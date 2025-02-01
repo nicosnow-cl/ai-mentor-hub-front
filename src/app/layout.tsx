@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+<<<<<<< HEAD
 import "./globals.scss";
 
 import { ChatStoreProvider } from "@/providers/chat-store-provider";
 import { InteractionStoreProvider } from "@/providers/interaction-store-provider";
+=======
+import "./globals.css";
+import { ChatStoreProvider } from "@/providers/chat-store-provider";
+>>>>>>> 29417e0 (feat: :sparkles: Initial commit)
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +35,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+<<<<<<< HEAD
         <ChatStoreProvider>
           <InteractionStoreProvider>{children}</InteractionStoreProvider>
         </ChatStoreProvider>
+=======
+        <ChatStoreProvider>{children}</ChatStoreProvider>
+>>>>>>> 29417e0 (feat: :sparkles: Initial commit)
       </body>
     </html>
   );
