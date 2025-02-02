@@ -22,10 +22,10 @@ body {
 
 pre {
   overflow-x: auto;
-  white-space: nowrap;
-  white-space: -moz-nowrap !important;
-  white-space: -nowrap;
-  white-space: -o-nowrap;
+  white-space: wrap;
+  white-space: -moz-wrap !important;
+  white-space: -wrap;
+  white-space: -o-wrap;
   word-wrap: break-word;
   font-family: inherit;
   margin: 0 !important;

@@ -23,12 +23,11 @@ export function Chat() {
         ref={containerRef}
         className="flex flex-col gap-y-16 h-[600px] overflow-hidden px-6 pt-48"
       >
-        {messages.map(({ role, content }, idx) => (
+        {messages.map((message, idx) => (
           <Bubble
-            key={`bubble-${role}-${idx}`}
-            // className={idx < messages.length - 1 ? "scale-95" : "scale-105"}
-            role={role}
-            message={content}
+            key={`bubble-${message.role}-${idx}`}
+            className={idx < messages.length - 1 ? "scale-95" : "scale-105"}
+            message={message}
           />
         ))}
       </div>

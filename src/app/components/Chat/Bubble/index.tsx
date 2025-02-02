@@ -1,20 +1,15 @@
 import { IconTransformPoint, IconUser } from "@tabler/icons-react";
 
 import { ChatRole } from "@/enums/chat-role.enum";
-import { getThinkAndContent } from "@/helpers/get-think-and-content";
+import { Message } from "@/stores/chat-store";
 
 export type BubbleProps = {
   className?: string;
-  role: string;
-  message: string;
+  message: Message;
 };
 
-export function Bubble({
-  role,
-  message,
-  className = "",
-}: Readonly<BubbleProps>) {
-  const { content } = getThinkAndContent({ role, content: message });
+export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
+  const { role, content } = message;
 
   return (
     <div

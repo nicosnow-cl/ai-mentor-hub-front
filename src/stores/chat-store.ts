@@ -3,6 +3,7 @@ import { createStore } from "zustand/vanilla";
 export type Message = {
   role: string;
   content: string;
+  think?: string;
 };
 
 export type ChatState = {

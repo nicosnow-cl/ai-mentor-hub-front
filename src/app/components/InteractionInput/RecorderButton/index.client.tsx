@@ -7,15 +7,18 @@ import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { useState } from "react";
 import { Button } from "./Button";
+import { useInteractionStore } from "@/providers/interaction-store-provider";
+import { InteractionStatus } from "@/enums/interaction-status.enum";
+import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 
 export function RecorderButton() {
-  const [isRecording, setIsRecording] = useState(false);
+  const { updateStatus } = useInteractionStore((store) => store);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioUrl, setAudioUrl] = useState("");
   const { messages, appendMessage } = useChatStore((state) => state);
 
   const startRecording = async () => {
-    setIsRecording(true);
+    updateStatus(InteractionStatus.Recording);
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
@@ -27,33 +30,48 @@ export function RecorderButton() {
     };
 
     recorder.onstop = async () => {
-      const blob = new Blob(chunks, { type: "audio/webm" });
+      try {
+        const blob = new Blob(chunks, { type: "audio/webm" });
 
-      const recognizedText = await sttAct(blob);
+        updateStatus(InteractionStatus.STT);
+        const recognizedText = await sttAct(blob);
 
-      if (recognizedText.text) {
-        const newUserMessage = { role: "user", content: recognizedText.text };
+        if (recognizedText.text) {
+          const newUserMessage = { role: "user", content: recognizedText.text };
 
-        appendMessage(newUserMessage);
+          appendMessage(newUserMessage);
 
-        const assistantMessage = await chatLmStudioAct([
-          ...messages,
-          newUserMessage,
-        ]);
+          updateStatus(InteractionStatus.Thinking);
+          const assistantMessage = await chatOpenRouterAct([
+            ...messages,
+            newUserMessage,
+          ]);
+          // const assistantMessage = await chatLmStudioAct([
+          //   ...messages,
+          //   newUserMessage,
+          // ]);
 
-        // const assistantMessage = await chatServerAct(
-        //   [...messages.slice(Math.max(messages.length - 5, 1)), newUserMessage],
-        //   recognizedText.language
-        // );
+          // const assistantMessage = await chatServerAct(
+          //   [...messages.slice(Math.max(messages.length - 5, 1)), newUserMessage],
+          //   recognizedText.language
+          // );
 
-        appendMessage(assistantMessage);
+          appendMessage(assistantMessage);
 
-        ttsAct(assistantMessage.content, recognizedText.language).then((data) =>
-          handlePlayAudio(data)
-        );
+          updateStatus(InteractionStatus.TTS);
+          const audioBase64 = await ttsAct(
+            assistantMessage.content,
+            recognizedText.language
+          );
+
+          updateStatus(InteractionStatus.Idle);
+          handlePlayAudio(audioBase64);
+        }
+      } catch (err: unknown) {
+        console.error({ err });
+
+        updateStatus(InteractionStatus.Error);
       }
-
-      setIsRecording(false);
     };
 
     recorder.start();
@@ -65,7 +83,6 @@ export function RecorderButton() {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
       mediaRecorder.stop();
       mediaRecorder.stream.getTracks().forEach((track) => track.stop());
-      setIsRecording(false);
     }
   };
 

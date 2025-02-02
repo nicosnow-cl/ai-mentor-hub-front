@@ -1,5 +1,5 @@
-import { AssistantIndicator } from "./AssistantIndicator";
-import { InputMessage } from "./InputMessage";
+import { AssistantIndicator } from "./AssistantIndicator/index.client";
+import { InputMessage } from "./InputMessage/index.client";
 import { MessageTextfield } from "./MessageTextfield";
 import { RecorderButton } from "./RecorderButton/index.client";
 

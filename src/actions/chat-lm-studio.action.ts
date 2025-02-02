@@ -4,6 +4,7 @@ import {
   ChatLmStudioSvcInput,
   chatLmStudioSvc,
 } from "@/services/chat-lm-studio.post";
+import { getThinkAndContent } from "@/helpers/get-think-and-content";
 import { Message } from "@/stores/chat-store";
 
 export const chatLmStudioAct = async (
@@ -12,5 +13,11 @@ export const chatLmStudioAct = async (
   const res = await chatLmStudioSvc(input);
   const data = await res.json();
 
-  return data.choices[0].message;
+  const { think, content } = getThinkAndContent(data.choices[0].message);
+
+  return {
+    role: data.choices[0].message.role,
+    content,
+    think,
+  };
 };
