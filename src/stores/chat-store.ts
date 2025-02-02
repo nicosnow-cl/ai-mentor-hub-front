@@ -3,10 +3,7 @@ import { createStore } from "zustand/vanilla";
 export type Message = {
   role: string;
   content: string;
-<<<<<<< HEAD
   think?: string;
-=======
->>>>>>> 29417e0 (feat: :sparkles: Initial commit)
 };
 
 export type ChatState = {
