@@ -101,10 +101,7 @@ export function RecorderButton() {
       <Button
         onMouseDown={() => startRecording()}
         onMouseUp={() => stopRecording()}
-        className="bg-slate-400 p-10 rounded-full"
       />
-
-      <span>{isRecording ? "Listening" : "Idle"}</span>
     </div>
   );
 }
