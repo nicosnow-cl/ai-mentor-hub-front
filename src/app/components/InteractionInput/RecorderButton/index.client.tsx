@@ -1,6 +1,6 @@
 "use client";
 
-import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
+// import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
 // import { chatServerAct } from "@/actions/chat-server.action";
 import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
@@ -12,7 +12,7 @@ import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 
 export function RecorderButton() {
-  const { updateStatus } = useInteractionStore((store) => store);
+  const { status, updateStatus } = useInteractionStore((store) => store);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioUrl, setAudioUrl] = useState("");
   const { messages, appendMessage } = useChatStore((state) => state);
@@ -58,14 +58,15 @@ export function RecorderButton() {
 
           appendMessage(assistantMessage);
 
-          updateStatus(InteractionStatus.TTS);
-          const audioBase64 = await ttsAct(
-            assistantMessage.content,
-            recognizedText.language
-          );
+          // updateStatus(InteractionStatus.TTS);
+          // const audioBase64 = await ttsAct(
+          //   assistantMessage.content,
+          //   recognizedText.language
+          // );
+
+          // handlePlayAudio(audioBase64);
 
           updateStatus(InteractionStatus.Idle);
-          handlePlayAudio(audioBase64);
         }
       } catch (err: unknown) {
         console.error({ err });
@@ -116,8 +117,11 @@ export function RecorderButton() {
       )}
 
       <Button
-        onMouseDown={() => startRecording()}
-        onMouseUp={() => stopRecording()}
+        onPointerDown={() => startRecording()}
+        onPointerUp={() => stopRecording()}
+        // onMouseDown={() => startRecording()}
+        // onMouseUp={() => stopRecording()}
+        isActive={status === InteractionStatus.Recording}
       />
     </div>
   );

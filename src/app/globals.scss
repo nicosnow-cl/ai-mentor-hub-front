@@ -9,7 +9,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: linear-gradient(
+      to bottom,
+      #000507,
+      #01090d,
+      #020d12,
+      #041016,
+      #06131a
+    );
     --foreground: #ededed;
   }
 }
@@ -47,8 +54,8 @@ pre {
 }
 
 .fade-to-bottom {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 55%);
-  mask-image: linear-gradient(to bottom, transparent 25%, black 55%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
+  mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
 }
 
 .fade-to-top {
