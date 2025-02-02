@@ -5,10 +5,10 @@ import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
 import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
-import { IconMicrophone } from "@tabler/icons-react";
 import { useState } from "react";
+import { Button } from "./Button";
 
-export function RecorderInput() {
+export function RecorderButton() {
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioUrl, setAudioUrl] = useState("");
@@ -91,13 +91,6 @@ export function RecorderInput() {
 
   return (
     <div className="flex flex-col items-center gap-y-6">
-      {/* <span>
-        {
-          messages.filter((message) => message.role === "assistant").at(-1)
-            ?.content
-        }
-      </span> */}
-
       {audioUrl && (
         <audio autoPlay>
           <source key={Math.random()} src={audioUrl} type="audio/wav" />
@@ -105,13 +98,11 @@ export function RecorderInput() {
         </audio>
       )}
 
-      <button
+      <Button
         onMouseDown={() => startRecording()}
         onMouseUp={() => stopRecording()}
         className="bg-slate-400 p-10 rounded-full"
-      >
-        <IconMicrophone className="size-12" />
-      </button>
+      />
 
       <span>{isRecording ? "Listening" : "Idle"}</span>
     </div>
