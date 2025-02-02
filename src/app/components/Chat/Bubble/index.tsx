@@ -1,6 +1,7 @@
 import { IconTransformPoint, IconUser } from "@tabler/icons-react";
 
 import { ChatRole } from "@/enums/chat-role.enum";
+<<<<<<< HEAD
 import { Message } from "@/stores/chat-store";
 
 export type BubbleProps = {
@@ -10,6 +11,22 @@ export type BubbleProps = {
 
 export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
   const { role, content } = message;
+=======
+import { getThinkAndContent } from "@/helpers/get-think-and-content";
+
+export type BubbleProps = {
+  className?: string;
+  role: string;
+  message: string;
+};
+
+export function Bubble({
+  role,
+  message,
+  className = "",
+}: Readonly<BubbleProps>) {
+  const { content } = getThinkAndContent({ role, content: message });
+>>>>>>> 6a8167f (feat: :sparkles: Implemented chat history)
 
   return (
     <div

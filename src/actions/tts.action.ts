@@ -3,6 +3,7 @@
 import { ttsSvc } from "@/services/tts.post";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const ttsAct = async (text: string, language?: string) => {
   const res = await ttsSvc(text, language);
   const blob = await res.blob();
@@ -23,5 +24,12 @@ export const ttsAct = async (text: string) => {
 
   // Convert to base64 to be serializable
 >>>>>>> 29417e0 (feat: :sparkles: Initial commit)
+=======
+export const ttsAct = async (text: string, language?: string) => {
+  const res = await ttsSvc(text, language);
+  const blob = await res.blob();
+  const buffer = Buffer.from(await blob.arrayBuffer());
+
+>>>>>>> 6a8167f (feat: :sparkles: Implemented chat history)
   return "data:" + blob.type + ";base64," + buffer.toString("base64");
 };

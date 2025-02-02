@@ -4,7 +4,10 @@ import {
   ChatLmStudioSvcInput,
   chatLmStudioSvc,
 } from "@/services/chat-lm-studio.post";
+<<<<<<< HEAD
 import { getThinkAndContent } from "@/helpers/get-think-and-content";
+=======
+>>>>>>> 6a8167f (feat: :sparkles: Implemented chat history)
 import { Message } from "@/stores/chat-store";
 
 export const chatLmStudioAct = async (
@@ -13,6 +16,7 @@ export const chatLmStudioAct = async (
   const res = await chatLmStudioSvc(input);
   const data = await res.json();
 
+<<<<<<< HEAD
   const { think, content } = getThinkAndContent(data.choices[0].message);
 
   return {
@@ -20,4 +24,7 @@ export const chatLmStudioAct = async (
     content,
     think,
   };
+=======
+  return data.choices[0].message;
+>>>>>>> 6a8167f (feat: :sparkles: Implemented chat history)
 };
