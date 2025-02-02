@@ -1,6 +1,7 @@
 "use client";
 
-import { chatAct } from "@/actions/chat.action";
+import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
+// import { chatServerAct } from "@/actions/chat-server.action";
 import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
@@ -30,17 +31,24 @@ export function RecorderInput() {
 
       const recognizedText = await sttAct(blob);
 
-      if (recognizedText) {
-        const newUserMessage = { role: "user", content: recognizedText };
+      if (recognizedText.text) {
+        const newUserMessage = { role: "user", content: recognizedText.text };
 
         appendMessage(newUserMessage);
 
-        const chatResponse = await chatAct([...messages, newUserMessage]);
-        const assistantMessage = chatResponse.choices[0].message;
+        const assistantMessage = await chatLmStudioAct([
+          ...messages,
+          newUserMessage,
+        ]);
+
+        // const assistantMessage = await chatServerAct(
+        //   [...messages.slice(Math.max(messages.length - 5, 1)), newUserMessage],
+        //   recognizedText.language
+        // );
 
         appendMessage(assistantMessage);
 
-        await ttsAct(assistantMessage.content).then((data) =>
+        ttsAct(assistantMessage.content, recognizedText.language).then((data) =>
           handlePlayAudio(data)
         );
       }
@@ -81,16 +89,14 @@ export function RecorderInput() {
     }, 50);
   };
 
-  console.log({ messages });
-
   return (
     <div className="flex flex-col items-center gap-y-6">
-      <span>
+      {/* <span>
         {
           messages.filter((message) => message.role === "assistant").at(-1)
             ?.content
         }
-      </span>
+      </span> */}
 
       {audioUrl && (
         <audio autoPlay>
