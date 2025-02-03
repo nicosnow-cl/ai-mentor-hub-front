@@ -2,6 +2,7 @@ import { AssistantIndicator } from "./AssistantIndicator/index.client";
 import { InteractionStatusIndicator } from "./InteractionStatusIndicator/index.client";
 import { MessageTextfield } from "./MessageTextfield";
 import { RecorderButton } from "./RecorderButton/index.client";
+import { RecordingTimeBar } from "./RecordingTimeBar/index.client";
 
 export function InteractionInput() {
   return (
@@ -20,6 +21,8 @@ export function InteractionInput() {
             <RecorderButton />
           </div>
         </div>
+
+        <RecordingTimeBar />
       </div>
     </div>
   );

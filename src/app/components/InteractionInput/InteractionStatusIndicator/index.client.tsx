@@ -1,7 +1,5 @@
 "use client";
 
-import { IconTransformPoint } from "@tabler/icons-react";
-
 import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
 
@@ -36,7 +34,7 @@ export function InteractionStatusIndicator() {
         status === InteractionStatus.Error ? "text-red-300" : ""
       }`}
     >
-      <IconTransformPoint className="size-5" />
+      <div className="terminal-spinner" />
 
       <i>{label}</i>
     </span>

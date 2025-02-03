@@ -63,6 +63,23 @@ pre {
   mask-image: linear-gradient(to top, transparent 25%, black 100%);
 }
 
+.fade-x-small {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
 @function random-pct() {
   @return random(40) + 40%;
 }
@@ -147,5 +164,48 @@ pre {
   100% {
     background-position: left;
     transform: rotate(-360deg);
+  }
+}
+
+.terminal-spinner {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.terminal-spinner:after {
+  animation: changeContent 0.8s linear infinite;
+  display: block;
+  content: "⠋";
+}
+
+@keyframes changeContent {
+  10% {
+    content: "⠙";
+  }
+  20% {
+    content: "⠹";
+  }
+  30% {
+    content: "⠸";
+  }
+  40% {
+    content: "⠼";
+  }
+  50% {
+    content: "⠴";
+  }
+  60% {
+    content: "⠦";
+  }
+  70% {
+    content: "⠧";
+  }
+  80% {
+    content: "⠇";
+  }
+  90% {
+    content: "⠏";
   }
 }

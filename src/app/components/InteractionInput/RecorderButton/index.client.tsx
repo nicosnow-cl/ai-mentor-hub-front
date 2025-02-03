@@ -10,15 +10,27 @@ import { Button } from "./Button";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
 import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
+import { useTtsStore } from "@/providers/tts-store-provider";
+
+const MENTOR_WORKING_STATUS = [
+  InteractionStatus.STT,
+  InteractionStatus.Thinking,
+  InteractionStatus.TTS,
+];
 
 export function RecorderButton() {
-  const { status, updateStatus } = useInteractionStore((store) => store);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [audioUrl, setAudioUrl] = useState("");
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
+  const { generateAudioUrl } = useTtsStore((store) => store);
   const { messages, appendMessage } = useChatStore((state) => state);
+  const { status, updateStatus } = useInteractionStore((store) => store);
 
   const startRecording = async () => {
     updateStatus(InteractionStatus.Recording);
+
+    const audioElements = document.querySelectorAll("audio");
+    audioElements.forEach((audiElem) => audiElem.pause());
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
@@ -58,13 +70,13 @@ export function RecorderButton() {
 
           appendMessage(assistantMessage);
 
-          // updateStatus(InteractionStatus.TTS);
-          // const audioBase64 = await ttsAct(
-          //   assistantMessage.content,
-          //   recognizedText.language
-          // );
+          updateStatus(InteractionStatus.TTS);
+          const audioBase64 = await ttsAct(
+            assistantMessage.content,
+            recognizedText.language
+          );
 
-          // handlePlayAudio(audioBase64);
+          generateAudioUrl(audioBase64);
 
           updateStatus(InteractionStatus.Idle);
         }
@@ -87,42 +99,16 @@ export function RecorderButton() {
     }
   };
 
-  const handlePlayAudio = (base64: string) => {
-    // Convertir Base64 a Blob
-    const base64String = base64.split(",")[1]; // Eliminar "data:audio/wav;base64," si existe
-    const byteCharacters = atob(base64String);
-    const byteNumbers = Array.from(byteCharacters, (char) =>
-      char.charCodeAt(0)
-    );
-    const byteArray = new Uint8Array(byteNumbers);
-
-    // Crear el Blob
-    const audioBlob = new Blob([byteArray], { type: "audio/wav" });
-    const audioUrl = URL.createObjectURL(audioBlob);
-
-    setAudioUrl("");
-
-    setTimeout(() => {
-      setAudioUrl(audioUrl);
-    }, 50);
-  };
-
   return (
-    <div className="flex flex-col items-center gap-y-6">
-      {audioUrl && (
-        <audio autoPlay>
-          <source key={Math.random()} src={audioUrl} type="audio/wav" />
-          Tu navegador no soporta reproducción de audio.
-        </audio>
-      )}
-
-      <Button
-        onPointerDown={() => startRecording()}
-        onPointerUp={() => stopRecording()}
-        // onMouseDown={() => startRecording()}
-        // onMouseUp={() => stopRecording()}
-        isActive={status === InteractionStatus.Recording}
-      />
-    </div>
+    <Button
+      onPointerDown={() => {
+        if (!MENTOR_WORKING_STATUS.includes(status)) {
+          startRecording();
+        }
+      }}
+      onPointerUp={() => stopRecording()}
+      isActive={status === InteractionStatus.Recording}
+      disabled={MENTOR_WORKING_STATUS.includes(status)}
+    />
   );
 }

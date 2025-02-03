@@ -5,6 +5,7 @@ import "./globals.scss";
 
 import { ChatStoreProvider } from "@/providers/chat-store-provider";
 import { InteractionStoreProvider } from "@/providers/interaction-store-provider";
+import { TtsStoreProvider } from "@/providers/tts-store-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <ChatStoreProvider>
-          <InteractionStoreProvider>{children}</InteractionStoreProvider>
-        </ChatStoreProvider>
+        <TtsStoreProvider>
+          <ChatStoreProvider>
+            <InteractionStoreProvider>{children}</InteractionStoreProvider>
+          </ChatStoreProvider>
+        </TtsStoreProvider>
       </body>
     </html>
   );
