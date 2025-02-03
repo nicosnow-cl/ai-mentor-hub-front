@@ -12,11 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-
       animation: {
-        fade: "fadeIn .5s ease-in-out",
+        "fade-in": "fadeIn 0.5s ease both",
       },
-
       keyframes: {
         fadeIn: {
           from: { opacity: "0" },

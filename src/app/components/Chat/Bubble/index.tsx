@@ -1,3 +1,5 @@
+import ReactMarkdown from "react-markdown";
+
 import { ChatRole } from "@/enums/chat-role.enum";
 import { Message } from "@/stores/chat-store";
 import { EmitterBadge } from "./EmitterBadge";
@@ -25,7 +27,7 @@ export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
         </pre>
       )} */}
 
-      <pre className="text-lg">{content}</pre>
+      <ReactMarkdown>{content}</ReactMarkdown>
     </div>
   );
 }

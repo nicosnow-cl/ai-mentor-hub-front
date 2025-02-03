@@ -1,8 +1,9 @@
 "use client";
 
+import { IconTransformPoint } from "@tabler/icons-react";
+
 import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
-import { IconTransformPoint } from "@tabler/icons-react";
 
 const getLabel = (status: InteractionStatus) => {
   switch (status) {
@@ -36,6 +37,7 @@ export function InteractionStatusIndicator() {
       }`}
     >
       <IconTransformPoint className="size-5" />
+
       <i>{label}</i>
     </span>
   );

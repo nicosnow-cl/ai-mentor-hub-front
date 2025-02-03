@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { Bubble } from "./Bubble";
 
-const MESSAGE_SCALES = ["scale-75", "scale-90", "scale-105", "scale-110"];
+const MESSAGE_SCALES = ["scale-90", "scale-100", "scale-105", "scale-110"];
 
 const getBubbleScale = (index: number, arrayLength: number) => {
   const lastIndex = arrayLength - 1;
@@ -49,14 +49,18 @@ export function Chat() {
         {messages.length - 1 > 10 && <button>Ver más</button>}
 
         {lastTenMessages.map((message, idx) => (
-          <Bubble
+          <div
             key={`bubble-${message.role}-${idx}`}
-            className={`${getBubbleScale(
-              idx,
-              messages.length
-            )} transition-transform`}
-            message={message}
-          />
+            className="animate-fade-in"
+          >
+            <Bubble
+              className={`${getBubbleScale(
+                idx,
+                lastTenMessages.length
+              )} transition-transform sca`}
+              message={message}
+            />
+          </div>
         ))}
       </div>
     </div>
