@@ -101,12 +101,12 @@ export function RecorderButton() {
 
   return (
     <Button
-      onPointerDown={() => {
+      onMouseDown={() => {
         if (!MENTOR_WORKING_STATUS.includes(status)) {
           startRecording();
         }
       }}
-      onPointerUp={() => stopRecording()}
+      onMouseUp={() => stopRecording()}
       isActive={status === InteractionStatus.Recording}
       disabled={MENTOR_WORKING_STATUS.includes(status)}
     />

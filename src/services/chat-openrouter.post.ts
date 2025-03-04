@@ -4,7 +4,8 @@ export type ChatOpenRouterSvcInput = string | Message[];
 
 // const MODEL = "gemma-2-2b-it";
 // const MODEL = "google/gemini-2.0-flash-exp:free";
-const MODEL = "meta-llama/llama-3.2-3b-instruct:free";
+// const MODEL = "meta-llama/llama-3.2-3b-instruct:free";
+const MODEL = "google/gemini-2.0-flash-lite-preview-02-05:free";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
 export const chatOpenRouterSvc = (input: ChatOpenRouterSvcInput) => {

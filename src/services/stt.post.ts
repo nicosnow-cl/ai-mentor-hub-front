@@ -1,5 +1,7 @@
 export const sttSvc = (formData: FormData) => {
-  return fetch("http://127.0.0.1:8000/whisper/stt", {
+  formData.append("provider", "faster-whisper");
+
+  return fetch("http://127.0.0.1:8000/stt", {
     method: "POST",
     body: formData,
   });
