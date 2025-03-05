@@ -1,6 +1,6 @@
 "use server";
 
-import { ttsElevenLabsSvc } from "@/services/tts-elevenlabs.service";
+import { ttsElevenLabsSvc } from "@/services/tts-elevenlabs.client";
 
 export const ttsElevenLabsAct = async (text: string) => {
   const audioBuffer = await ttsElevenLabsSvc(text);

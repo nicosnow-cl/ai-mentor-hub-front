@@ -2,7 +2,7 @@
 
 // import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
 // import { chatServerAct } from "@/actions/chat-server.action";
-import { sttAct } from "@/actions/stt.action";
+// import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { useInteractionStore } from "@/providers/interaction-store-provider";
 import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 import { useTtsStore } from "@/providers/tts-store-provider";
+import { sttElevenLabsAct } from "@/actions/stt-elevenlabs.action";
 
 const MENTOR_WORKING_STATUS = [
   InteractionStatus.STT,
@@ -46,7 +47,8 @@ export function RecorderButton() {
         const blob = new Blob(chunks, { type: "audio/webm" });
 
         updateStatus(InteractionStatus.STT);
-        const recognizedText = await sttAct(blob);
+        // const recognizedText = await sttAct(blob);
+        const recognizedText = await sttElevenLabsAct(blob);
 
         if (recognizedText.text) {
           const newUserMessage = { role: "user", content: recognizedText.text };
