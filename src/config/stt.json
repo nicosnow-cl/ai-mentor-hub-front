@@ -1,0 +1,8 @@
+[
+  {
+    "provider": "elevenlabs",
+    "apiKey": "sk_8734fd416e444ec7f54fb4f9b8be2c76a1e70168e68260fb",
+    "model": "scribe_v1",
+    "isActive": true
+  }
+]

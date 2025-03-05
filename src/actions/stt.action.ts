@@ -1,17 +1,16 @@
 "use server";
 
-import { sttSvc } from "@/services/stt.post";
+import { STTClient } from "@/clients/stt.client";
 
-type SttResponse = {
-  language: string;
-  text: string;
-};
+// import { sttSvc } from "@/services/stt.post";
 
-export const sttAct = async (audioBlob: Blob): Promise<SttResponse> => {
-  const formData = new FormData();
-  formData.append("audio", audioBlob, "audio.mp3");
+export const sttAct = async (audio: Blob) => {
+  // const formData = new FormData();
+  // formData.append("audio", audioBlob, "audio.mp3");
 
-  const res = await sttSvc(formData);
+  // const res = await sttSvc(formData);
 
-  return res.json();
+  // return res.json();
+
+  return STTClient.getInstance().transcribe(audio);
 };

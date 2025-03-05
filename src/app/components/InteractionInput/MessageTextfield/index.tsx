@@ -4,11 +4,10 @@ import { useState } from "react";
 
 import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 import { InteractionStatus } from "@/enums/interaction-status.enum";
-// import { ttsAct } from "@/actions/tts.action";
+import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
 import { useTtsStore } from "@/providers/tts-store-provider";
-import { ttsElevenLabsAct } from "@/actions/tts-elevenlabs.action";
 
 const MENTOR_WORKING_STATUS = [
   InteractionStatus.STT,
@@ -42,7 +41,7 @@ export function MessageTextfield() {
       updateStatus(InteractionStatus.TTS);
       setText("");
 
-      const audioBase64 = await ttsElevenLabsAct(assistantMessage.content);
+      const audioBase64 = await ttsAct(assistantMessage.content);
       console.log({ audioBase64 });
       generateAudioUrl(audioBase64);
 
