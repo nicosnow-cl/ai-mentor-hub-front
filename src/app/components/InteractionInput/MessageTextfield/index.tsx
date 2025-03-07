@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 import { InteractionStatus } from "@/enums/interaction-status.enum";
+import { llmAct } from "@/actions/llm.action";
 import { ttsAct } from "@/actions/tts.action";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
@@ -32,17 +32,14 @@ export function MessageTextfield() {
       appendMessage(newUserMessage);
       updateStatus(InteractionStatus.Thinking);
 
-      const assistantMessage = await chatOpenRouterAct([
-        ...messages,
-        newUserMessage,
-      ]);
+      const assistantMessage = await llmAct([...messages, newUserMessage]);
 
       appendMessage(assistantMessage);
       updateStatus(InteractionStatus.TTS);
       setText("");
 
       const audioBase64 = await ttsAct(assistantMessage.content);
-      console.log({ audioBase64 });
+
       generateAudioUrl(audioBase64);
 
       updateStatus(InteractionStatus.Idle);
