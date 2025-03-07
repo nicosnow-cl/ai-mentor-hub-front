@@ -1,6 +1,7 @@
 import { STTClientBase } from "@/types";
 import { STTElevenLabsClient } from "@/services/stt-elevenlabs.service";
 import STTConfigs from "@/config/stt.json";
+import { ENV_VARS } from "@/config/environment";
 
 export class STTClient {
   private static instance: STTClientBase;
@@ -27,7 +28,7 @@ export class STTClient {
         console.log("Setting STT ElevenLabs");
 
         this.instance = new STTElevenLabsClient({
-          apiKey: providerConfig.apiKey,
+          apiKey: ENV_VARS.ELEVENLABS_API_KEY,
           model: providerConfig.model,
         });
 

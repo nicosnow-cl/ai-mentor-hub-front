@@ -1,17 +1,14 @@
 "use client";
 
-// import { chatLmStudioAct } from "@/actions/chat-lm-studio.action";
-// import { chatServerAct } from "@/actions/chat-server.action";
 import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
+import { llmAct } from "@/actions/llm.action";
 import { useChatStore } from "@/providers/chat-store-provider";
 import { useState } from "react";
 import { Button } from "./Button";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
 import { InteractionStatus } from "@/enums/interaction-status.enum";
-import { chatOpenRouterAct } from "@/actions/chat-openrouter.action";
 import { useTtsStore } from "@/providers/tts-store-provider";
-// import { sttElevenLabsAct } from "@/actions/stt-elevenlabs.action";
 
 const MENTOR_WORKING_STATUS = [
   InteractionStatus.STT,
@@ -56,19 +53,7 @@ export function RecorderButton() {
           appendMessage(newUserMessage);
 
           updateStatus(InteractionStatus.Thinking);
-          const assistantMessage = await chatOpenRouterAct([
-            ...messages,
-            newUserMessage,
-          ]);
-          // const assistantMessage = await chatLmStudioAct([
-          //   ...messages,
-          //   newUserMessage,
-          // ]);
-
-          // const assistantMessage = await chatServerAct(
-          //   [...messages.slice(Math.max(messages.length - 5, 1)), newUserMessage],
-          //   recognizedText.language
-          // );
+          const assistantMessage = await llmAct([...messages, newUserMessage]);
 
           appendMessage(assistantMessage);
 

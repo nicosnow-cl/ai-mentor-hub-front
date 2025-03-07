@@ -1,7 +1,8 @@
+import { ENV_VARS } from "@/config/environment";
 import { LLMClientBase } from "@/types";
+import { LLMLmStudio } from "@/services/llm-lmstudio.service";
 import { LLMOpenRouter } from "@/services/llm-openrouter.service";
 import LLMConfigs from "@/config/llm.json";
-import { LLMLmStudio } from "@/services/llm-lmstudio.service";
 
 export class LLMClient {
   private static instance: LLMClientBase;
@@ -28,7 +29,9 @@ export class LLMClient {
         console.log("Setting LLM OpenRouter");
 
         this.instance = new LLMOpenRouter({
+          apiKey: ENV_VARS.OPENROUTER_API_KEY,
           model: providerConfig.model,
+          baseUrl: providerConfig.baseUrl,
         });
 
         break;
@@ -38,7 +41,7 @@ export class LLMClient {
 
         this.instance = new LLMLmStudio({
           model: providerConfig.model,
-          baseUrl: providerConfig.baseUrl as string,
+          baseUrl: providerConfig.baseUrl,
         });
 
         break;

@@ -10,7 +10,7 @@ export class STTElevenLabsClient implements STTClientBase {
     this.config = config;
 
     this.client = new ElevenLabsClient({
-      apiKey: this.config.apiKey,
+      apiKey: config.apiKey,
     });
   }
 

@@ -8,6 +8,7 @@
   },
   {
     "provider": "murf",
+    "baseUrl": "https://api.murf.ai/v1",
     "model": "GEN2",
     "voice": "en-US-natalie",
     "style": "Conversational",

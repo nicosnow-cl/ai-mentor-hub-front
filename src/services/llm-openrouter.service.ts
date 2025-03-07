@@ -4,11 +4,9 @@ import { Message } from "@/stores/chat-store";
 
 export class LLMOpenRouter implements LLMClientBase {
   private readonly config: Record<string, string>;
-  private readonly apiKey: string;
 
   constructor(config: Record<string, string>) {
     this.config = config;
-    this.apiKey = process.env.OPENROUTER_API_KEY as string;
   }
 
   private getPayload(input: LLMInput) {
@@ -46,11 +44,11 @@ export class LLMOpenRouter implements LLMClientBase {
   }
 
   async chat(input: LLMInput): Promise<Message> {
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.config.apiKey}`,
       },
       body: JSON.stringify(this.getPayload(input)),
     });

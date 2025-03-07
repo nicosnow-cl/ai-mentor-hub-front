@@ -2,11 +2,9 @@ import { TTSClientBase } from "@/types";
 
 export class TTSMurfAiClient implements TTSClientBase {
   private readonly config: Record<string, string>;
-  private readonly apiKey: string;
 
   constructor(config: Record<string, string>) {
     this.config = config;
-    this.apiKey = process.env.MURF_API_KEY as string;
   }
 
   private getPayload(text: string) {
@@ -19,12 +17,12 @@ export class TTSMurfAiClient implements TTSClientBase {
   }
 
   async speech(text: string): Promise<{ buffer: Buffer; blobType: string }> {
-    const res = await fetch("https://api.murf.ai/v1/speech/generate", {
+    const res = await fetch(`${this.config.baseUrl}/speech/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "api-key": this.apiKey,
+        "api-key": this.config.apiKey,
       },
       body: JSON.stringify(this.getPayload(text)),
     });
