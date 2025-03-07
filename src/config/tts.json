@@ -4,6 +4,13 @@
     "apiKey": "sk_8734fd416e444ec7f54fb4f9b8be2c76a1e70168e68260fb",
     "model": "eleven_multilingual_v2",
     "voice": "21m00Tcm4TlvDq8ikWAM",
+    "isActive": false
+  },
+  {
+    "provider": "murf",
+    "model": "GEN2",
+    "voice": "en-US-natalie",
+    "style": "Conversational",
     "isActive": true
   }
 ]

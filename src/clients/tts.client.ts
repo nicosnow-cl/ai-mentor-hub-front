@@ -1,6 +1,7 @@
 import { TTSClientBase } from "@/types/tts-client-base.type";
 import { TTSElevenLabsClient } from "@/services/tts-elevenlabs.service";
 import TTSConfigs from "@/config/tts.json";
+import { TTSMurfAiClient } from "@/services/tts-murfai.service";
 
 export class TTSClient {
   private static instance: TTSClientBase;
@@ -27,10 +28,22 @@ export class TTSClient {
         console.log("Setting TTS ElevenLabs");
 
         this.instance = new TTSElevenLabsClient({
-          apiKey: providerConfig.apiKey,
-          voice: providerConfig.voice,
+          apiKey: providerConfig.apiKey as string,
           model: providerConfig.model,
+          voice: providerConfig.voice,
         });
+
+        break;
+
+      case "murf":
+        console.log("Setting TTS Murf");
+
+        this.instance = new TTSMurfAiClient({
+          model: providerConfig.model,
+          voice: providerConfig.voice,
+          style: providerConfig.style as string,
+        });
+
         break;
 
       default:

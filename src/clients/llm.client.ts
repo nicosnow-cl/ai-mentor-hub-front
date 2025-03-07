@@ -1,6 +1,7 @@
 import { LLMClientBase } from "@/types";
 import { LLMOpenRouter } from "@/services/llm-openrouter.service";
 import LLMConfigs from "@/config/llm.json";
+import { LLMLmStudio } from "@/services/llm-lmstudio.service";
 
 export class LLMClient {
   private static instance: LLMClientBase;
@@ -28,6 +29,16 @@ export class LLMClient {
 
         this.instance = new LLMOpenRouter({
           model: providerConfig.model,
+        });
+
+        break;
+
+      case "lmstudio":
+        console.log("Setting LM Studio");
+
+        this.instance = new LLMLmStudio({
+          model: providerConfig.model,
+          baseUrl: providerConfig.baseUrl as string,
         });
 
         break;
