@@ -66,6 +66,8 @@ export function RecorderButton() {
           generateAudioUrl(audioBase64);
 
           updateStatus(InteractionStatus.Idle);
+        } else {
+          updateStatus(InteractionStatus.Idle);
         }
       } catch (err: unknown) {
         console.error({ err });

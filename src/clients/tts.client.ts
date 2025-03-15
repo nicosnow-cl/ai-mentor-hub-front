@@ -40,6 +40,7 @@ export class TTSClient {
         console.log("Setting TTS Murf");
 
         this.instance = new TTSMurfAiClient({
+          apiKey: ENV_VARS.MURF_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
           model: providerConfig.model,
           voice: providerConfig.voice,
