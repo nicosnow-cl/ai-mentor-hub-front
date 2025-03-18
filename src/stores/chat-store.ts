@@ -1,6 +1,7 @@
 import { createStore } from "zustand/vanilla";
 
 export type Message = {
+  id: string;
   role: string;
   content: string;
   think?: string;

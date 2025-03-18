@@ -1,12 +1,13 @@
 import ReactMarkdown from "react-markdown";
 
+import { AudioControls } from "./AudioControls";
 import { ChatRole } from "@/enums/chat-role.enum";
-import { Message } from "@/stores/chat-store";
 import { EmitterBadge } from "./EmitterBadge";
+import { Message } from "@/stores/chat-store";
 
 export type BubbleProps = {
-  className?: string;
   message: Message;
+  className?: string;
 };
 
 export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
@@ -18,7 +19,13 @@ export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
         role === ChatRole.Assistant ? "text-left" : "text-right"
       } ${className}`}
     >
-      <EmitterBadge role={role} />
+      <div className="flex gap-x-4 items-center">
+        <EmitterBadge role={role} />
+
+        {role === ChatRole.Assistant && (
+          <AudioControls messageId={message.id} />
+        )}
+      </div>
 
       {/* {think && (
         <pre className="flex flex-col whitespace-pre-wrap text-xs">

@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+import { Button } from "./Button";
+import { InteractionStatus } from "@/enums/interaction-status.enum";
+import { llmAct } from "@/actions/llm.action";
 import { sttAct } from "@/actions/stt.action";
 import { ttsAct } from "@/actions/tts.action";
-import { llmAct } from "@/actions/llm.action";
 import { useChatStore } from "@/providers/chat-store-provider";
-import { useState } from "react";
-import { Button } from "./Button";
 import { useInteractionStore } from "@/providers/interaction-store-provider";
-import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { useTtsStore } from "@/providers/tts-store-provider";
 
 const MENTOR_WORKING_STATUS = [
@@ -20,7 +22,9 @@ export function RecorderButton() {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
-  const { generateAudioUrl } = useTtsStore((store) => store);
+  const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
+    (store) => store
+  );
   const { messages, appendMessage } = useChatStore((state) => state);
   const { status, updateStatus } = useInteractionStore((store) => store);
 
@@ -48,7 +52,11 @@ export function RecorderButton() {
         const recognizedText = await sttAct(blob);
 
         if (recognizedText.text) {
-          const newUserMessage = { role: "user", content: recognizedText.text };
+          const newUserMessage = {
+            id: uuidv4(),
+            role: "user",
+            content: recognizedText.text,
+          };
 
           appendMessage(newUserMessage);
 
@@ -63,7 +71,8 @@ export function RecorderButton() {
             recognizedText.language
           );
 
-          generateAudioUrl(audioBase64);
+          generateAudioUrl(assistantMessage.id, audioBase64);
+          setCurrentMessageId(assistantMessage.id);
 
           updateStatus(InteractionStatus.Idle);
         } else {

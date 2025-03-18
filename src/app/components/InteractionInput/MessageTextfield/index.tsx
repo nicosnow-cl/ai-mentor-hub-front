@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { InteractionStatus } from "@/enums/interaction-status.enum";
 import { llmAct } from "@/actions/llm.action";
@@ -19,7 +20,9 @@ export function MessageTextfield() {
   const [text, setText] = useState("");
   const { messages, appendMessage } = useChatStore((state) => state);
   const { status, updateStatus } = useInteractionStore((store) => store);
-  const { generateAudioUrl } = useTtsStore((store) => store);
+  const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
+    (store) => store
+  );
 
   const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setText(evt.target.value);
@@ -27,7 +30,7 @@ export function MessageTextfield() {
 
   const handleSubmitText = async () => {
     try {
-      const newUserMessage = { role: "user", content: text };
+      const newUserMessage = { id: uuidv4(), role: "user", content: text };
 
       appendMessage(newUserMessage);
       updateStatus(InteractionStatus.Thinking);
@@ -40,7 +43,8 @@ export function MessageTextfield() {
 
       const audioBase64 = await ttsAct(assistantMessage.content);
 
-      generateAudioUrl(audioBase64);
+      generateAudioUrl(assistantMessage.id, audioBase64);
+      setCurrentMessageId(assistantMessage.id);
 
       updateStatus(InteractionStatus.Idle);
     } catch (err: unknown) {

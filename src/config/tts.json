@@ -4,7 +4,7 @@
     "apiKey": "sk_8734fd416e444ec7f54fb4f9b8be2c76a1e70168e68260fb",
     "model": "eleven_multilingual_v2",
     "voice": "21m00Tcm4TlvDq8ikWAM",
-    "isActive": false
+    "isActive": true
   },
   {
     "provider": "murf",
@@ -19,6 +19,6 @@
     "baseUrl": "https://api.deepgram.com/v1",
     "model": "aura",
     "voice": "stella",
-    "isActive": true
+    "isActive": false
   }
 ]
