@@ -6,7 +6,7 @@ import { STTClientBase, TranscribeResult } from "@/types";
 const require = createRequire(import.meta.url);
 const { createClient } = require("@deepgram/sdk");
 
-export class STTDeepGramClient implements STTClientBase {
+export class STTDeepgramClient implements STTClientBase {
   private readonly config: Record<string, string>;
   private readonly client: DeepgramClient;
 

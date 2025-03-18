@@ -12,6 +12,13 @@
     "model": "GEN2",
     "voice": "en-US-natalie",
     "style": "Conversational",
+    "isActive": false
+  },
+  {
+    "provider": "deepgram",
+    "baseUrl": "https://api.deepgram.com/v1",
+    "model": "aura",
+    "voice": "stella",
     "isActive": true
   }
 ]

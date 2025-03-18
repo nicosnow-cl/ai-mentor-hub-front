@@ -1,6 +1,6 @@
 import { ENV_VARS } from "@/config/environment";
 import { STTClientBase } from "@/types";
-import { STTDeepGramClient } from "@/services/stt-deepgram.service";
+import { STTDeepgramClient } from "@/services/stt-deepgram.service";
 import { STTElevenLabsClient } from "@/services/stt-elevenlabs.service";
 import STTConfigs from "@/config/stt.json";
 
@@ -38,7 +38,7 @@ export class STTClient {
       case "deepgram":
         console.log("Setting STT DeepGram");
 
-        this.instance = new STTDeepGramClient({
+        this.instance = new STTDeepgramClient({
           apiKey: ENV_VARS.DEEPGRAM_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
           model: providerConfig.model,

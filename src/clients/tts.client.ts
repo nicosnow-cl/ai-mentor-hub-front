@@ -3,6 +3,7 @@ import { TTSClientBase } from "@/types/tts-client-base.type";
 import { TTSElevenLabsClient } from "@/services/tts-elevenlabs.service";
 import { TTSMurfAiClient } from "@/services/tts-murfai.service";
 import TTSConfigs from "@/config/tts.json";
+import { TTSDeepgramClient } from "@/services/tts-deepgram.service";
 
 export class TTSClient {
   private static instance: TTSClientBase;
@@ -45,6 +46,18 @@ export class TTSClient {
           model: providerConfig.model,
           voice: providerConfig.voice,
           style: providerConfig.style as string,
+        });
+
+        break;
+
+      case "deepgram":
+        console.log("Setting TTS Deepgram");
+
+        this.instance = new TTSDeepgramClient({
+          apiKey: ENV_VARS.DEEPGRAM_API_KEY,
+          baseUrl: providerConfig.baseUrl as string,
+          model: providerConfig.model,
+          voice: providerConfig.voice,
         });
 
         break;
