@@ -2,24 +2,9 @@
 
 import { useEffect, useMemo, useRef } from "react";
 
-import { useChatStore } from "@/providers/chat-store-provider";
 import { Bubble } from "./Bubble";
-
-const MESSAGE_SCALES = ["scale-90", "scale-100", "scale-105", "scale-110"];
-
-const getBubbleScale = (index: number, arrayLength: number) => {
-  const lastIndex = arrayLength - 1;
-
-  if (index === lastIndex) {
-    return MESSAGE_SCALES[3];
-  } else if (index === lastIndex - 1) {
-    return MESSAGE_SCALES[2];
-  } else if (index === lastIndex - 2) {
-    return MESSAGE_SCALES[1];
-  }
-
-  return MESSAGE_SCALES[0];
-};
+import { ScalableScroll } from "./ScalableScroll/index.client";
+import { useChatStore } from "@/providers/chat-store-provider";
 
 export function Chat() {
   const { messages } = useChatStore((state) => state);
@@ -46,21 +31,16 @@ export function Chat() {
         className="flex flex-col gap-y-16 h-[45vh] pt-20 md:h-[600px] overflow-hidden px-12 md:pt-40 hover:overflow-y-auto"
         style={{ scrollbarGutter: "stable" }}
       >
-        {messages.length - 1 > 10 && <button>Ver más</button>}
+        {<button disabled={messages.length - 1 <= 10}>Ver más</button>}
 
         {lastTenMessages.map((message, idx) => (
-          <div
+          <ScalableScroll
             key={`bubble-${message.role}-${idx}`}
+            containerRef={containerRef}
             className="animate-fade-in"
           >
-            <Bubble
-              className={`${getBubbleScale(
-                idx,
-                lastTenMessages.length
-              )} transition-transform sca`}
-              message={message}
-            />
-          </div>
+            <Bubble message={message} />
+          </ScalableScroll>
         ))}
       </div>
     </div>

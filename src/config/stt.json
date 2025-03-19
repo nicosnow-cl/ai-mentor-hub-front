@@ -2,12 +2,12 @@
   {
     "provider": "elevenlabs",
     "model": "scribe_v1",
-    "isActive": false
+    "isActive": true
   },
   {
     "provider": "deepgram",
     "baseUrl": "https://api.deepgram.com/v1",
     "model": "nova-2",
-    "isActive": true
+    "isActive": false
   }
 ]
