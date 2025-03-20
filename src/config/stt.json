@@ -8,6 +8,6 @@
     "provider": "deepgram",
     "baseUrl": "https://api.deepgram.com/v1",
     "model": "nova-2",
-    "isActive": false
+    "isActive": true
   }
 ]

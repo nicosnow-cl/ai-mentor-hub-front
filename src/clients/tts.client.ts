@@ -4,6 +4,7 @@ import { TTSElevenLabsClient } from "@/services/tts-elevenlabs.service";
 import { TTSMurfAiClient } from "@/services/tts-murfai.service";
 import TTSConfigs from "@/config/tts.json";
 import { TTSDeepgramClient } from "@/services/tts-deepgram.service";
+import { TTSAwsClient } from "@/services/tts-aws.service";
 
 export class TTSClient {
   private static instance: TTSClientBase;
@@ -56,6 +57,18 @@ export class TTSClient {
         this.instance = new TTSDeepgramClient({
           apiKey: ENV_VARS.DEEPGRAM_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
+          model: providerConfig.model,
+          voice: providerConfig.voice,
+        });
+
+        break;
+
+      case "aws":
+        console.log("Setting TTS AWS");
+
+        this.instance = new TTSAwsClient({
+          accessKey: ENV_VARS.AWS_ACCESS_KEY,
+          secretKey: ENV_VARS.AWS_SECRET_KEY,
           model: providerConfig.model,
           voice: providerConfig.voice,
         });

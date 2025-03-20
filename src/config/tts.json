@@ -18,6 +18,12 @@
     "baseUrl": "https://api.deepgram.com/v1",
     "model": "aura",
     "voice": "stella",
+    "isActive": false
+  },
+  {
+    "provider": "aws",
+    "model": "standard",
+    "voice": "Amy",
     "isActive": true
   }
 ]
