@@ -2,7 +2,7 @@
   {
     "provider": "elevenlabs",
     "model": "scribe_v1",
-    "isActive": true
+    "isActive": false
   },
   {
     "provider": "deepgram",

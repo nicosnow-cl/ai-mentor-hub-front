@@ -15,7 +15,7 @@ export function Bubble({ message, className = "" }: Readonly<BubbleProps>) {
 
   return (
     <div
-      className={`flex flex-col gap-y-2 text-slate-50 hover:bg-purple-900/30 ${
+      className={`flex flex-col gap-y-2 text-slate-50 ${
         role === ChatRole.Assistant ? "text-left" : "text-right"
       } ${className}`}
     >

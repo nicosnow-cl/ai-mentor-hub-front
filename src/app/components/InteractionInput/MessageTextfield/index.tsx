@@ -24,7 +24,7 @@ export function MessageTextfield() {
     (store) => store
   );
 
-  const handleOnChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setText(evt.target.value);
   };
 
@@ -54,7 +54,7 @@ export function MessageTextfield() {
     }
   };
 
-  const handleOnKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     if (MENTOR_WORKING_STATUS.includes(status)) {
       return;
     }
@@ -68,13 +68,14 @@ export function MessageTextfield() {
 
   return (
     <input
+      ref={(input) => input?.focus()}
       className={`!bg-transparent rounded-lg block w-full p-2.5 outline-0 ${
         MENTOR_WORKING_STATUS.includes(status) ? "opacity-50" : "opacity-100"
       }`}
       type="text"
       placeholder="Preguntame cualquier cosa..."
-      onKeyDown={handleOnKeyDown}
-      onChange={handleOnChange}
+      onKeyDown={handleKeyDown}
+      onChange={handleChange}
       value={text}
       disabled={MENTOR_WORKING_STATUS.includes(status)}
     />
