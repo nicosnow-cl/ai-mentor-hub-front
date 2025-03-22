@@ -1,4 +1,5 @@
 import { ENV_VARS } from "@/config/environment";
+import { STTAwsClient } from "@/services/stt-aws.service";
 import { STTClientBase } from "@/types";
 import { STTDeepgramClient } from "@/services/stt-deepgram.service";
 import { STTElevenLabsClient } from "@/services/stt-elevenlabs.service";
@@ -42,6 +43,16 @@ export class STTClient {
           apiKey: ENV_VARS.DEEPGRAM_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
           model: providerConfig.model,
+        });
+
+        break;
+
+      case "aws":
+        console.log("Setting STT AWS");
+
+        this.instance = new STTAwsClient({
+          accessKey: ENV_VARS.AWS_ACCESS_KEY,
+          secretKey: ENV_VARS.AWS_SECRET_KEY,
         });
 
         break;
