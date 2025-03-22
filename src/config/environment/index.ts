@@ -7,6 +7,7 @@ const EnvironmentSchema = z.object({
   OPENROUTER_API_KEY: z.string().default(""),
   AWS_ACCESS_KEY: z.string().default(""),
   AWS_SECRET_KEY: z.string().default(""),
+  TTS_AZURE_SUBSCRIPTION_KEY: z.string().default(""),
 });
 
 export const ENV_VARS = EnvironmentSchema.parse(process.env);

@@ -5,12 +5,12 @@ import {
 } from "@aws-sdk/client-transcribe-streaming";
 import fs from "fs/promises";
 
-import { STTClientBase, TranscribeResult } from "@/types";
-import { Readable } from "stream";
-import { splitBuffer } from "@/helpers/split-buffer";
 import { blobToTempFile } from "@/helpers/blob-to-tempfile";
-import { wavFileToPCM } from "@/helpers/wav-file-to-pcm";
+import { Readable } from "stream";
 import { readAndCleanTempFile } from "@/helpers/read-and-clean-tempfile";
+import { splitBuffer } from "@/helpers/split-buffer";
+import { STTClientBase, TranscribeResult } from "@/types";
+import { wavFileToPCM } from "@/helpers/wav-file-to-pcm";
 
 const REGION = "us-east-1";
 

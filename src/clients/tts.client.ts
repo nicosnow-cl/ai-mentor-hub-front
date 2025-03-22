@@ -1,10 +1,11 @@
 import { ENV_VARS } from "@/config/environment";
+import { TTSAwsClient } from "@/services/tts-aws.service";
+import { TTSAzureClient } from "@/services/tts-azure.service";
 import { TTSClientBase } from "@/types/tts-client-base.type";
+import { TTSDeepgramClient } from "@/services/tts-deepgram.service";
 import { TTSElevenLabsClient } from "@/services/tts-elevenlabs.service";
 import { TTSMurfAiClient } from "@/services/tts-murfai.service";
 import TTSConfigs from "@/config/tts.json";
-import { TTSDeepgramClient } from "@/services/tts-deepgram.service";
-import { TTSAwsClient } from "@/services/tts-aws.service";
 
 export class TTSClient {
   private static instance: TTSClientBase;
@@ -32,7 +33,7 @@ export class TTSClient {
 
         this.instance = new TTSElevenLabsClient({
           apiKey: ENV_VARS.ELEVENLABS_API_KEY,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
           voice: providerConfig.voice,
         });
 
@@ -44,7 +45,7 @@ export class TTSClient {
         this.instance = new TTSMurfAiClient({
           apiKey: ENV_VARS.MURF_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
           voice: providerConfig.voice,
           style: providerConfig.style as string,
         });
@@ -57,7 +58,7 @@ export class TTSClient {
         this.instance = new TTSDeepgramClient({
           apiKey: ENV_VARS.DEEPGRAM_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
           voice: providerConfig.voice,
         });
 
@@ -69,7 +70,17 @@ export class TTSClient {
         this.instance = new TTSAwsClient({
           accessKey: ENV_VARS.AWS_ACCESS_KEY,
           secretKey: ENV_VARS.AWS_SECRET_KEY,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
+          voice: providerConfig.voice,
+        });
+
+        break;
+
+      case "azure":
+        console.log("Setting TTS Azure");
+
+        this.instance = new TTSAzureClient({
+          subscriptionKey: ENV_VARS.TTS_AZURE_SUBSCRIPTION_KEY,
           voice: providerConfig.voice,
         });
 

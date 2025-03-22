@@ -24,6 +24,11 @@
     "provider": "aws",
     "model": "standard",
     "voice": "Amy",
+    "isActive": false
+  },
+  {
+    "provider": "azure",
+    "voice": "en-US-EvelynMultilingualNeural",
     "isActive": true
   }
 ]
