@@ -1,5 +1,6 @@
 import { ENV_VARS } from "@/config/environment";
 import { STTAwsClient } from "@/services/stt-aws.service";
+import { STTAzureClient } from "@/services/stt-azure.service";
 import { STTClientBase } from "@/types";
 import { STTDeepgramClient } from "@/services/stt-deepgram.service";
 import { STTElevenLabsClient } from "@/services/stt-elevenlabs.service";
@@ -31,7 +32,7 @@ export class STTClient {
 
         this.instance = new STTElevenLabsClient({
           apiKey: ENV_VARS.ELEVENLABS_API_KEY,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
         });
 
         break;
@@ -42,7 +43,7 @@ export class STTClient {
         this.instance = new STTDeepgramClient({
           apiKey: ENV_VARS.DEEPGRAM_API_KEY,
           baseUrl: providerConfig.baseUrl as string,
-          model: providerConfig.model,
+          model: providerConfig.model as string,
         });
 
         break;
@@ -53,6 +54,15 @@ export class STTClient {
         this.instance = new STTAwsClient({
           accessKey: ENV_VARS.AWS_ACCESS_KEY,
           secretKey: ENV_VARS.AWS_SECRET_KEY,
+        });
+
+        break;
+
+      case "azure":
+        console.log("Setting STT Azure");
+
+        this.instance = new STTAzureClient({
+          subscriptionKey: ENV_VARS.STT_AZURE_SUBSCRIPTION_KEY,
         });
 
         break;
