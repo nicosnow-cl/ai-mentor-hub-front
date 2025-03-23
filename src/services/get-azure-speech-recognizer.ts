@@ -8,9 +8,14 @@ export const getSpeechRecognizer = (
   region = REGION
 ) => {
   const speechConfig = AzureSDK.SpeechConfig.fromSubscription(apiKey, region);
-  speechConfig.speechRecognitionLanguage = "en-US";
-
   const audioConfig = AzureSDK.AudioConfig.fromStreamInput(pushStream);
 
-  return new AzureSDK.SpeechRecognizer(speechConfig, audioConfig);
+  const autoDetectLangConfig =
+    AzureSDK.AutoDetectSourceLanguageConfig.fromLanguages(["en-US", "es-ES"]);
+
+  return AzureSDK.SpeechRecognizer.FromConfig(
+    speechConfig,
+    autoDetectLangConfig,
+    audioConfig
+  );
 };
