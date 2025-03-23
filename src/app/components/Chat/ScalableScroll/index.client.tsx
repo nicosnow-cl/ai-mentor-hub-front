@@ -1,7 +1,7 @@
 "use client";
 
 import { useScroll, useTransform, motion } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type ScalabelScrollProps = React.ComponentPropsWithoutRef<
   typeof motion.div
@@ -17,6 +17,7 @@ export function ScalableScroll({
   ...restProps
 }: ScalabelScrollProps) {
   const ref = useRef(null);
+  const [scales, setScales] = useState([1, 0.5, 0.25]);
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
@@ -24,7 +25,28 @@ export function ScalableScroll({
     offset: ["end end", "start start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0.25]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], scales);
+
+  useEffect(() => {
+    const updateScales = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        // Mobile
+        setScales([1, 0.9, 0.8]);
+      } else if (width < 1024) {
+        // Tablet
+        setScales([1, 0.85, 0.75]);
+      } else {
+        // Desktop
+        setScales([1, 0.8, 0.7]);
+      }
+    };
+
+    updateScales(); // Initial setup
+    window.addEventListener("resize", updateScales);
+    return () => window.removeEventListener("resize", updateScales);
+  }, []);
 
   return (
     <motion.div ref={ref} style={{ scale, ...style }} {...restProps}>

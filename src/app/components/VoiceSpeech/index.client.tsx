@@ -24,6 +24,7 @@ export function VoiceSpeech() {
     <audio
       key={currentMessageId}
       ref={(ref) => setRef(ref)}
+      className="absolute"
       onPlay={() => setPlayerStatus("playing")}
       onPause={() => setPlayerStatus("paused")}
       autoPlay

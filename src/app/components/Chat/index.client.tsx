@@ -25,13 +25,13 @@ export function Chat() {
   }, [messages.length]);
 
   return (
-    <div className="h-[45vh] md:h-[600px] max-w-[1024px] fade-to-bottom">
+    <div className="flex-1 w-full fade-to-bottom z-10">
       <div
         ref={containerRef}
-        className="flex flex-col gap-y-16 h-[45vh] pt-20 md:h-[600px] overflow-hidden px-12 md:pt-40 hover:overflow-y-auto"
-        style={{ scrollbarGutter: "stable" }}
+        className="flex flex-col mt-20 gap-y-8 px-6 overflow-y-auto md:gap-y-16 md:px-12 md:pt-40"
+        style={{ maxHeight: "70vh", scrollbarGutter: "stable" }}
       >
-        {<button disabled={messages.length - 1 <= 10}>Ver más</button>}
+        <button disabled={messages.length - 1 <= 10}>Ver más</button>
 
         {lastTenMessages.map((message, idx) => (
           <ScalableScroll

@@ -24,7 +24,10 @@ export const defaultInitState: ChatState = {
 export const createChatStore = (initState: ChatState = defaultInitState) => {
   return createStore<ChatStore>()((set) => ({
     ...initState,
-    appendMessage: (message: Message) =>
-      set((state) => ({ ...state, messages: [...state.messages, message] })),
+    appendMessage: (message: Message) => {
+      console.log("New Message: ", message);
+
+      set((state) => ({ ...state, messages: [...state.messages, message] }));
+    },
   }));
 };

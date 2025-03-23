@@ -30,11 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
         <TtsStoreProvider>
           <ChatStoreProvider>
-            <InteractionStoreProvider>{children}</InteractionStoreProvider>
+            <InteractionStoreProvider>
+              <div className="flex items-center justify-center">{children}</div>
+            </InteractionStoreProvider>
           </ChatStoreProvider>
         </TtsStoreProvider>
       </body>
