@@ -14,7 +14,7 @@ export function InteractionInput() {
       <div className="relative w-full col-span-4">
         <InteractionStatusIndicator />
 
-        <div className="w-full h-fit bg-slate-800/50 border-slate-600 border rounded-2xl p-2 shadow-lg">
+        <div className="w-full h-fit bg-slate-800/50 border-slate-600 border rounded-2xl p-2 shadow-lg glass">
           <div className="flex gap-x-4">
             <MessageTextfield />
 
