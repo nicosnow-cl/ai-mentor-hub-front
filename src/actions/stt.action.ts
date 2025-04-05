@@ -1,7 +1,7 @@
-"use server";
+'use server'
 
-import { STTClient } from "@/clients/stt.client";
+import { STTClient } from '@/clients/stt.client'
 
 export const sttAct = async (audio: Blob) => {
-  return STTClient.getInstance().transcribe(audio);
-};
+  return STTClient.getInstance().transcribe(audio)
+}

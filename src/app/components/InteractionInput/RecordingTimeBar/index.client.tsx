@@ -1,57 +1,59 @@
-"use client";
+'use client'
 
-import { startTransition, useEffect, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from 'react'
 
-import { InteractionStatus } from "@/enums/interaction-status.enum";
-import { useInteractionStore } from "@/providers/interaction-store-provider";
+import { InteractionStatus } from '@/enums/interaction-status.enum'
+import { useInteractionStore } from '@/providers/interaction-store-provider'
 
-const initialTime = 20 * 1000; // 20 Segundos
+const initialTime = 20 * 1000 // 20 Segundos
 
 export function RecordingTimeBar() {
-  const [recordingTimeLeft, setRecordingTimeLeft] = useState(initialTime);
-  const { status } = useInteractionStore((store) => store);
+  const [recordingTimeLeft, setRecordingTimeLeft] = useState(initialTime)
+  const { status } = useInteractionStore((store) => store)
 
   const percentageLeft = useMemo(
     () => (recordingTimeLeft / initialTime) * 100,
     [recordingTimeLeft]
-  );
+  )
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timeout
 
-    setRecordingTimeLeft(initialTime);
+    setRecordingTimeLeft(initialTime)
 
     if (status === InteractionStatus.Recording) {
       intervalId = setInterval(() => {
         startTransition(() => {
           setRecordingTimeLeft((prev) => {
-            const timeLeft = Math.max(0, prev - 50);
+            const timeLeft = Math.max(0, prev - 50)
 
             if (timeLeft <= 0) {
-              clearInterval(intervalId);
+              clearInterval(intervalId)
             }
 
-            return timeLeft;
-          });
-        });
-      }, 50);
+            return timeLeft
+          })
+        })
+      }, 50)
     }
 
     return () => {
-      clearInterval(intervalId);
-    };
-  }, [status]);
+      clearInterval(intervalId)
+    }
+  }, [status])
 
   if (status !== InteractionStatus.Recording) {
-    return null;
+    return null
   }
 
   return (
-    <div className="absolute w-full h-fit bottom-0 animate-fade-in">
+    <div className="absolute bottom-0 h-fit w-full animate-fade-in">
       <span
-        className="mx-auto block h-0.5 bg-slate-300 rounded-full fade-x-small"
-        style={{ width: `${percentageLeft}%` }}
+        className="fade-x-small mx-auto block h-0.5 rounded-full bg-slate-300"
+        style={{
+          width: `${percentageLeft}%`,
+        }}
       />
     </div>
-  );
+  )
 }

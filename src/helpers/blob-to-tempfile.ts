@@ -1,15 +1,15 @@
-import { tmpdir } from "os";
-import fs from "fs/promises";
-import path from "path";
+import { tmpdir } from 'os'
+import fs from 'fs/promises'
+import path from 'path'
 
 export const blobToTempFile = async (
   blob: Blob,
-  extension = ".wav"
+  extension = '.wav'
 ): Promise<string> => {
-  const tempFilePath = path.join(tmpdir(), `audio-${Date.now()}${extension}`);
-  const buffer = Buffer.from(await blob.arrayBuffer());
+  const tempFilePath = path.join(tmpdir(), `audio-${Date.now()}${extension}`)
+  const buffer = Buffer.from(await blob.arrayBuffer())
 
-  await fs.writeFile(tempFilePath, buffer);
+  await fs.writeFile(tempFilePath, buffer)
 
-  return tempFilePath;
-};
+  return tempFilePath
+}

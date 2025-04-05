@@ -1,33 +1,33 @@
 export type CircularProgressProps = {
-  containerProps?: React.ComponentPropsWithoutRef<"div">;
-  progress?: number;
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-};
+  containerProps?: React.ComponentPropsWithoutRef<'div'>
+  progress?: number
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+}
 
 export function CircularProgress({
   containerProps,
   progress = 0,
-  size = "md",
+  size = 'md',
 }: CircularProgressProps) {
   const { className: containerClassName, ...restContainerProps } =
-    containerProps ?? {};
+    containerProps ?? {}
 
-  const strokeDashoffset = 100 - progress;
+  const strokeDashoffset = 100 - progress
 
   const getSize = () => {
     switch (size) {
-      case "xs":
-        return "size-5";
-      case "sm":
-        return "size-7";
-      case "lg":
-        return "size-10";
-      case "xl":
-        return "size-12";
+      case 'xs':
+        return 'size-5'
+      case 'sm':
+        return 'size-7'
+      case 'lg':
+        return 'size-10'
+      case 'xl':
+        return 'size-12'
       default:
-        return "size-9";
+        return 'size-9'
     }
-  };
+  }
 
   return (
     <div
@@ -58,9 +58,11 @@ export function CircularProgress({
           strokeDasharray="100"
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 0.05s linear" }}
+          style={{
+            transition: 'stroke-dashoffset 0.05s linear',
+          }}
         />
       </svg>
     </div>
-  );
+  )
 }

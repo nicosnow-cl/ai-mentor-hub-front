@@ -1,18 +1,18 @@
-import { createStore } from "zustand/vanilla";
+import { createStore } from 'zustand/vanilla'
 
 export type MenuDrawerState = {
-  open: boolean;
-};
+  open: boolean
+}
 
 export type MenuDrawerActions = {
-  toogleDrawer: (open?: boolean) => void;
-};
+  toogleDrawer: (open?: boolean) => void
+}
 
-export type MenuDrawerStore = MenuDrawerState & MenuDrawerActions;
+export type MenuDrawerStore = MenuDrawerState & MenuDrawerActions
 
 export const defaultInitState: MenuDrawerState = {
   open: false,
-};
+}
 
 export const createMenuDrawerStore = (
   initState: MenuDrawerState = defaultInitState
@@ -24,5 +24,5 @@ export const createMenuDrawerStore = (
         ...state,
         open: typeof open !== undefined ? open : !state.open,
       })),
-  }));
-};
+  }))
+}

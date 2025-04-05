@@ -1,8 +1,8 @@
-import { IconMicrophone } from "@tabler/icons-react";
+import { IconMicrophone } from '@tabler/icons-react'
 
-export type ButtonProps = React.ComponentPropsWithoutRef<"button"> & {
-  isActive?: boolean;
-};
+export type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
+  isActive?: boolean
+}
 
 export function Button({
   className,
@@ -12,19 +12,19 @@ export function Button({
 }: Readonly<ButtonProps>) {
   return (
     <div
-      className={`relative group ${disabled ? "opacity-50" : "opacity-100"}`}
+      className={`group relative ${disabled ? 'opacity-50' : 'opacity-100'}`}
     >
       {isActive && (
-        <span className="bg-blue-950 absolute size-full rounded-full inset-0 -z-10 animate-ping" />
+        <span className="absolute inset-0 -z-10 size-full animate-ping rounded-full bg-blue-950" />
       )}
 
       <button
         {...props}
-        className={`z-10 bg-zinc-950 p-4 rounded-full shadow-md group-hover:bg-slate-950 transition-colors duration-300 ${className}`}
+        className={`z-10 rounded-full bg-zinc-950 p-4 shadow-md transition-colors duration-300 group-hover:bg-slate-950 ${className}`}
         disabled={disabled}
       >
-        <IconMicrophone className="size-6 group-hover:text-blue-200 transition-colors duration-300" />
+        <IconMicrophone className="size-6 transition-colors duration-300 group-hover:text-blue-200" />
       </button>
     </div>
-  );
+  )
 }

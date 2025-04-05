@@ -1,14 +1,14 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid'
 
-import { getThinkAndContent } from "@/helpers/get-think-and-content";
-import { Message } from "@/stores/chat-store";
-import { LLMClientBase, LLMInput } from "@/types";
+import { getThinkAndContent } from '@/helpers/get-think-and-content'
+import { Message } from '@/stores/chat-store'
+import { LLMClientBase, LLMInput } from '@/types'
 
 export class LLMLmStudio implements LLMClientBase {
-  private readonly config: Record<string, string>;
+  private readonly config: Record<string, string>
 
   constructor(config: Record<string, string>) {
-    this.config = config;
+    this.config = config
   }
 
   private getPayload(input: LLMInput) {
@@ -16,7 +16,7 @@ export class LLMLmStudio implements LLMClientBase {
       model: this.config.model,
       messages: [
         {
-          role: "user",
+          role: 'user',
           content: `Your role: You are Athenia, a spoken English teacher and language improver.
 
         Instructions:
@@ -34,39 +34,42 @@ export class LLMLmStudio implements LLMClientBase {
         },
       ],
       stream: false,
-    };
-
-    if (typeof input === "string") {
-      payload.messages.push({ role: "user", content: input });
-    } else {
-      payload.messages = [...payload.messages, ...input];
     }
 
-    return payload;
+    if (typeof input === 'string') {
+      payload.messages.push({
+        role: 'user',
+        content: input,
+      })
+    } else {
+      payload.messages = [...payload.messages, ...input]
+    }
+
+    return payload
   }
 
   async chat(input: LLMInput): Promise<Message> {
     const res = await fetch(`${this.config.baseUrl}/v1/chat/completions`, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(this.getPayload(input)),
-    });
+    })
 
-    const data = await res.json();
+    const data = await res.json()
 
     if (data.error) {
-      throw new Error(data.error);
+      throw new Error(data.error)
     }
 
-    const { think, content } = getThinkAndContent(data.choices[0].message);
+    const { think, content } = getThinkAndContent(data.choices[0].message)
 
     return {
       id: data.id || uuidv4(),
       role: data.choices[0].message.role,
       content,
       think,
-    };
+    }
   }
 }

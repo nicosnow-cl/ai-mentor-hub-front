@@ -1,17 +1,17 @@
-import { ElevenLabsClient } from "elevenlabs";
+import { ElevenLabsClient } from 'elevenlabs'
 
-import { STTClientBase, TranscribeResult } from "@/types";
+import { STTClientBase, TranscribeResult } from '@/types'
 
 export class STTElevenLabsClient implements STTClientBase {
-  private readonly config: Record<string, string>;
-  private readonly client: ElevenLabsClient;
+  private readonly config: Record<string, string>
+  private readonly client: ElevenLabsClient
 
   constructor(config: Record<string, string>) {
-    this.config = config;
+    this.config = config
 
     this.client = new ElevenLabsClient({
       apiKey: config.apiKey,
-    });
+    })
   }
 
   async transcribe(audio: Blob): Promise<TranscribeResult> {
@@ -21,11 +21,11 @@ export class STTElevenLabsClient implements STTClientBase {
       tag_audio_events: false, // Tag audio events like laughter, applause, etc.
       // language_code: "eng", // Language of the audio file. If set to null, the model will detect the language automatically.
       // diarize: true, // Whether to annotate who is speaking
-    });
+    })
 
     return {
       text: transcribed.text,
       language: transcribed.language_code,
-    };
+    }
   }
 }

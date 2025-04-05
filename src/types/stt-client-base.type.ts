@@ -1,8 +1,8 @@
 export type TranscribeResult = {
-  text: string;
-  language: string;
-};
+  text: string
+  language: string
+}
 
 export type STTClientBase = {
-  transcribe(audio: Blob): Promise<TranscribeResult>;
-};
+  transcribe(audio: Blob): Promise<TranscribeResult>
+}

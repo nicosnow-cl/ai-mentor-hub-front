@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useScroll, useTransform, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useScroll, useTransform, motion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
 
 export type ScalabelScrollProps = React.ComponentPropsWithoutRef<
   typeof motion.div
 > & {
-  children: React.ReactNode;
-  containerRef?: React.RefObject<HTMLElement | null>;
-};
+  children: React.ReactNode
+  containerRef?: React.RefObject<HTMLElement | null>
+}
 
 export function ScalableScroll({
   children,
@@ -16,41 +16,48 @@ export function ScalableScroll({
   style,
   ...restProps
 }: ScalabelScrollProps) {
-  const ref = useRef(null);
-  const [scales, setScales] = useState([1, 0.5, 0.25]);
+  const ref = useRef(null)
+  const [scales, setScales] = useState([1, 0.5, 0.25])
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
     target: ref,
-    offset: ["end end", "start start"],
-  });
+    offset: ['end end', 'start start'],
+  })
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], scales);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], scales)
 
   useEffect(() => {
     const updateScales = () => {
-      const width = window.innerWidth;
+      const width = window.innerWidth
 
       if (width < 640) {
         // Mobile
-        setScales([1, 0.9, 0.8]);
+        setScales([1, 0.9, 0.8])
       } else if (width < 1024) {
         // Tablet
-        setScales([1, 0.85, 0.75]);
+        setScales([1, 0.85, 0.75])
       } else {
         // Desktop
-        setScales([1, 0.8, 0.7]);
+        setScales([1, 0.8, 0.7])
       }
-    };
+    }
 
-    updateScales(); // Initial setup
-    window.addEventListener("resize", updateScales);
-    return () => window.removeEventListener("resize", updateScales);
-  }, []);
+    updateScales() // Initial setup
+    window.addEventListener('resize', updateScales)
+    return () => window.removeEventListener('resize', updateScales)
+  }, [])
 
   return (
-    <motion.div ref={ref} style={{ scale, ...style }} {...restProps}>
+    <motion.div
+      ref={ref}
+      style={{
+        scale,
+        ...style,
+      }}
+      {...restProps}
+    >
       {children}
     </motion.div>
-  );
+  )
 }

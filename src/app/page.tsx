@@ -1,7 +1,7 @@
-import { Chat } from "./components/Chat/index.client";
-import { InteractionInput } from "./components/InteractionInput";
-import { Navbar } from "./components/Navbar";
-import { VoiceSpeech } from "./components/VoiceSpeech/index.client";
+import { Chat } from './components/Chat/index.client'
+import { InteractionInput } from './components/InteractionInput'
+import { Navbar } from './components/Navbar'
+import { VoiceSpeech } from './components/VoiceSpeech/index.client'
 
 export default function Home() {
   return (
@@ -9,13 +9,13 @@ export default function Home() {
       <VoiceSpeech />
       <Navbar />
 
-      <div className="w-screen min-h-[calc(100vh-56px)] mt-14 grid items-center justify-items-center p-2 max-w-[1920px] md:p-8 md:pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <main className="size-full flex flex-col gap-8 md:gap-y-20 md:row-start-2 items-center sm:items-start">
+      <div className="mt-14 grid min-h-[calc(100vh-56px)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2 font-[family-name:var(--font-geist-sans)] sm:p-20 md:p-8 md:pb-20">
+        <main className="flex size-full flex-col items-center gap-8 sm:items-start md:row-start-2 md:gap-y-20">
           <Chat />
 
           <InteractionInput />
         </main>
       </div>
     </>
-  );
+  )
 }

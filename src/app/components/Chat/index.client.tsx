@@ -1,35 +1,38 @@
-"use client";
+'use client'
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from 'react'
 
-import { Bubble } from "./Bubble";
-import { ScalableScroll } from "./ScalableScroll/index.client";
-import { useChatStore } from "@/providers/chat-store-provider";
+import { Bubble } from './Bubble'
+import { ScalableScroll } from './ScalableScroll/index.client'
+import { useChatStore } from '@/providers/chat-store-provider'
 
 export function Chat() {
-  const { messages } = useChatStore((state) => state);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { messages } = useChatStore((state) => state)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const lastTenMessages = useMemo(
     () => messages.slice(Math.max(messages.length - 10, 0)),
     [messages]
-  );
+  )
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTo({
         top: containerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+        behavior: 'smooth',
+      })
     }
-  }, [messages.length]);
+  }, [messages.length])
 
   return (
-    <div className="flex-1 w-full fade-to-bottom z-10">
+    <div className="fade-to-bottom z-10 w-full flex-1">
       <div
         ref={containerRef}
-        className="flex flex-col mt-20 gap-y-8 px-6 overflow-y-auto md:gap-y-16 md:px-12 md:pt-40"
-        style={{ maxHeight: "70vh", scrollbarGutter: "stable" }}
+        className="mt-20 flex flex-col gap-y-8 overflow-y-auto px-6 md:gap-y-16 md:px-12 md:pt-40"
+        style={{
+          maxHeight: '70vh',
+          scrollbarGutter: 'stable',
+        }}
       >
         <button disabled={messages.length - 1 <= 10}>Ver más</button>
 
@@ -44,5 +47,5 @@ export function Chat() {
         ))}
       </div>
     </div>
-  );
+  )
 }
