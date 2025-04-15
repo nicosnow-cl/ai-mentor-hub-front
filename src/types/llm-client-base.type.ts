@@ -1,4 +1,4 @@
-import { Message } from '@/stores/chat-store'
+import { Message } from './chats'
 
 export type LLMInput = string | Message[]
 

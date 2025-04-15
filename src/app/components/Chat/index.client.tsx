@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { Bubble } from './Bubble'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from './EmptyState'
+import { MessageRole } from '@/enums'
 import { ScalableScroll } from './ScalableScroll/index.client'
 import { useChatStore } from '@/providers/chat-store-provider'
 
@@ -13,7 +14,10 @@ export function Chat() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const lastTenMessages = useMemo(
-    () => messages.slice(Math.max(messages.length - 10, 0)),
+    () =>
+      messages
+        .filter((message) => message.role !== MessageRole.System)
+        .slice(Math.max(messages.length - 10, 0)),
     [messages]
   )
 
@@ -36,7 +40,7 @@ export function Chat() {
           scrollbarGutter: 'stable',
         }}
       >
-        {messages.length === 0 && <EmptyState />}
+        {lastTenMessages.length === 0 && <EmptyState />}
         {messages.length > 10 && <Button variant="ghost">Ver más</Button>}
 
         {lastTenMessages.map((message, idx) => (

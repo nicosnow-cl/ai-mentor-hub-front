@@ -1,5 +1,5 @@
+import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums/message-role.enum'
-import { Message } from '@/stores/chat-store'
 
 export const getThinkAndContent = (
   message: Message

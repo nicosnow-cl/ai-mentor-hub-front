@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+import { cn } from '@/lib/utils'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
 import { llmAct } from '@/actions/llm.action'
+import { MessageRole } from '@/enums'
 import { ttsAct } from '@/actions/tts.action'
 import { useChatStore } from '@/providers/chat-store-provider'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 import { useTtsStore } from '@/providers/tts-store-provider'
-import { cn } from '@/lib/utils'
 
 const MENTOR_WORKING_STATUS = [
   InteractionStatus.STT,
@@ -33,7 +34,7 @@ export function MessageTextfield() {
     try {
       const newUserMessage = {
         id: uuidv4(),
-        role: 'user',
+        role: MessageRole.User,
         content: text,
       }
 

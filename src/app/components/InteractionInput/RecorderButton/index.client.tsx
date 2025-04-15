@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Button } from './Button'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
 import { llmAct } from '@/actions/llm.action'
+import { MessageRole } from '@/enums'
 import { sttAct } from '@/actions/stt.action'
 import { ttsAct } from '@/actions/tts.action'
 import { useChatStore } from '@/providers/chat-store-provider'
@@ -55,7 +56,7 @@ export function RecorderButton() {
         if (recognizedText.text) {
           const newUserMessage = {
             id: uuidv4(),
-            role: 'user',
+            role: MessageRole.User,
             content: recognizedText.text,
           }
 
