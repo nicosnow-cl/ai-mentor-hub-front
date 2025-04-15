@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { Message } from '@/stores/chat-store'
-import { LLMClientBase, LLMInput } from '@/types'
+import { LLMClientBase, LLMInput } from '@/types/chats'
 
 export class LLMLmStudio implements LLMClientBase {
   private readonly config: Record<string, string>

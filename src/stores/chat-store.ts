@@ -1,23 +1,22 @@
 import { createStore } from 'zustand/vanilla'
+import { v4 as uuidv4 } from 'uuid'
 
-export type Message = {
-  id: string
-  role: string
-  content: string
-  think?: string
-}
+import { Chat, Message } from '@/types/chats'
 
-export type ChatState = {
-  messages: Message[]
-}
+export const CHAT_STORE_KEY = 'chat-store'
+
+export type ChatState = Chat
 
 export type ChatActions = {
   appendMessage: (message: Message) => void
+  reset: () => void
 }
 
 export type ChatStore = ChatState & ChatActions
 
 export const defaultInitState: ChatState = {
+  id: uuidv4(),
+  title: 'Chat',
   messages: [],
 }
 
@@ -25,12 +24,22 @@ export const createChatStore = (initState: ChatState = defaultInitState) => {
   return createStore<ChatStore>()((set) => ({
     ...initState,
     appendMessage: (message: Message) => {
-      console.log('New Message: ', message)
+      set((state) => {
+        const newState = {
+          ...state,
+          messages: [...state.messages, message],
+        }
 
-      set((state) => ({
-        ...state,
-        messages: [...state.messages, message],
-      }))
+        localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(newState))
+
+        return newState
+      })
     },
+    reset: () =>
+      set(() => {
+        localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(defaultInitState))
+
+        return defaultInitState
+      }),
   }))
 }

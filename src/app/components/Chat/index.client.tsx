@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import { Bubble } from './Bubble'
+import { Button } from '@/components/ui/button'
+import { EmptyState } from './EmptyState'
 import { ScalableScroll } from './ScalableScroll/index.client'
 import { useChatStore } from '@/providers/chat-store-provider'
 
@@ -30,11 +32,12 @@ export function Chat() {
         ref={containerRef}
         className="mt-20 flex flex-col gap-y-8 overflow-y-auto px-6 md:gap-y-16 md:px-12 md:pt-40"
         style={{
-          maxHeight: '70vh',
+          maxHeight: '65vh',
           scrollbarGutter: 'stable',
         }}
       >
-        <button disabled={messages.length - 1 <= 10}>Ver más</button>
+        {messages.length === 0 && <EmptyState />}
+        {messages.length > 10 && <Button variant="ghost">Ver más</Button>}
 
         {lastTenMessages.map((message, idx) => (
           <ScalableScroll

@@ -1,5 +1,5 @@
 import { ENV_VARS } from '@/config/environment'
-import { LLMClientBase } from '@/types'
+import { LLMClientBase } from '@/types/chats'
 import { LLMLmStudio } from '@/services/llm-lmstudio.service'
 import { LLMOpenRouter } from '@/services/llm-openrouter.service'
 import LLMConfigs from '@/config/llm.json'

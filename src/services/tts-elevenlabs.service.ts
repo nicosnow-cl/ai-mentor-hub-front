@@ -1,7 +1,7 @@
 import { ElevenLabsClient } from 'elevenlabs'
 
 import { streamToBuffer } from '@/helpers/stream-to-buffer'
-import { TTSClientBase } from '@/types'
+import { TTSClientBase } from '@/types/chats'
 
 export class TTSElevenLabsClient implements TTSClientBase {
   private readonly config: Record<string, string>

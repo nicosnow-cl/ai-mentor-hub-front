@@ -9,7 +9,7 @@ import { blobToTempFile } from '@/helpers/blob-to-tempfile'
 import { Readable } from 'stream'
 import { readAndCleanTempFile } from '@/helpers/read-and-clean-tempfile'
 import { splitBuffer } from '@/helpers/split-buffer'
-import { STTClientBase, TranscribeResult } from '@/types'
+import { STTClientBase, TranscribeResult } from '@/types/chats'
 import { wavFileToPCM } from '@/helpers/wav-file-to-pcm'
 
 const REGION = 'us-east-1'

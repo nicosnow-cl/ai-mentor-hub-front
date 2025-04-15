@@ -9,7 +9,7 @@ export default function Home() {
       <VoiceSpeech />
       <Navbar />
 
-      <div className="mt-14 grid min-h-[calc(100vh-56px)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2 font-[family-name:var(--font-geist-sans)] sm:p-20 md:p-8 md:pb-20">
+      <div className="mt-14 grid min-h-[calc(100vh-56px)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2 sm:p-20 md:p-8 md:pb-20">
         <main className="flex size-full flex-col items-center gap-8 sm:items-start md:row-start-2 md:gap-y-20">
           <Chat />
 

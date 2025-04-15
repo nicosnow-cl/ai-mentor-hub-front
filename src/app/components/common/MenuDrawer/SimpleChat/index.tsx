@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 
-import { useChatStore } from '@/providers/chat-store-provider'
 import { Bubble } from '@/app/components/Chat/Bubble'
+import { useChatStore } from '@/providers/chat-store-provider'
 
 export function SimpleChat() {
   const { messages } = useChatStore((state) => state)

@@ -3,7 +3,7 @@
 import { type ReactNode, createContext, useRef, useContext } from 'react'
 import { useStore } from 'zustand'
 
-import { type ChatStore, createChatStore } from '@/stores/chat-store'
+import { CHAT_STORE_KEY, ChatStore, createChatStore } from '@/stores/chat-store'
 
 export type ChatStoreApi = ReturnType<typeof createChatStore>
 
@@ -19,7 +19,19 @@ export const ChatStoreProvider = ({ children }: ChatStoreProviderProps) => {
   const storeRef = useRef<ChatStoreApi>(null)
 
   if (!storeRef.current) {
-    storeRef.current = createChatStore()
+    const storedState = localStorage.getItem(CHAT_STORE_KEY)
+
+    if (storedState) {
+      const parsedState = JSON.parse(storedState)
+
+      storeRef.current = createChatStore(parsedState)
+    } else {
+      const chatStore = createChatStore()
+
+      localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(chatStore.getState()))
+
+      storeRef.current = chatStore
+    }
   }
 
   return (

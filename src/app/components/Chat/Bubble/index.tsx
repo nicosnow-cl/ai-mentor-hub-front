@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown'
 
 import { AudioControls } from './AudioControls'
-import { ChatRole } from '@/enums/chat-role.enum'
+import { MessageRole } from '@/enums/message-role.enum'
 import { EmitterBadge } from './EmitterBadge'
 import { Message } from '@/stores/chat-store'
 
@@ -16,13 +16,13 @@ export function Bubble({ message, className = '' }: Readonly<BubbleProps>) {
   return (
     <div
       className={`flex flex-col gap-y-2 text-slate-50 ${
-        role === ChatRole.Assistant ? 'text-left' : 'text-right'
+        role === MessageRole.Assistant ? 'text-left' : 'text-right'
       } ${className}`}
     >
       <div className="flex items-center gap-x-4">
         <EmitterBadge role={role} />
 
-        {role === ChatRole.Assistant && (
+        {role === MessageRole.Assistant && (
           <AudioControls messageId={message.id} />
         )}
       </div>

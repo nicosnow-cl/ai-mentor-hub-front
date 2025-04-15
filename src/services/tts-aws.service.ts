@@ -7,7 +7,7 @@ import {
 } from '@aws-sdk/client-polly'
 import { SynthesizeSpeechCommand } from '@aws-sdk/client-polly'
 
-import { TTSClientBase } from '@/types'
+import { TTSClientBase } from '@/types/chats'
 
 const REGION = 'us-east-1'
 

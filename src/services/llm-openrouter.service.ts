@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
-import { LLMClientBase, LLMInput } from '@/types'
+import { LLMClientBase, LLMInput } from '@/types/chats'
 import { Message } from '@/stores/chat-store'
 
 export class LLMOpenRouter implements LLMClientBase {

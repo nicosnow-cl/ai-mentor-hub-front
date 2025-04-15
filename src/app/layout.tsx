@@ -46,7 +46,7 @@ export default function RootLayout({
             <ChatStoreProvider>
               <InteractionStoreProvider>
                 <MenuDrawerProvider>
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center font-[family-name:var(--font-geist-sans)]">
                     {children}
                   </div>
 

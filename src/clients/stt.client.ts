@@ -1,7 +1,7 @@
 import { ENV_VARS } from '@/config/environment'
 import { STTAwsClient } from '@/services/stt-aws.service'
 import { STTAzureClient } from '@/services/stt-azure.service'
-import { STTClientBase } from '@/types'
+import { STTClientBase } from '@/types/chats'
 import { STTDeepgramClient } from '@/services/stt-deepgram.service'
 import { STTElevenLabsClient } from '@/services/stt-elevenlabs.service'
 import STTConfigs from '@/config/stt.json'

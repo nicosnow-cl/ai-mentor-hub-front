@@ -1,4 +1,4 @@
-import { ChatRole } from '@/enums/chat-role.enum'
+import { MessageRole } from '@/enums/message-role.enum'
 import { Message } from '@/stores/chat-store'
 
 export const getThinkAndContent = (
@@ -11,7 +11,7 @@ export const getThinkAndContent = (
   let content = ''
 
   if (
-    message.role === ChatRole.Assistant &&
+    message.role === MessageRole.Assistant &&
     message.content.includes('</think>')
   ) {
     think = message.content

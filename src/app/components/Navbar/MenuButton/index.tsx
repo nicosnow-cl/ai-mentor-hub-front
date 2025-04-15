@@ -1,15 +1,16 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { IconMenu2 } from '@tabler/icons-react'
 
 import { useMenuDrawer } from '@/providers/menu-drawer.provider'
 
-export function Button() {
+export function MenuButton() {
   const { toogleDrawer } = useMenuDrawer((state) => state)
 
   return (
-    <button className="absolute right-4" onClick={() => toogleDrawer(true)}>
+    <Button onClick={() => toogleDrawer(true)} variant="ghost" size="icon">
       <IconMenu2 />
-    </button>
+    </Button>
   )
 }

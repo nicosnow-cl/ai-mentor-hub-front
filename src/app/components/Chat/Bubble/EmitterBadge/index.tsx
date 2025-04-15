@@ -1,6 +1,6 @@
 import { IconTransformPoint, IconUser } from '@tabler/icons-react'
 
-import { ChatRole } from '@/enums/chat-role.enum'
+import { MessageRole } from '@/enums/message-role.enum'
 
 export type EmitterBadgeProps = {
   role: string
@@ -12,18 +12,18 @@ const CLASSES = {
 }
 
 export function EmitterBadge({ role }: Readonly<EmitterBadgeProps>) {
-  const Icon = role === ChatRole.Assistant ? IconTransformPoint : IconUser
+  const Icon = role === MessageRole.Assistant ? IconTransformPoint : IconUser
 
   return (
     <span
       className={`flex w-fit items-center gap-x-1 rounded-full px-3 py-1 ${
-        role === ChatRole.Assistant ? CLASSES.assistant : CLASSES.user
+        role === MessageRole.Assistant ? CLASSES.assistant : CLASSES.user
       }`}
     >
       <Icon className="size-4" />
 
       <span className="text-xs capitalize">
-        {role === ChatRole.Assistant ? 'mentor' : 'usuario'}
+        {role === MessageRole.Assistant ? 'mentor' : 'usuario'}
       </span>
     </span>
   )
