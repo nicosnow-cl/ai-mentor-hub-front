@@ -1,9 +1,9 @@
 import ReactMarkdown from 'react-markdown'
 
 import { AudioControls } from './AudioControls'
-import { MessageRole } from '@/enums/message-role.enum'
 import { EmitterBadge } from './EmitterBadge'
-import { Message } from '@/stores/chat-store'
+import { Message } from '@/types/chats'
+import { MessageRole } from '@/enums/message-role.enum'
 
 export type BubbleProps = {
   message: Message

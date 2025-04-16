@@ -16,8 +16,8 @@ export function ScalableScroll({
   style,
   ...restProps
 }: ScalabelScrollProps) {
-  const ref = useRef(null)
   const [scales, setScales] = useState([1, 0.5, 0.25])
+  const ref = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
@@ -44,19 +44,14 @@ export function ScalableScroll({
     }
 
     updateScales() // Initial setup
+
     window.addEventListener('resize', updateScales)
+
     return () => window.removeEventListener('resize', updateScales)
   }, [])
 
   return (
-    <motion.div
-      ref={ref}
-      style={{
-        scale,
-        ...style,
-      }}
-      {...restProps}
-    >
+    <motion.div ref={ref} style={{ ...style, scale }} {...restProps}>
       {children}
     </motion.div>
   )
