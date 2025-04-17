@@ -23,10 +23,12 @@ export function MenuDrawer() {
           } as React.CSSProperties
         }
       >
-        <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-          <DrawerDescription>This action cannot be undone.</DrawerDescription>
-        </DrawerHeader>
+        <div className="hidden">
+          <DrawerHeader>
+            <DrawerTitle>Menu</DrawerTitle>
+            <DrawerDescription>App Menu</DrawerDescription>
+          </DrawerHeader>
+        </div>
 
         <Menu />
       </DrawerContent>

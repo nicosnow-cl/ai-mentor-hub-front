@@ -19,13 +19,17 @@ export function ScalableScroll({
   const [scales, setScales] = useState([1, 0.5, 0.25])
   const ref = useRef<HTMLDivElement>(null)
 
-  const { scrollYProgress } = useScroll({
-    container: containerRef,
-    target: ref,
-    offset: ['end end', 'start start'],
-  })
+  const { scrollYProgress } = useScroll(
+    containerRef?.current
+      ? {
+          container: containerRef,
+          target: ref,
+          offset: ['end end', 'start start'],
+        }
+      : undefined
+  )
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], scales)
+  const scale = useTransform(scrollYProgress || 0, [0, 0.5, 1], scales)
 
   useEffect(() => {
     const updateScales = () => {
