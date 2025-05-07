@@ -1,12 +1,15 @@
 'use client'
 
+import { IconAlertHexagonFilled } from '@tabler/icons-react'
+
+import { cn } from '@/lib/utils'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 const getLabel = (status: InteractionStatus) => {
   switch (status) {
     case InteractionStatus.Error:
-      return 'Houston, tenemos un problema.'
+      return 'Houston, tuvimos un problema.'
     case InteractionStatus.Recording:
     case InteractionStatus.STT:
       return 'Escuchando...'
@@ -19,10 +22,19 @@ const getLabel = (status: InteractionStatus) => {
   }
 }
 
+const getIcon = (status: InteractionStatus) => {
+  if (status === InteractionStatus.Error) {
+    return <IconAlertHexagonFilled />
+  }
+
+  return <div className="terminal-spinner" />
+}
+
 export function InteractionStatusIndicator() {
   const { status } = useInteractionStore((store) => store)
 
   const label = getLabel(status)
+  const icon = getIcon(status)
 
   if (!label) {
     return null
@@ -30,11 +42,12 @@ export function InteractionStatusIndicator() {
 
   return (
     <span
-      className={`absolute -top-8 flex items-center gap-x-2 pl-3 ${
-        status === InteractionStatus.Error ? 'text-red-300' : ''
-      }`}
+      className={cn(
+        'glass absolute -top-8 flex items-center gap-x-2 rounded-md px-3',
+        status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'
+      )}
     >
-      <div className="terminal-spinner" />
+      {icon}
 
       <i>{label}</i>
     </span>

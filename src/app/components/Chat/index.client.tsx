@@ -52,18 +52,21 @@ export function Chat() {
           scrollbarGutter: 'stable',
         }}
       >
-        {messages.length === 0 && <EmptyState />}
         {messages.length > 10 && <Actions />}
 
-        {filteredMessages.map((message, idx) => (
-          <ScalableScroll
-            key={`main-chat-${message.role}-${idx}`}
-            className="animate-fade-in"
-            containerRef={containerRef}
-          >
-            <Bubble message={message} />
-          </ScalableScroll>
-        ))}
+        {!filteredMessages.length ? (
+          <EmptyState />
+        ) : (
+          filteredMessages.map((message, idx) => (
+            <ScalableScroll
+              key={`main-chat-${message.role}-${idx}`}
+              className="animate-fade-in"
+              containerRef={containerRef}
+            >
+              <Bubble message={message} />
+            </ScalableScroll>
+          ))
+        )}
       </div>
     </div>
   )

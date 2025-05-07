@@ -21,7 +21,7 @@ export function AudioControls({ messageId }: AudioControlsProps) {
 
   const canPlay = playerStatus !== 'playing'
 
-  const renderIcon = () => {
+  const getIcon = () => {
     if (messageId !== currentMessageId) {
       return <IconPlayerPlayFilled className="size-5" />
     }
@@ -86,7 +86,7 @@ export function AudioControls({ messageId }: AudioControlsProps) {
       />
 
       <button className="cursor-pointer" onClick={handleClick}>
-        {renderIcon()}
+        {getIcon()}
       </button>
     </div>
   )

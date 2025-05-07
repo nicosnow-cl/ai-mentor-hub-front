@@ -44,11 +44,13 @@ export class LLMLmStudio implements LLMClientBase {
     }
 
     const { think, content } = getThinkAndContent(data.choices[0].message)
+    const { content: parsedContent, accelerators } = JSON.parse(content)
 
     return {
       id: data.id || uuidv4(),
       role: data.choices[0].message.role,
-      content,
+      content: parsedContent,
+      accelerators,
       think,
     }
   }

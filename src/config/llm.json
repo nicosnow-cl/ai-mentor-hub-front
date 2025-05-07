@@ -8,7 +8,7 @@
   {
     "provider": "lmstudio",
     "baseUrl": "http://127.0.0.1:1234",
-    "model": "llama-3.2-3b-instruct",
+    "model": "qwen3-4b",
     "isActive": true
   }
 ]

@@ -94,18 +94,6 @@
   }
 }
 
-pre {
-  overflow-x: auto;
-  white-space: wrap;
-  white-space: -moz-wrap !important;
-  white-space: -wrap;
-  white-space: -o-wrap;
-  word-wrap: break-word;
-  font-family: inherit;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
 @theme {
   --animate-wiggle: wiggle 1s ease-in-out infinite;
 
@@ -291,4 +279,140 @@ pre {
 
 ::-webkit-scrollbar-corner {
   background: var(--background);
+}
+
+/* ==========================
+   Tema para Markdown
+   ========================== */
+@layer utilities {
+  .markdown {
+    color: var(--foreground);
+    line-height: 1.6;
+    font-size: 1rem;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: bold;
+      line-height: 1.25;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.25rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+    }
+
+    h5 {
+      font-size: 1.125rem;
+    }
+
+    h6 {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+    }
+
+    p {
+      margin: 1rem 0;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--primary-foreground);
+      }
+    }
+
+    blockquote {
+      border-left: 4px solid var(--muted);
+      padding-left: 1rem;
+      margin: 1rem 0;
+      color: var(--muted-foreground);
+      font-style: italic;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: var(--muted);
+      color: var(--foreground);
+      padding: 0.2rem 0.4rem;
+      border-radius: var(--radius);
+    }
+
+    pre {
+      font-family: 'Fira Code', monospace;
+      background-color: #0b1a22;
+      color: var(--foreground);
+      padding: 1rem;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: 1rem 0;
+      border-radius: 1rem;
+
+      code {
+        background: none;
+        padding: 0;
+      }
+    }
+
+    ul,
+    ol {
+      margin: 1rem 0;
+      padding-left: 2rem;
+
+      li {
+        margin: 0.5rem 0;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+
+      th,
+      td {
+        border: 1px solid var(--border);
+        padding: 0.5rem;
+        text-align: left;
+      }
+
+      th {
+        background: var(--muted);
+        color: var(--foreground);
+      }
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: var(--radius);
+    }
+  }
 }

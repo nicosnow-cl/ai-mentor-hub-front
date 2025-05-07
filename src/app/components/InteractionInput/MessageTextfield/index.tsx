@@ -1,5 +1,6 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -47,18 +48,21 @@ export function MessageTextfield() {
       updateStatus(InteractionStatus.TTS)
       setText('')
 
-      const audioBase64 = await ttsAct(assistantMessage.content)
+      const audioGenerated = await ttsAct(assistantMessage.content)
 
-      generateAudioUrl(assistantMessage.id, audioBase64)
+      if (audioGenerated.error) {
+        throw new Error(audioGenerated.error)
+      }
+
+      generateAudioUrl(assistantMessage.id, audioGenerated.base64 as string)
       setCurrentMessageId(assistantMessage.id)
 
       updateStatus(InteractionStatus.Idle)
     } catch (err: unknown) {
-      console.error({
-        err,
-      })
+      console.error(err)
 
       updateStatus(InteractionStatus.Error)
+      toast.error('Error generating response. Please try again.')
     }
   }
 

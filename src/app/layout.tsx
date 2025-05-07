@@ -6,6 +6,7 @@ import { InteractionStoreProvider } from '@/providers/interaction-store-provider
 import { MenuDrawer } from './components/common/MenuDrawer'
 import { MenuDrawerProvider } from '@/providers/menu-drawer.provider'
 import { ThemeProvider } from '@/providers/theme.provider'
+import { Toaster } from '@/components/ui/sonner'
 import { TtsStoreProvider } from '@/providers/tts-store-provider'
 import './globals.scss'
 
@@ -56,6 +57,7 @@ export default function RootLayout({
             </ChatStoreProvider>
           </TtsStoreProvider>
         </ThemeProvider>
+        <Toaster position="bottom-left" />
       </body>
     </html>
   )
