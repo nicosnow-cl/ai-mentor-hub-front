@@ -15,7 +15,7 @@ export function AssistantIndicator() {
   const showAnimation = VALID_STATUS.includes(status)
 
   return (
-    <div className="relative size-64 scale-75">
+    <div className="relative size-64">
       <div className="blob layer-1 animate" />
       <div className={`blob layer-2 ${showAnimation ? 'animate' : ''}`} />
       <div className={`blob layer-3 ${showAnimation ? 'animate' : ''}`} />

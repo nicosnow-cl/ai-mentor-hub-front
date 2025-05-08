@@ -8,9 +8,7 @@ import { RecordingTimeBar } from './RecordingTimeBar/index.client'
 export function InteractionInput() {
   return (
     <div className="relative mx-auto grid w-full max-w-[40rem] grid-cols-4 place-items-center md:w-3/5">
-      <Accelerators />
-
-      <div className="absolute -bottom-10 md:-left-32 md:-top-1/2 md:-translate-y-1/2">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
         <AssistantIndicator />
       </div>
 
@@ -27,6 +25,8 @@ export function InteractionInput() {
 
         <RecordingTimeBar />
       </div>
+
+      <Accelerators />
     </div>
   )
 }

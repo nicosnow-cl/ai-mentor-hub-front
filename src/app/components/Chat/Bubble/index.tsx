@@ -1,11 +1,10 @@
-import { IconBulbFilled } from '@tabler/icons-react'
-
 import { AudioControls } from './AudioControls'
 import { cn } from '@/lib/utils'
 import { Content } from './Content'
 import { EmitterBadge } from './EmitterBadge'
 import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums/message-role.enum'
+import { Think } from './Think'
 
 export type BubbleProps = {
   message: Message
@@ -13,7 +12,7 @@ export type BubbleProps = {
 }
 
 export function Bubble({ message, className = '' }: Readonly<BubbleProps>) {
-  const { role, content, think } = message
+  const { role } = message
 
   return (
     <div
@@ -31,16 +30,9 @@ export function Bubble({ message, className = '' }: Readonly<BubbleProps>) {
         )}
       </div>
 
-      {think && (
-        <pre className="glass mt-2 flex flex-col whitespace-pre-wrap rounded-md bg-blue-300/5 p-2 text-xs text-blue-200">
-          <span className="flex font-bold">
-            <IconBulbFilled className="size-4" /> Cadena de pensamientos
-          </span>
-          <code>{think}</code>
-        </pre>
-      )}
+      <Think>{message.think}</Think>
 
-      <Content>{content}</Content>
+      <Content>{message.content}</Content>
     </div>
   )
 }

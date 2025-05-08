@@ -4,6 +4,7 @@ import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
 import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums'
+import { stringToJSON } from '@/helpers/string-to-json'
 
 export class LLMLmStudio implements LLMClientBase {
   private readonly config: Record<string, string>
@@ -44,13 +45,19 @@ export class LLMLmStudio implements LLMClientBase {
     }
 
     const { think, content } = getThinkAndContent(data.choices[0].message)
-    const { content: parsedContent, accelerators } = JSON.parse(content)
+    const contentObj = stringToJSON(content)
+
+    if (!contentObj) {
+      throw new Error('Invalid JSON response')
+    }
+
+    const { content: parsedContent, userFollowups } = contentObj
 
     return {
       id: data.id || uuidv4(),
       role: data.choices[0].message.role,
-      content: parsedContent,
-      accelerators,
+      content: parsedContent as string,
+      accelerators: userFollowups as string[],
       think,
     }
   }
