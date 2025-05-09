@@ -1,13 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import { ChatStoreProvider } from '@/providers/chat-store-provider'
-import { InteractionStoreProvider } from '@/providers/interaction-store-provider'
 import { MenuDrawer } from './components/common/MenuDrawer'
-import { MenuDrawerProvider } from '@/providers/menu-drawer.provider'
-import { ThemeProvider } from '@/providers/theme.provider'
+import { RootProvider } from '@/providers/root-provider'
 import { Toaster } from '@/components/ui/sonner'
-import { TtsStoreProvider } from '@/providers/tts-store-provider'
 import './globals.scss'
 
 const geistSans = Geist({
@@ -42,21 +38,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} overflow-hidden antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
-          <TtsStoreProvider>
-            <ChatStoreProvider>
-              <InteractionStoreProvider>
-                <MenuDrawerProvider>
-                  <div className="flex items-center justify-center font-[family-name:var(--font-geist-sans)]">
-                    {children}
-                  </div>
+        <RootProvider>
+          <div className="flex items-center justify-center font-[family-name:var(--font-geist-sans)]">
+            {children}
+          </div>
 
-                  <MenuDrawer />
-                </MenuDrawerProvider>
-              </InteractionStoreProvider>
-            </ChatStoreProvider>
-          </TtsStoreProvider>
-        </ThemeProvider>
+          <MenuDrawer />
+        </RootProvider>
+
         <Toaster position="bottom-left" />
       </body>
     </html>

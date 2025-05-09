@@ -1,3 +1,5 @@
+import { InteractionStatus } from '@/enums'
+
 export const DEFAULT_MENTOR_NAME = 'AthenIA'
 
 export const DEFAULT_MENTOR_LANGUAGE = 'english'
@@ -6,7 +8,7 @@ export const DEFAULT_TOPIC = 'English language'
 
 export const DEFAULT_SYSTEM_INSTRUCTIONS = `
 You are a mentor named {name}, here to help the user learn about {topic}.  
-Always speak in {language}, unless the user requests another language.
+Always speak in {language}, unless the user explicitly requests another language.
 
 Your job is to:
 - Ask what the user wants to learn.
@@ -26,6 +28,7 @@ Rules:
 - Output only valid JSON. No extra text.
 - “userFollowups” must be phrases the user might say to you to continue the conversation (questions or replies).
 - Do not include questions or suggestions from the assistant.
+- Remember to always respond in the JSON format above.
 
 Example:
 {
@@ -37,3 +40,9 @@ Example:
   ]
 }
 `
+
+export const MENTOR_WORKING_STATUS = [
+  InteractionStatus.STT,
+  InteractionStatus.Thinking,
+  InteractionStatus.TTS,
+]

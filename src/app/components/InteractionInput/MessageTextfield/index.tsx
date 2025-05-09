@@ -1,69 +1,31 @@
 'use client'
 
-import { toast } from 'sonner'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { cn } from '@/lib/utils'
-import { InteractionStatus } from '@/enums/interaction-status.enum'
-import { llmAct } from '@/actions/llm.action'
+import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
-import { ttsAct } from '@/actions/tts.action'
-import { useChatStore } from '@/providers/chat-store-provider'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
-import { useTtsStore } from '@/providers/tts-store-provider'
-
-const MENTOR_WORKING_STATUS = [
-  InteractionStatus.STT,
-  InteractionStatus.Thinking,
-  InteractionStatus.TTS,
-]
+import { useSendMessage } from '@/app/hooks/use-send-message'
 
 export function MessageTextfield() {
   const [text, setText] = useState('')
-  const { messages, appendMessage } = useChatStore((state) => state)
-  const { status, updateStatus } = useInteractionStore((store) => store)
-  const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
-    (store) => store
-  )
+  const { status } = useInteractionStore((store) => store)
+  const sendMessage = useSendMessage()
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setText(evt.target.value)
   }
 
   const handleSubmitText = async () => {
-    try {
-      const newUserMessage = {
-        id: uuidv4(),
-        role: MessageRole.User,
-        content: text,
-      }
+    await sendMessage({
+      id: uuidv4(),
+      role: MessageRole.User,
+      content: text,
+    })
 
-      appendMessage(newUserMessage)
-      updateStatus(InteractionStatus.Thinking)
-
-      const assistantMessage = await llmAct([...messages, newUserMessage])
-
-      appendMessage(assistantMessage)
-      updateStatus(InteractionStatus.TTS)
-      setText('')
-
-      const audioGenerated = await ttsAct(assistantMessage.content)
-
-      if (audioGenerated.error) {
-        throw new Error(audioGenerated.error)
-      }
-
-      generateAudioUrl(assistantMessage.id, audioGenerated.base64 as string)
-      setCurrentMessageId(assistantMessage.id)
-
-      updateStatus(InteractionStatus.Idle)
-    } catch (err: unknown) {
-      console.error(err)
-
-      updateStatus(InteractionStatus.Error)
-      toast.error('Error generating response. Please try again.')
-    }
+    setText('')
   }
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
@@ -83,7 +45,7 @@ export function MessageTextfield() {
       ref={(input) => input?.focus()}
       className={cn(
         'block w-full rounded-lg !bg-transparent p-2.5 outline-0',
-        MENTOR_WORKING_STATUS.includes(status) ? 'opacity-50' : 'opacity-100'
+        MENTOR_WORKING_STATUS.includes(status) && 'opacity-50'
       )}
       type="text"
       placeholder="Preguntame cualquier cosa..."

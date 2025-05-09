@@ -8,7 +8,7 @@
   {
     "provider": "lmstudio",
     "baseUrl": "http://127.0.0.1:1234",
-    "model": "hermes-3-llama-3.2-3b",
+    "model": "qwen3-8b",
     "isActive": true
   }
 ]

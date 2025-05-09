@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, createContext, useRef, useContext } from 'react'
+import { createContext, useRef, useContext, useState, useEffect } from 'react'
 import { useStore } from 'zustand'
 
 import { CHAT_STORE_KEY, ChatStore, createChatStore } from '@/stores/chat-store'
@@ -12,26 +12,39 @@ export const ChatStoreContext = createContext<ChatStoreApi | undefined>(
 )
 
 export interface ChatStoreProviderProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export const ChatStoreProvider = ({ children }: ChatStoreProviderProps) => {
   const storeRef = useRef<ChatStoreApi>(null)
+  const [, forceUpdate] = useState(false)
+
+  useEffect(() => {
+    if (!storeRef.current) {
+      const storedState = localStorage.getItem(CHAT_STORE_KEY)
+
+      if (storedState) {
+        const parsedState = JSON.parse(storedState)
+
+        storeRef.current = createChatStore(parsedState)
+      } else {
+        const chatStore = createChatStore()
+
+        localStorage.setItem(
+          CHAT_STORE_KEY,
+          JSON.stringify(chatStore.getState())
+        )
+
+        storeRef.current = chatStore
+      }
+
+      // Fuerza un render para que el store se propague al context
+      forceUpdate((prev) => !prev)
+    }
+  }, [])
 
   if (!storeRef.current) {
-    const storedState = localStorage.getItem(CHAT_STORE_KEY)
-
-    if (storedState) {
-      const parsedState = JSON.parse(storedState)
-
-      storeRef.current = createChatStore(parsedState)
-    } else {
-      const chatStore = createChatStore()
-
-      localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(chatStore.getState()))
-
-      storeRef.current = chatStore
-    }
+    return null
   }
 
   return (
