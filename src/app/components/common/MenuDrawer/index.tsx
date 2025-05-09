@@ -16,7 +16,7 @@ export function MenuDrawer() {
   return (
     <Drawer open={open} onOpenChange={toogleDrawer} direction="right">
       <DrawerContent
-        className="right-0 top-0 mt-0 h-screen w-[18rem] rounded-bl-3xl rounded-tl-3xl lg:w-[24rem]"
+        className="right-0 top-0 mt-0 h-screen w-full rounded-none sm:max-w-[32rem] md:max-w-[40rem] lg:max-w-[48rem]"
         style={
           {
             '--initial-transform': 'calc(100% + 8px)',

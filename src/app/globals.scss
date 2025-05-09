@@ -89,8 +89,21 @@
 
 @layer utilities {
   .glass {
-    backdrop-filter: blur(18px) saturate(85%);
-    -webkit-backdrop-filter: blur(18px) saturate(85%);
+    --blur: 1rem;
+    --saturate: 85%;
+
+    backdrop-filter: blur(var(--blur)) saturate(var(--saturate));
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturate));
+
+    .glass-soft {
+      --blur: 0.5rem;
+      --saturate: 85%;
+    }
+
+    .glass-intense {
+      --blur: 2rem;
+      --saturate: 100%;
+    }
   }
 }
 

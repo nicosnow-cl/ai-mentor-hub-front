@@ -45,17 +45,22 @@ export class LLMLmStudio implements LLMClientBase {
     }
 
     const { think, content } = getThinkAndContent(data.choices[0].message)
-    const contentObj = stringToJSON(content)
+    let contentObj = stringToJSON(content)
 
     if (!contentObj) {
-      throw new Error('Invalid JSON response')
+      console.error('Invalid JSON response')
+
+      contentObj = {
+        content,
+        userFollowups: [],
+      }
     }
 
     const { content: parsedContent, userFollowups } = contentObj
 
     return {
       id: data.id || uuidv4(),
-      role: data.choices[0].message.role,
+      role: data.choices[0].message.role || MessageRole.Assistant,
       content: parsedContent as string,
       accelerators: userFollowups as string[],
       think,
