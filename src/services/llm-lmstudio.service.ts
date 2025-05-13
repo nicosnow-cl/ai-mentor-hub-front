@@ -31,9 +31,7 @@ export class LLMLmStudio implements LLMClientBase {
 
   async chat(input: LLMInput): Promise<Message> {
     const res = await fetch(`${this.config.baseUrl}/v1/chat/completions`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: JSON.stringify(this.getPayload(input)),
     })

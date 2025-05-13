@@ -6,20 +6,20 @@ import { v4 as uuidv4 } from 'uuid'
 import { cn } from '@/lib/utils'
 import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
+import { useInteract } from '@/app/hooks/use-send-message'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
-import { useSendMessage } from '@/app/hooks/use-send-message'
 
 export function MessageTextfield() {
   const [text, setText] = useState('')
   const { status } = useInteractionStore((store) => store)
-  const sendMessage = useSendMessage()
+  const { interact } = useInteract()
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setText(evt.target.value)
   }
 
   const handleSubmitText = async () => {
-    await sendMessage({
+    await interact({
       id: uuidv4(),
       role: MessageRole.User,
       content: text,

@@ -4,27 +4,16 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Button } from './Button'
+import { cn } from '@/lib/utils'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
-import { llmAct } from '@/actions/llm.action'
+import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
-import { sttAct } from '@/actions/stt.action'
-import { ttsAct } from '@/actions/tts.action'
-import { useChatStore } from '@/providers/chat-store-provider'
+import { useInteract } from '@/app/hooks/use-send-message'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
-import { useTtsStore } from '@/providers/tts-store-provider'
-
-const MENTOR_WORKING_STATUS = [
-  InteractionStatus.STT,
-  InteractionStatus.Thinking,
-  InteractionStatus.TTS,
-]
 
 export function RecorderButton() {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-  const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
-    (store) => store
-  )
-  const { messages, appendMessage } = useChatStore((state) => state)
+  const { interact, transcribeAudio } = useInteract()
   const { status, updateStatus } = useInteractionStore((store) => store)
 
   const startRecording = async () => {
@@ -50,40 +39,15 @@ export function RecorderButton() {
           type: 'audio/webm',
         })
 
-        updateStatus(InteractionStatus.STT)
-        const recognizedText = await sttAct(blob)
+        const transcribedText = await transcribeAudio(blob)
 
-        if (recognizedText.text) {
-          const newUserMessage = {
-            id: uuidv4(),
-            role: MessageRole.User,
-            content: recognizedText.text,
-          }
-
-          appendMessage(newUserMessage)
-
-          updateStatus(InteractionStatus.Thinking)
-          const assistantMessage = await llmAct([...messages, newUserMessage])
-
-          appendMessage(assistantMessage)
-
-          updateStatus(InteractionStatus.TTS)
-          const audioBase64 = await ttsAct(
-            assistantMessage.content,
-            recognizedText.language
-          )
-
-          generateAudioUrl(assistantMessage.id, audioBase64)
-          setCurrentMessageId(assistantMessage.id)
-
-          updateStatus(InteractionStatus.Idle)
-        } else {
-          updateStatus(InteractionStatus.Idle)
-        }
-      } catch (err: unknown) {
-        console.error({
-          err,
+        interact({
+          id: uuidv4(),
+          role: MessageRole.User,
+          content: transcribedText,
         })
+      } catch (err: unknown) {
+        console.error(err)
 
         updateStatus(InteractionStatus.Error)
       }
@@ -135,7 +99,10 @@ export function RecorderButton() {
       isActive={status === InteractionStatus.Recording}
       disabled={MENTOR_WORKING_STATUS.includes(status)}
       aria-pressed={status === InteractionStatus.Recording}
-      className={`recorder-button ${status === InteractionStatus.Recording ? 'active' : ''}`}
+      className={cn(
+        'recorder-button',
+        status === InteractionStatus.Recording && 'active'
+      )}
     >
       🎤
     </Button>

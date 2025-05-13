@@ -9,7 +9,7 @@ import { useInteractionStore } from '@/providers/interaction-store-provider'
 const getLabel = (status: InteractionStatus) => {
   switch (status) {
     case InteractionStatus.Error:
-      return 'Houston, tuvimos un problema.'
+      return 'Houston, tuvimos un problema'
     case InteractionStatus.Recording:
     case InteractionStatus.STT:
       return 'Escuchando...'
@@ -43,7 +43,7 @@ export function InteractionStatusIndicator() {
   return (
     <span
       className={cn(
-        'glass absolute -top-8 flex items-center gap-x-2 rounded-md px-3',
+        'glass absolute -top-8 flex items-center gap-x-2 rounded-md px-3 text-xs',
         status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'
       )}
     >

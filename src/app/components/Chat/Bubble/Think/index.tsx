@@ -30,7 +30,7 @@ export function Think({ children }: Readonly<ThinkProps>) {
       onOpenChange={setOpen}
       className="glass mt-2 rounded-md bg-blue-300/5 p-2 text-xs text-blue-200"
     >
-      <div className="flex justify-between gap-x-2">
+      <div className="flex justify-between gap-y-2">
         <span className="flex items-center gap-x-1 font-bold">
           <IconBulbFilled className="size-4" /> Cadena de pensamientos
         </span>
@@ -45,7 +45,7 @@ export function Think({ children }: Readonly<ThinkProps>) {
       </div>
 
       <CollapsibleContent asChild>
-        <pre className="whitespace-pre-wrap">
+        <pre className="mt-2 whitespace-pre-wrap">
           <code>{children}</code>
         </pre>
       </CollapsibleContent>
