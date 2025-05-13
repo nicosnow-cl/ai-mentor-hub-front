@@ -39,9 +39,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} overflow-hidden antialiased`}
       >
         <RootProvider>
-          <div className="flex items-center justify-center font-[family-name:var(--font-geist-sans)]">
-            {children}
-          </div>
+          {children}
 
           <MenuDrawer />
         </RootProvider>

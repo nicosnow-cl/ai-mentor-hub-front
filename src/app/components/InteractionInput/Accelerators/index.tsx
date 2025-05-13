@@ -41,11 +41,11 @@ export function Accelerators() {
   }
 
   return (
-    <div className="mx-auto flex flex-wrap gap-x-2">
+    <div className="mx-auto flex flex-wrap justify-center gap-1">
       {accelerators.map((accelerator, idx) => (
         <Button
           key={`${accelerator}-${idx}`}
-          className="glass border border-slate-500/10"
+          className="glass overflow-ellipsis border border-slate-400/10"
           size="sm"
           variant="ghost"
           onClick={() => handleSubmitMessage(accelerator)}

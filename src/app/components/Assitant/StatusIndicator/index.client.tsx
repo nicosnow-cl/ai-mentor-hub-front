@@ -18,7 +18,7 @@ const getLabel = (status: InteractionStatus) => {
     case InteractionStatus.TTS:
       return 'Transcribiendo...'
     default:
-      return '...'
+      return ''
   }
 }
 
@@ -43,7 +43,7 @@ export function StatusIndicator() {
   return (
     <span
       className={cn(
-        'glass flex w-fit items-center gap-x-2 rounded-md px-3 text-xs',
+        'glass flex w-fit animate-fade-in items-center gap-x-2 rounded-md px-3 text-sm',
         status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'
       )}
     >

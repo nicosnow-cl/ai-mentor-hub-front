@@ -44,11 +44,11 @@ export function Chat() {
       <div
         ref={containerRef}
         className={cn(
-          'mt-20 flex flex-col gap-y-8 overflow-y-hidden px-6 hover:overflow-y-auto',
-          'md:gap-y-16 md:px-12 md:pt-40'
+          'flex flex-col gap-y-8 overflow-y-hidden px-6 pt-40 hover:overflow-y-auto',
+          'md:gap-y-16 md:px-12'
         )}
         style={{
-          maxHeight: '65vh',
+          maxHeight: '60vh',
           scrollbarGutter: 'stable',
         }}
       >

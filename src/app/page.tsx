@@ -8,11 +8,11 @@ import { VoiceSpeech } from './components/VoiceSpeech/index.client'
 
 export default function Home() {
   return (
-    <>
-      <VoiceSpeech />
+    <div className="grid place-items-center font-[family-name:var(--font-geist-sans)]">
       <Navbar />
+      <VoiceSpeech />
 
-      <div className="mt-14 grid min-h-[calc(100vh-56px)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2">
+      <div className="mt-14 grid h-[calc(100vh-3.5rem)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2">
         <main className="flex size-full flex-col items-center gap-8 sm:items-start md:row-start-2 md:gap-y-20">
           <Chat />
 
@@ -31,6 +31,6 @@ export default function Home() {
           </div>
         </main>
       </div>
-    </>
+    </div>
   )
 }
