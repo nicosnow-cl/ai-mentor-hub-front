@@ -18,7 +18,7 @@ const getLabel = (status: InteractionStatus) => {
     case InteractionStatus.TTS:
       return 'Transcribiendo...'
     default:
-      return ''
+      return '...'
   }
 }
 
@@ -30,7 +30,7 @@ const getIcon = (status: InteractionStatus) => {
   return <div className="terminal-spinner" />
 }
 
-export function InteractionStatusIndicator() {
+export function StatusIndicator() {
   const { status } = useInteractionStore((store) => store)
 
   const label = getLabel(status)
@@ -43,7 +43,7 @@ export function InteractionStatusIndicator() {
   return (
     <span
       className={cn(
-        'glass absolute -top-8 flex items-center gap-x-2 rounded-md px-3 text-xs',
+        'glass flex w-fit items-center gap-x-2 rounded-md px-3 text-xs',
         status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'
       )}
     >

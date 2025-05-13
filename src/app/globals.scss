@@ -1,9 +1,15 @@
 @use 'sass:math';
 
+/* ==========================
+   Tailwind Layers
+   ========================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================
+   Variables Globales
+   ========================== */
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
@@ -73,20 +79,27 @@
   --foreground: #ededed;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--bottom-background);
-}
-
+/* ==========================
+   Estilos Base
+   ========================== */
 @layer base {
+  body {
+    color: var(--foreground);
+    background: var(--bottom-background);
+  }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
+/* ==========================
+   Utilidades
+   ========================== */
 @layer utilities {
   .glass {
     --blur: 1rem;
@@ -95,21 +108,121 @@ body {
     backdrop-filter: blur(var(--blur)) saturate(var(--saturate));
     -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--saturate));
 
-    .glass-soft {
+    &-soft {
       --blur: 0.5rem;
       --saturate: 85%;
     }
 
-    .glass-intense {
+    &-intense {
       --blur: 2rem;
       --saturate: 100%;
     }
   }
+
+  @function random-pct() {
+    @return math.random(40) + 40%;
+  }
+
+  .blob {
+    &.animate {
+      animation: spin 10s infinite alternate-reverse;
+    }
+
+    &.layer-1 {
+      --bg-color-from: rgb(39, 134, 200);
+      --bg-gradient-from: radial-gradient(
+        circle,
+        rgba(39, 133, 200, 1) 0%,
+        rgba(205, 133, 228, 1) 33%,
+        rgba(199, 174, 227, 1) 66%,
+        rgba(39, 134, 200, 1) 100%
+      );
+
+      --blur: 5rem;
+    }
+
+    &.layer-2 {
+      --bg-color-from: rgb(38, 115, 208);
+      --bg-gradient-from: radial-gradient(
+        circle,
+        rgba(158, 94, 147, 0.75) 0%,
+        rgba(244, 237, 201, 0.75) 33%,
+        rgba(64, 79, 115, 0.75) 66%,
+        rgba(158, 94, 147, 0.75) 100%
+      );
+
+      --blur: 2rem;
+    }
+
+    &.layer-3 {
+      --bg-color-from: rgb(38, 115, 208);
+      --bg-gradient-from: radial-gradient(
+        circle,
+        rgba(38, 115, 208, 1) 0%,
+        rgb(169, 220, 255) 33%,
+        rgba(153, 126, 215, 1) 66%,
+        rgba(38, 115, 208, 1) 100%
+      );
+
+      --blur: 1rem;
+    }
+
+    background-color: var(--bg-color-from);
+    background-image: var(--bg-gradient-from);
+    background-size: 350%;
+    background-position: left;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: blur(var(--blur));
+
+    @for $i from 1 through 100 {
+      $a: random-pct();
+      $b: 100% - $a;
+      $c: random-pct();
+      $d: 100% - $c;
+      $e: random-pct();
+      $f: 100% - $e;
+      $g: random-pct();
+      $h: 100% - $g;
+      border-radius: #{$a $b $c $d} / #{$e $f $g $h};
+      animation-duration: 10s;
+    }
+  }
+
+  .fade-to-bottom {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
+    mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
+  }
+
+  .fade-to-top {
+    -webkit-mask-image: linear-gradient(to top, transparent 25%, black 100%);
+    mask-image: linear-gradient(to top, transparent 25%, black 100%);
+  }
+
+  .fade-x-small {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+  }
 }
 
-@theme {
-  --animate-wiggle: wiggle 1s ease-in-out infinite;
-
+/* ==========================
+   Animaciones y funciones
+   ========================== */
+@layer theme {
   @keyframes wiggle {
     0%,
     100% {
@@ -119,185 +232,84 @@ body {
       transform: rotate(3deg);
     }
   }
-}
 
-.fade-to-bottom {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
-  mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
-}
-
-.fade-to-top {
-  -webkit-mask-image: linear-gradient(to top, transparent 25%, black 100%);
-  mask-image: linear-gradient(to top, transparent 25%, black 100%);
-}
-
-.fade-x-small {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 15%,
-    black 85%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 15%,
-    black 85%,
-    transparent 100%
-  );
-}
-
-@function random-pct() {
-  @return math.random() * 40% + 40%;
-}
-
-.blob {
-  &.animate {
-    animation: spin 10s infinite alternate-reverse;
+  @keyframes spin {
+    0% {
+      background-position: left;
+    }
+    50% {
+      background-position: right;
+    }
+    100% {
+      background-position: left;
+      transform: rotate(-360deg);
+    }
   }
 
-  &.layer-1 {
-    --bg-color-from: rgb(39, 134, 200);
-    --bg-gradient-from: radial-gradient(
-      circle,
-      rgba(39, 133, 200, 1) 0%,
-      rgba(205, 133, 228, 1) 33%,
-      rgba(199, 174, 227, 1) 66%,
-      rgba(39, 134, 200, 1) 100%
-    );
-
-    --blur: 5rem;
+  @keyframes changeContent {
+    10% {
+      content: '⠙';
+    }
+    20% {
+      content: '⠹';
+    }
+    30% {
+      content: '⠸';
+    }
+    40% {
+      content: '⠼';
+    }
+    50% {
+      content: '⠴';
+    }
+    60% {
+      content: '⠦';
+    }
+    70% {
+      content: '⠧';
+    }
+    80% {
+      content: '⠇';
+    }
+    90% {
+      content: '⠏';
+    }
   }
-
-  &.layer-2 {
-    --bg-color-from: rgb(38, 115, 208);
-    --bg-gradient-from: radial-gradient(
-      circle,
-      rgba(158, 94, 147, 0.75) 0%,
-      rgba(244, 237, 201, 0.75) 33%,
-      rgba(64, 79, 115, 0.75) 66%,
-      rgba(158, 94, 147, 0.75) 100%
-    );
-
-    --blur: 2rem;
-  }
-
-  &.layer-3 {
-    --bg-color-from: rgb(38, 115, 208);
-    --bg-gradient-from: radial-gradient(
-      circle,
-      rgba(38, 115, 208, 1) 0%,
-      rgb(169, 220, 255) 33%,
-      rgba(153, 126, 215, 1) 66%,
-      rgba(38, 115, 208, 1) 100%
-    );
-
-    --blur: 1rem;
-  }
-
-  background-color: var(--bg-color-from);
-  background-image: var(--bg-gradient-from);
-  background-size: 350%;
-  background-position: left;
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  filter: blur(var(--blur));
-
-  @for $i from 1 through 100 {
-    $a: random-pct();
-    $b: 100% - $a;
-    $c: random-pct();
-    $d: 100% - $c;
-    $e: random-pct();
-    $f: 100% - $e;
-    $g: random-pct();
-    $h: 100% - $g;
-    border-radius: #{$a $b $c $d} / #{$e $f $g $h};
-    animation-duration: 10s;
-  }
-}
-
-@keyframes spin {
-  0% {
-    background-position: left;
-  }
-
-  50% {
-    background-position: right;
-  }
-
-  100% {
-    background-position: left;
-    transform: rotate(-360deg);
-  }
-}
-
-.terminal-spinner {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.terminal-spinner:after {
-  animation: changeContent 0.8s linear infinite;
-  display: block;
-  content: '⠋';
-}
-
-@keyframes changeContent {
-  10% {
-    content: '⠙';
-  }
-  20% {
-    content: '⠹';
-  }
-  30% {
-    content: '⠸';
-  }
-  40% {
-    content: '⠼';
-  }
-  50% {
-    content: '⠴';
-  }
-  60% {
-    content: '⠦';
-  }
-  70% {
-    content: '⠧';
-  }
-  80% {
-    content: '⠇';
-  }
-  90% {
-    content: '⠏';
-  }
-}
-
-::-webkit-scrollbar {
-  height: 12px;
-  width: 5px;
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--grey);
-  border-radius: 1ex;
-  -webkit-border-radius: 1ex;
-}
-
-::-webkit-scrollbar-corner {
-  background: var(--background);
 }
 
 /* ==========================
-   Tema para Markdown
+   Componentes
    ========================== */
-@layer utilities {
+@layer components {
+  ::-webkit-scrollbar {
+    height: 12px;
+    width: 5px;
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 1ex;
+    -webkit-border-radius: 1ex;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: var(--background);
+  }
+
+  .terminal-spinner {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:after {
+      animation: changeContent 0.8s linear infinite;
+      display: block;
+      content: '⠋';
+    }
+  }
+
   .markdown {
     color: var(--foreground);
     line-height: 1.6;
@@ -381,7 +393,6 @@ body {
       border-radius: var(--radius);
       overflow-x: auto;
       margin: 1rem 0;
-      border-radius: 1rem;
 
       code {
         background: none;

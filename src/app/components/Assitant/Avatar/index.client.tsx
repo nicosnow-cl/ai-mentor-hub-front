@@ -9,7 +9,7 @@ const VALID_STATUS = [
   InteractionStatus.Thinking,
 ]
 
-export function AssistantIndicator() {
+export function Avatar() {
   const { status } = useInteractionStore((store) => store)
 
   const showAnimation = VALID_STATUS.includes(status)

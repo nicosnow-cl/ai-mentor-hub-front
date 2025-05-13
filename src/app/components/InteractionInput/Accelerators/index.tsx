@@ -41,21 +41,19 @@ export function Accelerators() {
   }
 
   return (
-    <div className="absolute -bottom-12 left-1/2 z-10 -translate-x-1/2 transform">
-      <div className="mx-auto flex gap-x-2">
-        {accelerators.map((accelerator, idx) => (
-          <Button
-            key={`${accelerator}-${idx}`}
-            className="glass border border-slate-500/10"
-            size="sm"
-            variant="ghost"
-            onClick={() => handleSubmitMessage(accelerator)}
-            disabled={MENTOR_WORKING_STATUS.includes(status)}
-          >
-            {accelerator}
-          </Button>
-        ))}
-      </div>
+    <div className="mx-auto flex flex-wrap gap-x-2">
+      {accelerators.map((accelerator, idx) => (
+        <Button
+          key={`${accelerator}-${idx}`}
+          className="glass border border-slate-500/10"
+          size="sm"
+          variant="ghost"
+          onClick={() => handleSubmitMessage(accelerator)}
+          disabled={MENTOR_WORKING_STATUS.includes(status)}
+        >
+          {accelerator}
+        </Button>
+      ))}
     </div>
   )
 }
