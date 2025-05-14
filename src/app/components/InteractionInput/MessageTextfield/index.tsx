@@ -23,6 +23,7 @@ export function MessageTextfield() {
       id: uuidv4(),
       role: MessageRole.User,
       content: text,
+      createdAt: new Date().toISOString(),
     })
 
     setText('')

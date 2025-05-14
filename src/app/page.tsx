@@ -5,32 +5,33 @@ import { InteractionInput } from './components/InteractionInput'
 import { Navbar } from './components/Navbar'
 import { StatusIndicator } from './components/Assitant/StatusIndicator/index.client'
 import { VoiceSpeech } from './components/VoiceSpeech/index.client'
+import { AuroraHero } from './components/common/AuroraHero'
 
 export default function Home() {
   return (
-    <div className="grid place-items-center font-[family-name:var(--font-geist-sans)]">
+    <div className="flex h-screen flex-col items-center pb-2 font-[family-name:var(--font-geist-sans)]">
+      <AuroraHero />
       <Navbar />
+
       <VoiceSpeech />
 
-      <div className="mt-14 grid h-[calc(100vh-3.5rem)] w-screen max-w-[1920px] items-center justify-items-center gap-16 p-2">
-        <main className="flex size-full flex-col items-center gap-8 sm:items-start md:row-start-2 md:gap-y-20">
-          <Chat />
+      <main className="w-full max-w-[1920px] flex-1 px-2">
+        <Chat />
+      </main>
 
-          <div className="relative grid w-full place-items-center gap-y-2">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
-              <Avatar />
-            </div>
+      <section className="mt-auto grid w-full place-items-center gap-y-2 px-2">
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 translate-y-1/2">
+          <Avatar />
+        </div>
 
-            <div className="flex w-full max-w-[40rem] flex-col gap-y-1">
-              <StatusIndicator />
+        <div className="flex w-full max-w-[40rem] flex-col gap-y-1">
+          <StatusIndicator />
 
-              <InteractionInput />
-            </div>
+          <InteractionInput />
+        </div>
 
-            <Accelerators />
-          </div>
-        </main>
-      </div>
+        <Accelerators />
+      </section>
     </div>
   )
 }

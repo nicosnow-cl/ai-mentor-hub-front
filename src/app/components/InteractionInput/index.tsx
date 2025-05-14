@@ -4,18 +4,16 @@ import { RecordingTimeBar } from './RecordingTimeBar/index.client'
 
 export function InteractionInput() {
   return (
-    <div className="grid place-items-center">
-      <div className="relative col-span-4 w-full">
-        <div className="glass h-fit w-full rounded-2xl border border-slate-600 bg-slate-800/50 p-2 shadow-lg">
-          <div className="flex gap-x-4">
-            <MessageTextfield />
+    <div className="relative col-span-4 w-full">
+      <div className="glass h-fit w-full rounded-2xl border border-slate-600 bg-slate-800/50 p-2 shadow-lg">
+        <div className="flex gap-x-4">
+          <MessageTextfield />
 
-            <RecorderButton />
-          </div>
+          <RecorderButton />
         </div>
-
-        <RecordingTimeBar />
       </div>
+
+      <RecordingTimeBar />
     </div>
   )
 }

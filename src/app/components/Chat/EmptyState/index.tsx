@@ -1,25 +1,28 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { IconInfoHexagon, IconMessageChatbotFilled } from '@tabler/icons-react'
+import {
+  IconBulbFilled,
+  IconInnerShadowBottomFilled,
+} from '@tabler/icons-react'
 
 export function EmptyState() {
   return (
-    <div className="mx-auto flex flex-col items-center justify-center gap-y-4 text-center md:w-2/3">
-      <IconMessageChatbotFilled className="h-16 w-16 text-muted" />
+    <div className="mx-auto flex max-w-md flex-col items-center justify-center gap-y-4 text-center">
+      <IconInnerShadowBottomFilled className="h-16 w-16 text-muted" />
 
-      <p className="text-xl font-bold">Empezar una conversación</p>
+      <p className="text-xl font-bold">Empieza una conversación</p>
 
       <p className="text-sm">
-        Escribe o habla para empezar a chatear con tu mentor digital. Puedes
-        hacer preguntas, pedir consejos o simplemente charlar sobre cualquier
-        tema que te interese.
+        <b>Escribe o habla</b> para empezar a chatear con tu mentor digital.
+        Puedes hacer preguntas, pedir consejos o simplemente charlar sobre
+        cualquier tema que te interese.
       </p>
 
-      <Alert className="mt-4 text-left opacity-50">
-        <IconInfoHexagon className="h-4 w-4" />
+      <Alert className="mt-4 text-left opacity-75">
+        <IconBulbFilled className="h-5 w-5" />
 
         <AlertDescription>
-          Si necesitas reiniciar la conversación, puedes hacerlo usando el botón
-          que aparece en la parte superior de la pantalla.
+          Puedes reiniciar la conversación usando el botón que aparece en la
+          parte superior de la pantalla
         </AlertDescription>
       </Alert>
     </div>

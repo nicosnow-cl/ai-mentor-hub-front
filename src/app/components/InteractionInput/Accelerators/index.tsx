@@ -34,6 +34,7 @@ export function Accelerators() {
       id: uuidv4(),
       role: MessageRole.User,
       content: message,
+      createdAt: new Date().toISOString(),
     })
 
   if (!accelerators?.length) {

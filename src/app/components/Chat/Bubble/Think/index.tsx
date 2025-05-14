@@ -28,7 +28,7 @@ export function Think({ children }: Readonly<ThinkProps>) {
     <Collapsible
       open={open}
       onOpenChange={setOpen}
-      className="glass mt-2 rounded-md bg-blue-300/5 p-2 text-xs text-blue-200"
+      className="glass mt-2 max-w-5xl rounded-md bg-blue-300/5 p-2 text-xs text-blue-200"
     >
       <div className="flex justify-between gap-y-2">
         <span className="flex items-center gap-x-1 font-bold">

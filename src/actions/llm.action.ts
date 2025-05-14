@@ -14,6 +14,10 @@ export const llmAct = async (input: LLMInput) => {
 
     const message = await LLMClient.getInstance().chat(input)
 
+    if (!message.createdAt) {
+      message.createdAt = new Date().toISOString()
+    }
+
     logger.info(
       `Action response: ${parseMessage(JSON.stringify(message, null, 2))}`
     )

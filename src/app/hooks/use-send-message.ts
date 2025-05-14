@@ -4,11 +4,11 @@ import { toast } from 'sonner'
 import { InteractionStatus } from '@/enums'
 import { llmAct } from '@/actions/llm.action'
 import { Message } from '@/types/chats'
+import { sttAct } from '@/actions/stt.action'
 import { ttsAct } from '@/actions/tts.action'
 import { useChatStore } from '@/providers/chat-store-provider'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 import { useTtsStore } from '@/providers/tts-store-provider'
-import { sttAct } from '@/actions/stt.action'
 
 export const useInteract = () => {
   const { messages, appendMessage } = useChatStore((state) => state)
@@ -33,14 +33,14 @@ export const useInteract = () => {
 
       appendMessage(assistantMessage)
 
+      updateStatus(InteractionStatus.Idle)
+
       return assistantMessage
     } catch (err: unknown) {
       console.error(err)
 
       updateStatus(InteractionStatus.Error)
       toast.error('Error generating response. Please try again.')
-    } finally {
-      updateStatus(InteractionStatus.Idle)
     }
   }
 
@@ -62,8 +62,6 @@ export const useInteract = () => {
 
       updateStatus(InteractionStatus.Error)
       toast.error('Error generating audio. Please try again.')
-    } finally {
-      updateStatus(InteractionStatus.Idle)
     }
   }
 
@@ -77,14 +75,14 @@ export const useInteract = () => {
         throw new Error(recognizedText.error)
       }
 
+      updateStatus(InteractionStatus.Idle)
+
       return recognizedText
     } catch (err: unknown) {
       console.error(err)
 
       updateStatus(InteractionStatus.Error)
       toast.error('Error transcribing audio. Please try again.')
-    } finally {
-      updateStatus(InteractionStatus.Idle)
     }
   }
 

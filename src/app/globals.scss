@@ -84,6 +84,7 @@
    ========================== */
 @layer base {
   body {
+    height: 100vh;
     color: var(--foreground);
     background: var(--bottom-background);
   }
