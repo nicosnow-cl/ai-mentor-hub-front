@@ -1,7 +1,7 @@
 import * as AzureSDK from 'microsoft-cognitiveservices-speech-sdk'
 
 import { getSpeechSynthesizer } from './get-azure-speech-synthesizer'
-import { TTSClientBase } from '@/types/chats'
+import { TTSClientBase } from '@/types/tts-client-base.type'
 
 export class TTSAzureClient implements TTSClientBase {
   private readonly config: Record<string, string>

@@ -1,4 +1,4 @@
-import { TTSClientBase } from '@/types/chats'
+import { TTSClientBase } from '@/types/tts-client-base.type'
 
 export class TTSMurfAiClient implements TTSClientBase {
   private readonly config: Record<string, string>

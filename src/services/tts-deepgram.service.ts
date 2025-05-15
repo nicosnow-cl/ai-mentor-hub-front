@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import { DeepgramClient } from '@deepgram/sdk'
 
-import { TTSClientBase } from '@/types/chats'
+import { TTSClientBase } from '@/types/tts-client-base.type'
 
 const require = createRequire(import.meta.url)
 const { createClient } = require('@deepgram/sdk')

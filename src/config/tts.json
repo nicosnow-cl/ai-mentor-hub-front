@@ -29,6 +29,11 @@
   {
     "provider": "azure",
     "voice": "en-US-EvelynMultilingualNeural",
+    "isActive": false
+  },
+  {
+    "provider": "gcp",
+    "voice": "FEMALE",
     "isActive": true
   }
 ]

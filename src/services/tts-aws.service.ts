@@ -7,7 +7,7 @@ import {
 } from '@aws-sdk/client-polly'
 import { SynthesizeSpeechCommand } from '@aws-sdk/client-polly'
 
-import { TTSClientBase } from '@/types/chats'
+import { TTSClientBase } from '@/types/tts-client-base.type'
 
 const REGION = 'us-east-1'
 
@@ -40,7 +40,6 @@ export class TTSAwsClient implements TTSClientBase {
     blobType: string
   }> {
     const params = this.getParams(text)
-
     const pollyRes = await this.client.send(new SynthesizeSpeechCommand(params))
 
     if (!pollyRes.AudioStream) {

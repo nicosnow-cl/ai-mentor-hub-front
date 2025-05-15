@@ -4,6 +4,7 @@ import { TTSAzureClient } from '@/services/tts-azure.service'
 import { TTSClientBase } from '@/types/tts-client-base.type'
 import { TTSDeepgramClient } from '@/services/tts-deepgram.service'
 import { TTSElevenLabsClient } from '@/services/tts-elevenlabs.service'
+import { TTSGCPClient } from '@/services/tts-gcp.service'
 import { TTSMurfAiClient } from '@/services/tts-murfai.service'
 import TTSConfigs from '@/config/tts.json'
 
@@ -82,6 +83,16 @@ export class TTSClient {
         this.instance = new TTSAzureClient({
           subscriptionKey: ENV_VARS.TTS_AZURE_SUBSCRIPTION_KEY,
           voice: providerConfig.voice,
+        })
+
+        break
+
+      case 'gcp':
+        console.log('Setting TTS GCP')
+
+        this.instance = new TTSGCPClient({
+          apiKey: ENV_VARS.TTS_GCP_API_KEY,
+          voice: providerConfig.voice as string,
         })
 
         break
