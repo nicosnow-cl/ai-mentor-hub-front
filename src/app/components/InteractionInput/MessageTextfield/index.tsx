@@ -45,7 +45,7 @@ export function MessageTextfield() {
     <input
       ref={(input) => input?.focus()}
       className={cn(
-        'block w-full rounded-lg !bg-transparent p-2.5 outline-0',
+        'block w-full rounded-lg bg-transparent p-2.5 outline-0',
         MENTOR_WORKING_STATUS.includes(status) && 'opacity-50'
       )}
       type="text"

@@ -1,10 +1,10 @@
 import { MenuButton } from '../MenuButton'
-import { ResetButton } from '../ResetButton'
+import { ResetDialog } from '../ResetDialog'
 
 export function Actions() {
   return (
     <div className="absolute right-4">
-      <ResetButton />
+      <ResetDialog />
       <MenuButton />
     </div>
   )

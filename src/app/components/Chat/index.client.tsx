@@ -12,7 +12,7 @@ import { ScalableScroll } from './ScalableScroll/index.client'
 import { useChatStore } from '@/providers/chat-store-provider'
 
 export function Chat() {
-  const { messages } = useChatStore((state) => state)
+  const { id, messages } = useChatStore((state) => state)
   const containerRef = useRef<HTMLDivElement>(null)
   const isFirstRender = useIsFirstRender()
 
@@ -36,6 +36,7 @@ export function Chat() {
 
   return (
     <div
+      key={`main-chat-${id}`}
       className={cn(
         'z-10 w-full flex-1',
         isFirstRender ? 'animate-fade-in' : 'fade-to-bottom'
@@ -48,7 +49,7 @@ export function Chat() {
           'md:gap-y-16 md:px-12'
         )}
         style={{
-          maxHeight: '60vh',
+          maxHeight: '70dvh',
           scrollbarGutter: 'stable',
         }}
       >

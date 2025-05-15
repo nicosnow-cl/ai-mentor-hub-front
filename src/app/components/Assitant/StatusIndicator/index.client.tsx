@@ -5,6 +5,7 @@ import { IconAlertHexagonFilled } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
+import { useChatStore } from '@/providers/chat-store-provider'
 
 const getLabel = (status: InteractionStatus) => {
   switch (status) {
@@ -31,6 +32,7 @@ const getIcon = (status: InteractionStatus) => {
 }
 
 export function StatusIndicator() {
+  const { id } = useChatStore((store) => store)
   const { status } = useInteractionStore((store) => store)
 
   const label = getLabel(status)
@@ -42,6 +44,7 @@ export function StatusIndicator() {
 
   return (
     <span
+      key={`status-indicator-${id}`}
       className={cn(
         'glass flex w-fit animate-fade-in items-center gap-x-2 rounded-md px-3 text-sm',
         status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { Bubble } from '@/app/components/Chat/Bubble'
 import { useChatStore } from '@/providers/chat-store-provider'
@@ -9,6 +9,14 @@ export function SimpleChat() {
   const { messages } = useChatStore((state) => state)
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const filteredMessages = useMemo(
+    () =>
+      messages.filter(
+        (message) => message.role === 'user' || message.role === 'assistant'
+      ),
+    [messages]
+  )
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTo({
@@ -16,7 +24,7 @@ export function SimpleChat() {
         behavior: 'instant',
       })
     }
-  }, [messages.length])
+  }, [filteredMessages.length])
 
   return (
     <div
@@ -26,7 +34,7 @@ export function SimpleChat() {
         scrollbarGutter: 'stable',
       }}
     >
-      {messages.map((message, idx) => (
+      {filteredMessages.map((message, idx) => (
         <Bubble
           key={`simple-bubble-${message.role}-${idx}`}
           message={message}

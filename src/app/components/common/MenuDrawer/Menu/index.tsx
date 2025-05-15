@@ -7,7 +7,7 @@ export function Menu() {
   return (
     <Tabs
       defaultValue="chat"
-      className="flex max-h-full flex-col gap-y-4 overflow-hidden px-4"
+      className="flex h-full flex-col gap-y-4 overflow-hidden px-4"
     >
       <TabsList className="grow-0 justify-start">
         <TabsTrigger value="chat">Chat</TabsTrigger>
@@ -15,6 +15,7 @@ export function Menu() {
           Configuración
         </TabsTrigger>
       </TabsList>
+
       <TabsContent value="chat" className="flex flex-1 overflow-hidden pb-8">
         <SimpleChat />
       </TabsContent>
