@@ -1,16 +1,22 @@
 import { createLogger, format, transports, Logger } from 'winston'
 
-const { combine, timestamp, printf, colorize } = format
+import { truncateString } from './truncate-string'
 
+const { combine, timestamp, printf, colorize, align } = format
 let logger: Logger
-
-const logFormat = printf(({ level, message, label, timestamp }) => {
-  return `${timestamp} [${label}] ${level}: ${message}`
-})
 
 const createWinstonLogger = () => {
   const logger = createLogger({
-    format: combine(colorize(), timestamp(), logFormat),
+    level: process.env.LOG_LEVEL || 'info',
+    format: combine(
+      colorize({ all: true }),
+      timestamp(),
+      align(),
+      printf(
+        (info) =>
+          `${info.timestamp} - ${info.level}: [${info.label || 'system'} | ${info.correlationId || ''}] ${truncateString(info.message as string)}`
+      )
+    ),
     transports: [new transports.Console()],
   })
 
@@ -23,11 +29,4 @@ export const getLogger = (): Logger => {
   }
 
   return logger
-}
-
-export const parseMessage = (message: string): string => {
-  return message
-    .substring(0, 300) // Eliminar comillas al principio y al final
-    .replace(/\\n/g, '\n') // Reemplazar \n por saltos de línea reales
-    .replace(/\\t/g, '\t') // Reemplazar \t por tabulaciones reales
 }

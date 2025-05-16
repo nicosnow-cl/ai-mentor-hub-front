@@ -1,9 +1,10 @@
 import { ENV_VARS } from '@/config/environment'
 import { STTAwsClient } from '@/services/stt-aws.service'
 import { STTAzureClient } from '@/services/stt-azure.service'
-import { STTClientBase } from '@/types/chats'
+import { STTClientBase } from '@/types/stt-client-base.type'
 import { STTDeepgramClient } from '@/services/stt-deepgram.service'
 import { STTElevenLabsClient } from '@/services/stt-elevenlabs.service'
+import { STTGCPClient } from '@/services/stt-gcp.service'
 import STTConfigs from '@/config/stt.json'
 
 export class STTClient {
@@ -63,6 +64,15 @@ export class STTClient {
 
         this.instance = new STTAzureClient({
           subscriptionKey: ENV_VARS.STT_AZURE_SUBSCRIPTION_KEY,
+        })
+
+        break
+
+      case 'gcp':
+        console.log('Setting STT GCP')
+
+        this.instance = new STTGCPClient({
+          apiKey: ENV_VARS.STT_GCP_API_KEY,
         })
 
         break

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Logger } from 'winston'
 
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
@@ -8,9 +9,18 @@ import { stringToJSON } from '@/helpers/string-to-json'
 
 export class LLMLmStudio implements LLMClientBase {
   private readonly config: Record<string, string>
+  readonly logger: Logger | undefined
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
+
+    if (logger) {
+      this.logger = logger.child({ label: LLMLmStudio.name })
+
+      this.logger.info(
+        `LLM Studio client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private getPayload(input: LLMInput) {
@@ -30,38 +40,45 @@ export class LLMLmStudio implements LLMClientBase {
   }
 
   async chat(input: LLMInput): Promise<Message> {
-    const res = await fetch(`${this.config.baseUrl}/v1/chat/completions`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify(this.getPayload(input)),
-    })
+    try {
+      const res = await fetch(`${this.config.baseUrl}/v1/chat/completions`, {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify(this.getPayload(input)),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (data.error) {
-      throw new Error(data.error)
-    }
-
-    const { think, content } = getThinkAndContent(data.choices[0].message)
-    let contentObj = stringToJSON(content)
-
-    if (!contentObj) {
-      console.error('Invalid JSON response')
-
-      contentObj = {
-        content,
-        userFollowups: [],
+      if (data.error) {
+        throw new Error(data.error)
       }
-    }
 
-    const { content: parsedContent, userFollowups } = contentObj
+      const { think, content } = getThinkAndContent(data.choices[0].message)
+      let contentObj = stringToJSON(content)
 
-    return {
-      id: data.id || uuidv4(),
-      role: data.choices[0].message.role || MessageRole.Assistant,
-      content: parsedContent as string,
-      accelerators: userFollowups as string[],
-      think,
+      if (!contentObj) {
+        this.logger?.error('Invalid JSON response. Returning raw content.')
+        this.logger?.debug(`Raw content: ${content}`)
+
+        contentObj = {
+          content,
+          userFollowups: [],
+        }
+      }
+
+      const { content: parsedContent, userFollowups } = contentObj
+
+      return {
+        id: data.id || uuidv4(),
+        role: data.choices[0].message.role || MessageRole.Assistant,
+        content: parsedContent as string,
+        accelerators: userFollowups as string[],
+        think,
+      }
+    } catch (error) {
+      this.logger?.error(error)
+
+      throw new Error(`LLM error: ${error}`)
     }
   }
 }

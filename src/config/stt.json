@@ -17,6 +17,10 @@
   },
   {
     "provider": "azure",
+    "isActive": false
+  },
+  {
+    "provider": "gcp",
     "isActive": true
   }
 ]

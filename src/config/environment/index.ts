@@ -10,6 +10,7 @@ const EnvironmentSchema = z.object({
   TTS_AZURE_SUBSCRIPTION_KEY: z.string().default(''),
   STT_AZURE_SUBSCRIPTION_KEY: z.string().default(''),
   TTS_GCP_API_KEY: z.string().default(''),
+  STT_GCP_API_KEY: z.string().default(''),
 })
 
 export const ENV_VARS = EnvironmentSchema.parse(process.env)
