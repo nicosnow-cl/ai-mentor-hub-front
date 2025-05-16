@@ -1,26 +1,21 @@
-import { Message } from '@/types/chats'
-import { MessageRole } from '@/enums/message-role.enum'
-
 export const getThinkAndContent = (
-  message: Message
+  message: string
 ): {
   think: string
   content: string
 } => {
   // Validar que el contenido sea una cadena
-  if (!message?.content || typeof message.content !== 'string') {
+  if (!message) {
     return { think: '', content: '' }
   }
 
-  const { role, content: rawContent } = message
-
   // Inicializar valores predeterminados
   let think = ''
-  let content = rawContent
+  let content = message
 
   // Verificar si el mensaje es del asistente y contiene la etiqueta </think>
-  if (role === MessageRole.Assistant && rawContent.includes('</think>')) {
-    const [thinkPart, ...contentParts] = rawContent.split('</think>')
+  if (message.includes('</think>')) {
+    const [thinkPart, ...contentParts] = message.split('</think>')
 
     // Extraer el contenido de <think> y limpiar etiquetas
     think = thinkPart.replace('<think>', '').trim()

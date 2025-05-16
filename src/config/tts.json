@@ -34,6 +34,6 @@
   {
     "provider": "gcp",
     "voice": "FEMALE",
-    "isActive": true
+    "isActive": false
   }
 ]

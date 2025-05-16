@@ -9,6 +9,7 @@ const EnvironmentSchema = z.object({
   AWS_SECRET_KEY: z.string().default(''),
   TTS_AZURE_SUBSCRIPTION_KEY: z.string().default(''),
   STT_AZURE_SUBSCRIPTION_KEY: z.string().default(''),
+  LLM_GCP_API_KEY: z.string().default(''),
   TTS_GCP_API_KEY: z.string().default(''),
   STT_GCP_API_KEY: z.string().default(''),
 })

@@ -2,6 +2,7 @@ import { Logger } from 'winston'
 
 import { ENV_VARS } from '@/config/environment'
 import { LLMClientBase } from '@/types/llm-client-base.type'
+import { LLMGCPClient } from '@/services/llm-gcp.service'
 import { LLMLmStudio } from '@/services/llm-lmstudio.service'
 import { LLMOpenRouter } from '@/services/llm-openrouter.service'
 import LLMConfigs from '@/config/llm.json'
@@ -22,13 +23,23 @@ export class LLMClientFactory {
         return new LLMOpenRouter({
           apiKey: ENV_VARS.OPENROUTER_API_KEY,
           model: providerConfig.model,
-          baseUrl: providerConfig.baseUrl,
+          baseUrl: providerConfig.baseUrl as string,
         })
+
       case 'lmstudio':
         return new LLMLmStudio(
           {
             model: providerConfig.model,
-            baseUrl: providerConfig.baseUrl,
+            baseUrl: providerConfig.baseUrl as string,
+          },
+          logger
+        )
+
+      case 'gcp':
+        return new LLMGCPClient(
+          {
+            apiKey: ENV_VARS.LLM_GCP_API_KEY,
+            model: providerConfig.model,
           },
           logger
         )
