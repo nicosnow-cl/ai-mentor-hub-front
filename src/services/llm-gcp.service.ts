@@ -78,10 +78,12 @@ export class LLMGCPClient implements LLMClientBase {
         payload.config.systemInstruction = input[0].content
       }
 
-      payload.contents = input.slice(1).map(({ role, content }) => ({
-        role,
-        parts: [{ text: content }],
-      }))
+      payload.contents = input
+        .filter((message) => message.role !== MessageRole.System)
+        .map(({ role, content }) => ({
+          role,
+          parts: [{ text: content }],
+        }))
     }
 
     return payload
@@ -89,6 +91,8 @@ export class LLMGCPClient implements LLMClientBase {
 
   async chat(input: LLMInput): Promise<Message> {
     try {
+      console.log(JSON.stringify(this.getParams(input), null, 2))
+
       const response = await this.client.models.generateContent(
         this.getParams(input)
       )
