@@ -50,10 +50,6 @@ export const useInteract = () => {
 
       const audioGenerated = await ttsAct(message.content)
 
-      if (audioGenerated.error) {
-        throw new Error(audioGenerated.error)
-      }
-
       generateAudioUrl(message.id, audioGenerated.base64 as string)
 
       updateStatus(InteractionStatus.Idle)
@@ -70,10 +66,6 @@ export const useInteract = () => {
       updateStatus(InteractionStatus.STT)
 
       const recognizedText = await sttAct(audio)
-
-      if (recognizedText.error) {
-        throw new Error(recognizedText.error)
-      }
 
       updateStatus(InteractionStatus.Idle)
 

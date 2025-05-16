@@ -41,10 +41,14 @@ export function RecorderButton() {
 
         const transcribedText = await transcribeAudio(blob)
 
+        if (!transcribedText) {
+          throw new Error('Transcription failed')
+        }
+
         interact({
           id: uuidv4(),
           role: MessageRole.User,
-          content: transcribedText,
+          content: transcribedText.text,
         })
       } catch (err: unknown) {
         console.error(err)

@@ -1,6 +1,6 @@
 import { ElevenLabsClient } from 'elevenlabs'
 
-import { STTClientBase, TranscribeResult } from '@/types/chats'
+import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
 
 export class STTElevenLabsClient implements STTClientBase {
   private readonly config: Record<string, string>

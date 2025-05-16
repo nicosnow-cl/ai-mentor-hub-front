@@ -15,8 +15,12 @@ export class STTGCPClient implements STTClientBase {
   }
 
   getTranscription(response: protos.google.cloud.speech.v1.IRecognizeResponse) {
+    if (!response.results || response.results.length === 0) {
+      throw new Error('No transcription results')
+    }
+
     return response.results
-      .map((result) => result.alternatives[0].transcript)
+      .map((result) => result.alternatives?.[0].transcript)
       .join('\n')
   }
 

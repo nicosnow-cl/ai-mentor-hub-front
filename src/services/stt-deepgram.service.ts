@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import { SyncPrerecordedResponse, DeepgramClient } from '@deepgram/sdk'
 
-import { STTClientBase, TranscribeResult } from '@/types/chats'
+import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
 
 const require = createRequire(import.meta.url)
 const { createClient } = require('@deepgram/sdk')

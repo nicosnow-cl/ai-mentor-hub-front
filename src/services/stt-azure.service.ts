@@ -5,7 +5,7 @@ import fs from 'fs/promises'
 import { blobToTempFile } from '@/helpers/blob-to-tempfile'
 import { getSpeechRecognizer } from './get-azure-speech-recognizer'
 import { readAndCleanTempFile } from '@/helpers/read-and-clean-tempfile'
-import { STTClientBase, TranscribeResult } from '@/types/chats'
+import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
 import { wavFileToPCM } from '@/helpers/wav-file-to-pcm'
 
 export class STTAzureClient implements STTClientBase {
