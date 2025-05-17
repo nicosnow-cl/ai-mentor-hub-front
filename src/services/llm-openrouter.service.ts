@@ -1,14 +1,26 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Logger } from 'winston'
 
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
 import { Message } from '@/types/chats'
+import { MessageRole } from '@/enums'
+import { stringToJSON } from '@/helpers/string-to-json'
 
 export class LLMOpenRouter implements LLMClientBase {
   private readonly config: Record<string, string>
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
+
+    if (logger) {
+      this.logger = logger.child({ label: LLMOpenRouter.name })
+
+      this.logger.info(
+        `LLM client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private getPayload(input: LLMInput) {
@@ -49,24 +61,50 @@ export class LLMOpenRouter implements LLMClientBase {
   }
 
   async chat(input: LLMInput): Promise<Message> {
-    const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config.apiKey}`,
-      },
-      body: JSON.stringify(this.getPayload(input)),
-    })
+    try {
+      const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.config.apiKey}`,
+        },
+        body: JSON.stringify(this.getPayload(input)),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    const { think, content } = getThinkAndContent(data.choices[0].message)
+      if (data.error) {
+        throw new Error(JSON.stringify(data.error))
+      }
 
-    return {
-      id: data.id || uuidv4(),
-      role: data.choices[0].message.role,
-      content,
-      think,
+      const candidate = data.choices[0]?.message
+
+      const { think, content } = getThinkAndContent(candidate?.content || '')
+      let contentObj = stringToJSON(content)
+
+      if (!contentObj) {
+        this.logger?.error('Invalid JSON response. Returning raw content.')
+        this.logger?.debug(`Raw content: ${content}`)
+
+        contentObj = {
+          content,
+          userFollowups: [],
+        }
+      }
+
+      const { content: parsedContent, userFollowups } = contentObj
+
+      return {
+        id: data.id || uuidv4(),
+        role: candidate?.role || MessageRole.Assistant,
+        content: parsedContent as string,
+        accelerators: userFollowups as string[],
+        think,
+      }
+    } catch (error) {
+      this.logger?.error(error)
+
+      throw new Error(`LLM error: ${error}`)
     }
   }
 }

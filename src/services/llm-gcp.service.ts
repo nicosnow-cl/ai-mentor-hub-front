@@ -29,7 +29,7 @@ export class LLMGCPClient implements LLMClientBase {
       this.logger = logger.child({ label: LLMGCPClient.name })
 
       this.logger.info(
-        `${GoogleGenAI.name} client initialized with model: ${this.config.model}`
+        `LLM client initialized with model: ${this.config.model}`
       )
     }
   }
@@ -91,8 +91,6 @@ export class LLMGCPClient implements LLMClientBase {
 
   async chat(input: LLMInput): Promise<Message> {
     try {
-      console.log(JSON.stringify(this.getParams(input), null, 2))
-
       const response = await this.client.models.generateContent(
         this.getParams(input)
       )

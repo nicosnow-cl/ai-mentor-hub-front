@@ -1,17 +1,26 @@
 import { TextToSpeechClient, protos } from '@google-cloud/text-to-speech'
+import { Logger } from 'winston'
 
 import { TTSClientBase } from '@/types/tts-client-base.type'
 
 export class TTSGCPClient implements TTSClientBase {
   private readonly config: Record<string, string>
   private readonly client: TextToSpeechClient
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
-
     this.client = new TextToSpeechClient({
       apiKey: config.apiKey,
     })
+
+    if (logger) {
+      this.logger = logger.child({ label: TTSGCPClient.name })
+
+      this.logger.info(
+        `TTS client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   getParams(

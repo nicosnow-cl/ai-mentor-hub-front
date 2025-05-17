@@ -2,10 +2,10 @@
 
 import { headers } from 'next/headers'
 
-import { getCorrelationId } from '@/helpers/get-correlation-id'
 import { cleanTextForTTS } from '@/helpers/clean-text-for-tts'
+import { getCorrelationId } from '@/helpers/get-correlation-id'
 import { getLogger } from '@/helpers/logger'
-import { TTSClient } from '@/clients/tts.client'
+import { TTSClientFactory } from '@/clients/tts.client'
 
 export const ttsAct = async (text: string, language?: string) => {
   const correlationId = getCorrelationId(await headers())
@@ -16,10 +16,13 @@ export const ttsAct = async (text: string, language?: string) => {
 
     const cleanedText = cleanTextForTTS(text)
 
-    const { buffer, blobType } = await TTSClient.getInstance().speech(
-      cleanedText,
-      language
-    )
+    const ttsClient = TTSClientFactory.create(logger)
+
+    if (!ttsClient) {
+      throw new Error('No TTS Provider configured')
+    }
+
+    const { buffer, blobType } = await ttsClient.speech(cleanedText, language)
 
     const audio = {
       base64: 'data:' + blobType + ';base64,' + buffer.toString('base64'),

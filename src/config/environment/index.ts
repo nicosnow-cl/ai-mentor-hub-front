@@ -1,6 +1,15 @@
 import { z } from 'zod'
 
+import { LLMProvider, STTProvider, TTSProvider } from '@/enums'
+
 const EnvironmentSchema = z.object({
+  LLM_PROVIDER: z.nativeEnum(LLMProvider, { message: 'Invalid LLM provider' }),
+  STT_PROVIDER: z
+    .nativeEnum(STTProvider, { message: 'Invalid STT provider' })
+    .optional(),
+  TTS_PROVIDER: z
+    .nativeEnum(TTSProvider, { message: 'Invalid TTS provider' })
+    .optional(),
   DEEPGRAM_API_KEY: z.string().default(''),
   ELEVENLABS_API_KEY: z.string().default(''),
   MURF_API_KEY: z.string().default(''),

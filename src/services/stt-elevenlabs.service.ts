@@ -1,17 +1,26 @@
 import { ElevenLabsClient } from 'elevenlabs'
+import { Logger } from 'winston'
 
 import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
 
 export class STTElevenLabsClient implements STTClientBase {
   private readonly config: Record<string, string>
   private readonly client: ElevenLabsClient
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
-
     this.client = new ElevenLabsClient({
       apiKey: config.apiKey,
     })
+
+    if (logger) {
+      this.logger = logger.child({ label: STTElevenLabsClient.name })
+
+      this.logger.info(
+        `STT client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   async transcribe(audio: Blob): Promise<TranscribeResult> {

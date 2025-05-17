@@ -1,3 +1,4 @@
+import { Logger } from 'winston'
 import { SpeechClient, protos } from '@google-cloud/speech'
 
 import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
@@ -5,13 +6,21 @@ import { STTClientBase, TranscribeResult } from '@/types/stt-client-base.type'
 export class STTGCPClient implements STTClientBase {
   private readonly config: Record<string, string>
   private readonly client: SpeechClient
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
-
     this.client = new SpeechClient({
       apiKey: config.apiKey,
     })
+
+    if (logger) {
+      this.logger = logger.child({ label: STTGCPClient.name })
+
+      this.logger.info(
+        `STT GCP client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   getTranscription(response: protos.google.cloud.speech.v1.IRecognizeResponse) {

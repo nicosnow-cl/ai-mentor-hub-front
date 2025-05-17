@@ -15,6 +15,11 @@ export const llmAct = async (input: LLMInput) => {
     logger.info('Action invoked')
 
     const llmClient = LLMClientFactory.create(logger)
+
+    if (!llmClient) {
+      throw new Error('No STT Provider configured')
+    }
+
     const message = await llmClient.chat(input)
 
     if (!message.createdAt) {

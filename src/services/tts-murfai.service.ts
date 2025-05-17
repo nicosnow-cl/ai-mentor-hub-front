@@ -1,10 +1,21 @@
+import { Logger } from 'winston'
+
 import { TTSClientBase } from '@/types/tts-client-base.type'
 
-export class TTSMurfAiClient implements TTSClientBase {
+export class TTSMurfAIClient implements TTSClientBase {
   private readonly config: Record<string, string>
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
+
+    if (logger) {
+      this.logger = logger.child({ label: TTSMurfAIClient.name })
+
+      this.logger.info(
+        `TTS client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private getPayload(text: string) {

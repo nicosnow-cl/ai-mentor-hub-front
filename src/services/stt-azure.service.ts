@@ -1,3 +1,4 @@
+import { Logger } from 'winston'
 import { Readable } from 'stream'
 import * as AzureSDK from 'microsoft-cognitiveservices-speech-sdk'
 import fs from 'fs/promises'
@@ -10,9 +11,18 @@ import { wavFileToPCM } from '@/helpers/wav-file-to-pcm'
 
 export class STTAzureClient implements STTClientBase {
   private readonly config: Record<string, string>
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
+
+    if (logger) {
+      this.logger = logger.child({ label: STTAzureClient.name })
+
+      this.logger.info(
+        `STT client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private async generateAudioStream(audio: Blob) {

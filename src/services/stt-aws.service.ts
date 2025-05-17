@@ -3,6 +3,7 @@ import {
   StartStreamTranscriptionCommand,
   StartStreamTranscriptionCommandInput,
 } from '@aws-sdk/client-transcribe-streaming'
+import { Logger } from 'winston'
 import fs from 'fs/promises'
 
 import { blobToTempFile } from '@/helpers/blob-to-tempfile'
@@ -14,11 +15,12 @@ import { wavFileToPCM } from '@/helpers/wav-file-to-pcm'
 
 const REGION = 'us-east-1'
 
-export class STTAwsClient implements STTClientBase {
+export class STTAWSClient implements STTClientBase {
   private readonly config: Record<string, string>
   private readonly client: TranscribeStreamingClient
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
     this.client = new TranscribeStreamingClient({
       region: REGION,
@@ -27,6 +29,14 @@ export class STTAwsClient implements STTClientBase {
         secretAccessKey: this.config.secretKey,
       },
     })
+
+    if (logger) {
+      this.logger = logger.child({ label: STTAWSClient.name })
+
+      this.logger.info(
+        `STT client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private async generateAudioStream(audio: Blob) {

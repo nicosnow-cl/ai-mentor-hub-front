@@ -1,26 +1,21 @@
 [
   {
-    "provider": "elevenlabs",
-    "model": "scribe_v1",
-    "isActive": false
+    "provider": "eleven-labs",
+    "model": "scribe_v1"
   },
   {
     "provider": "deepgram",
     "baseUrl": "https://api.deepgram.com/v1",
-    "model": "nova-2",
-    "isActive": false
+    "model": "nova-2"
   },
   {
     "provider": "aws",
-    "model": "nova-2",
-    "isActive": false
+    "model": "nova-2"
   },
   {
-    "provider": "azure",
-    "isActive": false
+    "provider": "azure"
   },
   {
-    "provider": "gcp",
-    "isActive": true
+    "provider": "gcp"
   }
 ]

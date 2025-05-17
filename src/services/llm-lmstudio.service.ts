@@ -9,7 +9,7 @@ import { stringToJSON } from '@/helpers/string-to-json'
 
 export class LLMLmStudio implements LLMClientBase {
   private readonly config: Record<string, string>
-  readonly logger: Logger | undefined
+  private readonly logger?: Logger
 
   constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
@@ -18,7 +18,7 @@ export class LLMLmStudio implements LLMClientBase {
       this.logger = logger.child({ label: LLMLmStudio.name })
 
       this.logger.info(
-        `LLM Studio client initialized with model: ${this.config.model}`
+        `LLM client initialized with model: ${this.config.model}`
       )
     }
   }
@@ -53,7 +53,9 @@ export class LLMLmStudio implements LLMClientBase {
         throw new Error(data.error)
       }
 
-      const { think, content } = getThinkAndContent(data.choices[0].message)
+      const canditate = data.choices[0]?.message
+
+      const { think, content } = getThinkAndContent(canditate?.content || '')
       let contentObj = stringToJSON(content)
 
       if (!contentObj) {
@@ -70,7 +72,7 @@ export class LLMLmStudio implements LLMClientBase {
 
       return {
         id: data.id || uuidv4(),
-        role: data.choices[0].message.role || MessageRole.Assistant,
+        role: canditate?.role || MessageRole.Assistant,
         content: parsedContent as string,
         accelerators: userFollowups as string[],
         think,

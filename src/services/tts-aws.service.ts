@@ -6,16 +6,18 @@ import {
   VoiceId,
 } from '@aws-sdk/client-polly'
 import { SynthesizeSpeechCommand } from '@aws-sdk/client-polly'
+import { Logger } from 'winston'
 
 import { TTSClientBase } from '@/types/tts-client-base.type'
 
 const REGION = 'us-east-1'
 
-export class TTSAwsClient implements TTSClientBase {
+export class TTSAWSClient implements TTSClientBase {
   private readonly config: Record<string, string>
   private readonly client: PollyClient
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
     this.client = new PollyClient({
       region: REGION,
@@ -24,6 +26,14 @@ export class TTSAwsClient implements TTSClientBase {
         secretAccessKey: this.config.secretKey,
       },
     })
+
+    if (logger) {
+      this.logger = logger.child({ label: TTSAWSClient.name })
+
+      this.logger.info(
+        `TTS client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private getParams(text: string): SynthesizeSpeechCommandInput {

@@ -1,3 +1,4 @@
+import { Logger } from 'winston'
 import * as AzureSDK from 'microsoft-cognitiveservices-speech-sdk'
 
 import { getSpeechSynthesizer } from './get-azure-speech-synthesizer'
@@ -5,9 +6,18 @@ import { TTSClientBase } from '@/types/tts-client-base.type'
 
 export class TTSAzureClient implements TTSClientBase {
   private readonly config: Record<string, string>
+  private readonly logger?: Logger
 
-  constructor(config: Record<string, string>) {
+  constructor(config: Record<string, string>, logger?: Logger) {
     this.config = config
+
+    if (logger) {
+      this.logger = logger.child({ label: TTSAzureClient.name })
+
+      this.logger.info(
+        `TTS client initialized with model: ${this.config.model}`
+      )
+    }
   }
 
   private createClient() {

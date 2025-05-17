@@ -1,39 +1,34 @@
 [
   {
-    "provider": "elevenlabs",
+    "provider": "eleven-labs",
     "model": "eleven_multilingual_v2",
     "voice": "21m00Tcm4TlvDq8ikWAM",
     "isActive": false
   },
   {
-    "provider": "murf",
+    "provider": "murf-ai",
     "baseUrl": "https://api.murf.ai/v1",
     "model": "GEN2",
     "voice": "en-US-natalie",
-    "style": "Conversational",
-    "isActive": false
+    "style": "Conversational"
   },
   {
     "provider": "deepgram",
     "baseUrl": "https://api.deepgram.com/v1",
     "model": "aura",
-    "voice": "stella",
-    "isActive": false
+    "voice": "stella"
   },
   {
     "provider": "aws",
     "model": "standard",
-    "voice": "Amy",
-    "isActive": false
+    "voice": "Amy"
   },
   {
     "provider": "azure",
-    "voice": "en-US-EvelynMultilingualNeural",
-    "isActive": false
+    "voice": "en-US-EvelynMultilingualNeural"
   },
   {
     "provider": "gcp",
-    "voice": "FEMALE",
-    "isActive": true
+    "voice": "FEMALE"
   }
 ]
