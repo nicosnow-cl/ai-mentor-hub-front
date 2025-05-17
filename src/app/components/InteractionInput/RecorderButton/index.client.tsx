@@ -79,12 +79,12 @@ export function RecorderButton() {
     stopRecording()
   }
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent | React.TouchEvent) => {
     e.preventDefault()
     handleStart()
   }
 
-  const handlePointerUp = (e: React.PointerEvent) => {
+  const handlePointerUp = (e: React.PointerEvent | React.TouchEvent) => {
     e.preventDefault()
     handleStop()
   }
@@ -94,13 +94,11 @@ export function RecorderButton() {
       type="button"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      onPointerCancel={(e) => {
-        e.preventDefault()
-        handleStop()
-      }}
-      onContextMenu={(e) => {
-        e.preventDefault() // Evita que se abra el menú contextual
-      }}
+      onPointerCancel={handlePointerUp}
+      onTouchStart={handlePointerDown}
+      onTouchEnd={handlePointerUp}
+      onTouchCancel={handlePointerUp}
+      onContextMenu={(e) => e.preventDefault()}
       isActive={status === InteractionStatus.Recording}
       disabled={MENTOR_WORKING_STATUS.includes(status)}
       aria-pressed={status === InteractionStatus.Recording}
@@ -108,8 +106,6 @@ export function RecorderButton() {
         'recorder-button',
         status === InteractionStatus.Recording && 'active'
       )}
-    >
-      🎤
-    </Button>
+    ></Button>
   )
 }

@@ -67,6 +67,7 @@ export class STTClientFactory {
         return new STTGCPClient(
           {
             apiKey: ENV_VARS.STT_GCP_API_KEY,
+            language: providerConfig.language as string,
           },
           logger
         )

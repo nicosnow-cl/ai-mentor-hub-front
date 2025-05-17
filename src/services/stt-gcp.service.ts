@@ -18,7 +18,7 @@ export class STTGCPClient implements STTClientBase {
       this.logger = logger.child({ label: STTGCPClient.name })
 
       this.logger.info(
-        `STT GCP client initialized with model: ${this.config.model}`
+        `STT client initialized with model: ${this.config.model}`
       )
     }
   }
@@ -39,7 +39,7 @@ export class STTGCPClient implements STTClientBase {
     return {
       config: {
         encoding: 'LINEAR16',
-        sampleRateHertz: 16000,
+        sampleRateHertz: 48000,
         languageCode: this.config.language,
       },
       audio: {
@@ -60,7 +60,7 @@ export class STTGCPClient implements STTClientBase {
 
     return {
       text: transcription,
-      language: '',
+      language: this.config.language,
     }
   }
 }
