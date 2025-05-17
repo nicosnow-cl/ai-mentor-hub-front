@@ -1,26 +1,28 @@
 import { Accelerators } from './components/InteractionInput/Accelerators'
+import { AuroraHero } from './components/common/AuroraHero'
 import { Avatar } from './components/Assitant/Avatar/index.client'
 import { Chat } from './components/Chat/index.client'
 import { InteractionInput } from './components/InteractionInput'
 import { Navbar } from './components/Navbar'
 import { StatusIndicator } from './components/Assitant/StatusIndicator/index.client'
 import { VoiceSpeech } from './components/VoiceSpeech/index.client'
-import { AuroraHero } from './components/common/AuroraHero'
 
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col items-center pb-2 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex h-[100dvh] w-[100dvw] flex-col items-center font-[family-name:var(--font-geist-sans)]">
       <AuroraHero />
       <Navbar />
 
       <VoiceSpeech />
 
-      <main className="w-full max-w-[1920px] flex-1 px-2">
-        <Chat />
+      <main className="size-full">
+        <section className="size-full max-w-[1920px]">
+          <Chat />
+        </section>
       </main>
 
-      <section className="mt-auto grid w-full place-items-center gap-y-2 px-2">
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 translate-y-1/2">
+      <footer className="relative mt-auto grid w-full place-items-center gap-y-2 p-1 md:p-2">
+        <div className="absolute bottom-20 left-1/2 -z-10 -translate-x-1/2 translate-y-1/2">
           <Avatar />
         </div>
 
@@ -31,7 +33,7 @@ export default function Home() {
         </div>
 
         <Accelerators />
-      </section>
+      </footer>
     </div>
   )
 }

@@ -83,6 +83,10 @@
    Estilos Base
    ========================== */
 @layer base {
+  // html {
+  //   height: 100dvh;
+  // }
+
   body {
     height: 100dvh;
     color: var(--foreground);

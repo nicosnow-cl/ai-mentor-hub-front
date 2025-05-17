@@ -34,40 +34,43 @@ export function Chat() {
     }
   }, [messages])
 
+  if (!filteredMessages.length) {
+    return (
+      <div className="z-10 grid size-full place-items-center">
+        <EmptyState />
+      </div>
+    )
+  }
+
   return (
     <div
       key={`main-chat-${id}`}
       className={cn(
-        'z-10 w-full flex-1',
+        'z-10 size-full',
         isFirstRender ? 'animate-fade-in' : 'fade-to-bottom'
       )}
     >
       <div
         ref={containerRef}
         className={cn(
-          'flex flex-col gap-y-8 overflow-y-hidden px-6 pt-40 hover:overflow-y-auto',
+          'flex size-full max-h-[calc(100dvh-20rem)] flex-col gap-y-8 overflow-y-auto px-6 pt-20 md:overflow-y-hidden md:hover:overflow-y-auto',
           'md:gap-y-16 md:px-12'
         )}
         style={{
-          maxHeight: '70dvh',
           scrollbarGutter: 'stable',
         }}
       >
         {messages.length > 10 && <Actions />}
 
-        {!filteredMessages.length ? (
-          <EmptyState />
-        ) : (
-          filteredMessages.map((message, idx) => (
-            <ScalableScroll
-              key={`main-chat-${message.role}-${idx}`}
-              className="animate-fade-in"
-              containerRef={containerRef}
-            >
-              <Bubble message={message} />
-            </ScalableScroll>
-          ))
-        )}
+        {filteredMessages.map((message, idx) => (
+          <ScalableScroll
+            key={`main-chat-${message.role}-${idx}`}
+            className="animate-fade-in"
+            containerRef={containerRef}
+          >
+            <Bubble message={message} />
+          </ScalableScroll>
+        ))}
       </div>
     </div>
   )

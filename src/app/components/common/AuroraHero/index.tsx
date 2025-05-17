@@ -44,7 +44,7 @@ export function AuroraHero({
   return (
     <motion.div
       className={cn(
-        'fixed inset-0 -z-10 grid min-h-screen w-full place-content-center overflow-hidden opacity-50',
+        'fixed inset-0 -z-10 grid min-h-[100dvh] w-full place-content-center overflow-hidden opacity-50',
         className
       )}
       style={{ backgroundImage, ...style }}
