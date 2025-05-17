@@ -85,7 +85,7 @@ export function AudioControls({ messageId }: AudioControlsProps) {
         }}
       />
 
-      <button className="cursor-pointer" onClick={handleClick}>
+      <button type="button" className="cursor-pointer" onClick={handleClick}>
         {getIcon()}
       </button>
     </div>

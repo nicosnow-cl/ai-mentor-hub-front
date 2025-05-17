@@ -47,11 +47,7 @@ export function ScalableScroll({
       }
     }
 
-    updateScales() // Initial setup
-
-    window.addEventListener('resize', updateScales)
-
-    return () => window.removeEventListener('resize', updateScales)
+    updateScales()
   }, [])
 
   return (

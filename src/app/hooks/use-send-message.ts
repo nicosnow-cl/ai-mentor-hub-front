@@ -1,9 +1,12 @@
 'use client'
+
 import { toast } from 'sonner'
+import { useMediaQuery } from '@uidotdev/usehooks'
 
 import { InteractionStatus } from '@/enums'
 import { llmAct } from '@/actions/llm.action'
 import { Message } from '@/types/chats'
+import { MESSAGE_TEXTFIELD_ID } from '@/app/components/InteractionInput/MessageTextfield'
 import { sttAct } from '@/actions/stt.action'
 import { ttsAct } from '@/actions/tts.action'
 import { useChatStore } from '@/providers/chat-store-provider'
@@ -16,6 +19,7 @@ export const useInteract = () => {
   const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
     (store) => store
   )
+  const isMobile = useMediaQuery('(max-width: 768px)')
 
   const sendMessage = async (message: Message) => {
     try {
@@ -89,6 +93,10 @@ export const useInteract = () => {
       await generateAudio(assistantMessage)
 
       setCurrentMessageId(assistantMessage.id)
+
+      if (!isMobile) {
+        document.getElementById(MESSAGE_TEXTFIELD_ID)?.focus()
+      }
     } catch (err: unknown) {
       console.error(err)
     }

@@ -53,7 +53,7 @@ export function Chat() {
       <div
         ref={containerRef}
         className={cn(
-          'flex size-full max-h-[calc(100dvh-20rem)] flex-col gap-y-8 overflow-y-auto px-6 pt-20 md:overflow-y-hidden md:hover:overflow-y-auto',
+          'flex size-full max-h-[calc(100dvh-20rem)] flex-col gap-y-8 overflow-y-auto px-6 pt-20 md:overflow-y-hidden md:pt-28 md:hover:overflow-y-auto',
           'md:gap-y-16 md:px-12'
         )}
         style={{

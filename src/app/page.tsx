@@ -15,8 +15,8 @@ export default function Home() {
 
       <VoiceSpeech />
 
-      <main className="size-full">
-        <section className="size-full max-w-[1920px]">
+      <main className="size-full px-2">
+        <section className="mx-auto size-full max-w-[1920px]">
           <Chat />
         </section>
       </main>

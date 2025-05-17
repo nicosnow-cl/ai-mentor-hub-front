@@ -91,6 +91,7 @@ export function RecorderButton() {
 
   return (
     <Button
+      type="button"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={(e) => {

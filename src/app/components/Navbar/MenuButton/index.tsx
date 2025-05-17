@@ -9,7 +9,12 @@ export function MenuButton() {
   const { toogleDrawer } = useMenuDrawer((state) => state)
 
   return (
-    <Button onClick={() => toogleDrawer(true)} variant="ghost" size="icon">
+    <Button
+      type="button"
+      onClick={() => toogleDrawer(true)}
+      variant="ghost"
+      size="icon"
+    >
       <IconMenu2 />
     </Button>
   )

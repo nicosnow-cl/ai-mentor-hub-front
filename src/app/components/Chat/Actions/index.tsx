@@ -9,6 +9,7 @@ export function Actions() {
 
   return (
     <Button
+      type="button"
       className="mx-auto w-fit"
       variant="ghost"
       onClick={() => toogleDrawer(true)}

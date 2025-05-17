@@ -9,6 +9,8 @@ import { MessageRole } from '@/enums'
 import { useInteract } from '@/app/hooks/use-send-message'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
+export const MESSAGE_TEXTFIELD_ID = 'message-textfield'
+
 export function MessageTextfield() {
   const [text, setText] = useState('')
   const { status } = useInteractionStore((store) => store)
@@ -43,7 +45,7 @@ export function MessageTextfield() {
 
   return (
     <input
-      ref={(input) => input?.focus()}
+      id={MESSAGE_TEXTFIELD_ID}
       className={cn(
         'block w-full rounded-lg bg-transparent p-2.5 outline-0',
         MENTOR_WORKING_STATUS.includes(status) && 'opacity-50'

@@ -19,6 +19,7 @@ export function Button({
       )}
 
       <button
+        type="button"
         {...props}
         className={`z-10 rounded-full bg-zinc-950 p-4 shadow-md transition-colors duration-300 group-hover:bg-slate-950 ${className}`}
         disabled={disabled}

@@ -23,6 +23,7 @@ export function ResetDialog() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
+          type="button"
           className="ml-auto"
           variant="ghost"
           size="icon"

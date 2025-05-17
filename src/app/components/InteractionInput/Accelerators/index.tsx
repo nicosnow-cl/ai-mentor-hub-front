@@ -46,6 +46,7 @@ export function Accelerators() {
       {accelerators.map((accelerator, idx) => (
         <Button
           key={`${accelerator}-${idx}`}
+          type="button"
           className="glass overflow-ellipsis border border-slate-400/10"
           size="sm"
           variant="ghost"
