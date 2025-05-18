@@ -17,7 +17,7 @@ export function RecorderButton() {
   const { status, updateStatus } = useInteractionStore((store) => store)
 
   const startRecording = async () => {
-    updateStatus(InteractionStatus.Recording)
+    updateStatus(InteractionStatus.RECORDING_AUDIO)
 
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach((audioElem) => audioElem.pause())
@@ -53,7 +53,7 @@ export function RecorderButton() {
       } catch (err: unknown) {
         console.error(err)
 
-        updateStatus(InteractionStatus.Error)
+        updateStatus(InteractionStatus.ERROR)
       }
     }
 
@@ -99,12 +99,12 @@ export function RecorderButton() {
       onTouchEnd={handlePointerUp}
       onTouchCancel={handlePointerUp}
       onContextMenu={(e) => e.preventDefault()}
-      isActive={status === InteractionStatus.Recording}
+      isActive={status === InteractionStatus.RECORDING_AUDIO}
       disabled={MENTOR_WORKING_STATUS.includes(status)}
-      aria-pressed={status === InteractionStatus.Recording}
+      aria-pressed={status === InteractionStatus.RECORDING_AUDIO}
       className={cn(
         'recorder-button',
-        status === InteractionStatus.Recording && 'active'
+        status === InteractionStatus.RECORDING_AUDIO && 'active'
       )}
     ></Button>
   )

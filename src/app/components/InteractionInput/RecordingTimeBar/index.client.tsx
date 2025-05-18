@@ -21,7 +21,7 @@ export function RecordingTimeBar() {
 
     setRecordingTimeLeft(initialTime)
 
-    if (status === InteractionStatus.Recording) {
+    if (status === InteractionStatus.RECORDING_AUDIO) {
       intervalId = setInterval(() => {
         startTransition(() => {
           setRecordingTimeLeft((prev) => {
@@ -42,7 +42,7 @@ export function RecordingTimeBar() {
     }
   }, [status])
 
-  if (status !== InteractionStatus.Recording) {
+  if (status !== InteractionStatus.RECORDING_AUDIO) {
     return null
   }
 

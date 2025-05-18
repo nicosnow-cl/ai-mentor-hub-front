@@ -1,9 +1,9 @@
 export enum InteractionStatus {
-  Idle = 'idle',
-  Recording = 'recording',
-  Writting = 'writting',
+  IDLE = 'idle',
+  RECORDING_AUDIO = 'recording-audio',
+  WRITTING = 'writting',
   STT = 'stt',
   TTS = 'tts',
-  Thinking = 'thinking',
-  Error = 'error',
+  THINKING = 'thinking',
+  ERROR = 'error',
 }

@@ -15,7 +15,7 @@ export type InteractionActions = {
 export type InteractionStore = InteractionState & InteractionActions
 
 export const defaultInitState: InteractionState = {
-  status: InteractionStatus.Idle,
+  status: InteractionStatus.IDLE,
   recordingTimeLeft: 30 * 1000, // 30 Segundos
 }
 

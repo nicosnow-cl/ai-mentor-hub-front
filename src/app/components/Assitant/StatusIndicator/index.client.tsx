@@ -9,12 +9,13 @@ import { useChatStore } from '@/providers/chat-store-provider'
 
 const getLabel = (status: InteractionStatus) => {
   switch (status) {
-    case InteractionStatus.Error:
+    case InteractionStatus.ERROR:
       return 'Houston, tuvimos un problema'
-    case InteractionStatus.Recording:
-    case InteractionStatus.STT:
+    case InteractionStatus.RECORDING_AUDIO:
       return 'Escuchando...'
-    case InteractionStatus.Thinking:
+    case InteractionStatus.STT:
+      return 'Procesando...'
+    case InteractionStatus.THINKING:
       return 'Pensando...'
     case InteractionStatus.TTS:
       return 'Transcribiendo...'
@@ -24,7 +25,7 @@ const getLabel = (status: InteractionStatus) => {
 }
 
 const getIcon = (status: InteractionStatus) => {
-  if (status === InteractionStatus.Error) {
+  if (status === InteractionStatus.ERROR) {
     return <IconAlertHexagonFilled />
   }
 
@@ -47,7 +48,7 @@ export function StatusIndicator() {
       key={`status-indicator-${id}`}
       className={cn(
         'glass flex w-fit animate-fade-in items-center gap-x-2 rounded-md px-3 text-sm',
-        status === InteractionStatus.Error && 'bg-slate-900/20 text-red-300'
+        status === InteractionStatus.ERROR && 'bg-slate-900/20 text-red-300'
       )}
     >
       {icon}

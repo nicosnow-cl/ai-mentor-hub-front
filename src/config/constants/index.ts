@@ -43,6 +43,6 @@ Example:
 
 export const MENTOR_WORKING_STATUS = [
   InteractionStatus.STT,
-  InteractionStatus.Thinking,
+  InteractionStatus.THINKING,
   InteractionStatus.TTS,
 ]

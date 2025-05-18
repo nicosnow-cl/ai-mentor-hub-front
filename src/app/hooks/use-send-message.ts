@@ -23,7 +23,7 @@ export const useInteract = () => {
 
   const sendMessage = async (message: Message) => {
     try {
-      updateStatus(InteractionStatus.Thinking)
+      updateStatus(InteractionStatus.THINKING)
       appendMessage(message)
 
       const firstMessage = messages[0]
@@ -37,13 +37,13 @@ export const useInteract = () => {
 
       appendMessage(assistantMessage)
 
-      updateStatus(InteractionStatus.Idle)
+      updateStatus(InteractionStatus.IDLE)
 
       return assistantMessage
     } catch (err: unknown) {
       console.error(err)
 
-      updateStatus(InteractionStatus.Error)
+      updateStatus(InteractionStatus.ERROR)
       toast.error('Error generating response. Please try again.')
     }
   }
@@ -56,11 +56,11 @@ export const useInteract = () => {
 
       generateAudioUrl(message.id, audioGenerated.base64 as string)
 
-      updateStatus(InteractionStatus.Idle)
+      updateStatus(InteractionStatus.IDLE)
     } catch (err: unknown) {
       console.error(err)
 
-      updateStatus(InteractionStatus.Error)
+      updateStatus(InteractionStatus.ERROR)
       toast.error('Error generating audio. Please try again.')
     }
   }
@@ -71,13 +71,13 @@ export const useInteract = () => {
 
       const recognizedText = await sttAct(audio)
 
-      updateStatus(InteractionStatus.Idle)
+      updateStatus(InteractionStatus.IDLE)
 
       return recognizedText
     } catch (err: unknown) {
       console.error(err)
 
-      updateStatus(InteractionStatus.Error)
+      updateStatus(InteractionStatus.ERROR)
       toast.error('Error transcribing audio. Please try again.')
     }
   }
