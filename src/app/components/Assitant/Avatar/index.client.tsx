@@ -7,16 +7,6 @@ import { Background } from './Background'
 import { Blob, BlobAnimation } from './Blob'
 // import { useEffect, useState } from 'react'
 
-const ANIMATION_MAP = {
-  [InteractionStatus.IDLE]: 'idle',
-  [InteractionStatus.RECORDING_AUDIO]: 'soft',
-  [InteractionStatus.WRITTING]: 'soft',
-  [InteractionStatus.STT]: 'hard',
-  [InteractionStatus.THINKING]: 'intense',
-  [InteractionStatus.TTS]: 'hard',
-  [InteractionStatus.ERROR]: 'idle',
-}
-
 const DEFAULT_COLOR = 'rgba(153, 126, 215, 1)'
 
 const DEFAULT_GRADIENTS_COLORS = [
@@ -24,6 +14,19 @@ const DEFAULT_GRADIENTS_COLORS = [
   'rgb(158, 94, 147) 0%, rgb(244, 237, 201) 25%, rgb(64, 79, 115) 50%, rgb(158, 94, 147) 75%, rgb(38, 115, 208) 100%',
   'rgb(38, 115, 208) 0%, rgb(169, 220, 255) 25%, rgb(153, 126, 215) 50%, rgb(38, 115, 208) 75%, rgb(39, 133, 200) 100%',
 ]
+
+const mapStatusToAnimation = (status: string): BlobAnimation => {
+  switch (status) {
+    case InteractionStatus.THINKING:
+    case InteractionStatus.TTS:
+      return 'struggle'
+    case InteractionStatus.RECORDING_AUDIO:
+    case InteractionStatus.SPEAKING:
+      return 'beat'
+    default:
+      return 'default'
+  }
+}
 
 export type AvatarProps = React.ComponentPropsWithoutRef<'div'> & {
   backgroundColor?: string
@@ -38,30 +41,9 @@ export function Avatar({
 }: Readonly<AvatarProps>) {
   const { status } = useInteractionStore((store) => store)
 
-  // const [fakeStatus, setFakeStatus] = useState(InteractionStatus.IDLE)
-  // useEffect(() => {
-  //   // Test animation between states and interval
-
-  //   const interval = setInterval(() => {
-  //     setFakeStatus(() => {
-  //       const STATUS = [
-  //         InteractionStatus.IDLE,
-  //         InteractionStatus.RECORDING_AUDIO,
-  //         InteractionStatus.STT,
-  //         InteractionStatus.THINKING,
-  //       ]
-  //       const nextStatus = STATUS[Math.floor(Math.random() * STATUS.length)]
-
-  //       return nextStatus
-  //     })
-  //   }, 5000)
-  // }, [])
-
-  // console.log({ fakeStatus })
-
   return (
     <div className={cn('relative size-64', className)} {...props}>
-      <Blob animation={ANIMATION_MAP[status] as BlobAnimation} />
+      <Blob animation={mapStatusToAnimation(status)} />
 
       <Background
         className="absolute inset-0 -z-10"

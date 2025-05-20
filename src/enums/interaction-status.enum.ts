@@ -5,5 +5,6 @@ export enum InteractionStatus {
   STT = 'stt',
   TTS = 'tts',
   THINKING = 'thinking',
+  SPEAKING = 'speaking',
   ERROR = 'error',
 }
