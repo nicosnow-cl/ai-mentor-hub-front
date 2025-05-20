@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { IconMicrophone, IconTrash } from '@tabler/icons-react'
+import { motion, PanInfo } from 'motion/react'
+import { useMemo, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Button } from './Button'
@@ -11,13 +13,28 @@ import { MessageRole } from '@/enums'
 import { useInteract } from '@/app/hooks/use-send-message'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
+const DraggableButton = motion(Button)
+
 export function RecorderButton() {
+  const constraintsRef = useRef<HTMLDivElement>(null)
+  const [isPointerDown, setIsPointerDown] = useState(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
   const { interact, transcribeAudio } = useInteract()
   const { status, updateStatus } = useInteractionStore((store) => store)
+  const isCancelled = useRef(false)
+  const recordingStartTime = useRef<number>(0)
+
+  const { isDisabled, isRecording } = useMemo(
+    () => ({
+      isRecording: status === InteractionStatus.RECORDING_AUDIO,
+      isDisabled: MENTOR_WORKING_STATUS.includes(status),
+    }),
+    [status]
+  )
 
   const startRecording = async () => {
     updateStatus(InteractionStatus.RECORDING_AUDIO)
+    recordingStartTime.current = Date.now()
 
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach((audioElem) => audioElem.pause())
@@ -30,11 +47,21 @@ export function RecorderButton() {
     const chunks: BlobPart[] = []
 
     recorder.ondataavailable = (event) => {
-      chunks.push(event.data)
+      if (event.data.size) {
+        chunks.push(event.data)
+      }
     }
 
     recorder.onstop = async () => {
       try {
+        const endTime = Date.now()
+        const duration = (endTime - recordingStartTime.current) / 1000 // in seconds
+
+        if (isCancelled.current || duration < 2) {
+          updateStatus(InteractionStatus.IDLE)
+          return
+        }
+
         const blob = new Blob(chunks, {
           type: 'audio/webm',
         })
@@ -45,11 +72,17 @@ export function RecorderButton() {
           throw new Error('Transcription failed')
         }
 
-        interact({
-          id: uuidv4(),
-          role: MessageRole.User,
-          content: transcribedText.text,
-        })
+        if (transcribedText.text) {
+          interact({
+            id: uuidv4(),
+            role: MessageRole.User,
+            content: transcribedText.text,
+          })
+        } else {
+          console.info('Transcription result is empty')
+
+          updateStatus(InteractionStatus.IDLE)
+        }
       } catch (err: unknown) {
         console.error(err)
 
@@ -69,43 +102,74 @@ export function RecorderButton() {
     }
   }
 
-  const handleStart = () => {
-    if (!MENTOR_WORKING_STATUS.includes(status)) {
+  const handlePointerDown = () => {
+    if (!isDisabled) {
+      isCancelled.current = false
+      setIsPointerDown(true)
       startRecording()
     }
   }
 
-  const handleStop = () => {
+  const handlePointerUp = () => {
+    setIsPointerDown(false)
     stopRecording()
   }
 
-  const handlePointerDown = (e: React.PointerEvent | React.TouchEvent) => {
-    e.preventDefault()
-    handleStart()
+  const handleDrag = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    const currentWidth = constraintsRef.current?.clientWidth || 0
+
+    isCancelled.current = info.offset.x <= 56 - currentWidth
   }
 
-  const handlePointerUp = (e: React.PointerEvent | React.TouchEvent) => {
-    e.preventDefault()
-    handleStop()
+  const handleDragEnd = () => {
+    setIsPointerDown(false)
+    stopRecording()
   }
 
   return (
-    <Button
-      type="button"
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onTouchStart={handlePointerDown}
-      onTouchEnd={handlePointerUp}
-      onTouchCancel={handlePointerUp}
-      onContextMenu={(e) => e.preventDefault()}
-      isActive={status === InteractionStatus.RECORDING_AUDIO}
-      disabled={MENTOR_WORKING_STATUS.includes(status)}
-      aria-pressed={status === InteractionStatus.RECORDING_AUDIO}
+    <div
+      ref={constraintsRef}
       className={cn(
-        'recorder-button',
-        status === InteractionStatus.RECORDING_AUDIO && 'active'
+        'relative h-14 w-64 rounded-full bg-slate-950/50 transition-colors duration-300',
+        isPointerDown ? 'bg-slate-900/50' : 'bg-transparent'
       )}
-    ></Button>
+    >
+      <span
+        className={cn(
+          'absolute inset-0 grid size-14 place-items-center text-red-500/50 transition-opacity duration-300',
+          isPointerDown ? 'opacity-50' : 'opacity-0'
+        )}
+      >
+        <IconTrash />
+      </span>
+
+      <DraggableButton
+        type="button"
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+        onContextMenu={(e) => e.preventDefault()}
+        className={cn('absolute', isPointerDown && 'active')}
+        isActive={isRecording}
+        disabled={isDisabled}
+        style={{ right: '0' }}
+        dragConstraints={constraintsRef}
+        dragElastic={0.05}
+        drag={isDisabled ? false : 'x'}
+        dragSnapToOrigin
+      >
+        <IconMicrophone
+          className={cn(
+            'size-6 transition-colors duration-300',
+            !isDisabled && 'group-hover:text-slate-200'
+          )}
+        />
+      </DraggableButton>
+    </div>
   )
 }
