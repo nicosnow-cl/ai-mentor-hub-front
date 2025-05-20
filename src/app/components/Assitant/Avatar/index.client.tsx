@@ -1,11 +1,10 @@
 'use client'
 
-import { InteractionStatus } from '@/enums/interaction-status.enum'
-import { useInteractionStore } from '@/providers/interaction-store-provider'
-import { cn } from '@/lib/utils'
 import { Background } from './Background'
 import { Blob, BlobAnimation } from './Blob'
-// import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
+import { InteractionStatus } from '@/enums/interaction-status.enum'
+import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 const DEFAULT_COLOR = 'rgba(153, 126, 215, 1)'
 
@@ -22,6 +21,7 @@ const mapStatusToAnimation = (status: string): BlobAnimation => {
       return 'struggle'
     case InteractionStatus.RECORDING_AUDIO:
     case InteractionStatus.SPEAKING:
+    case InteractionStatus.STT:
       return 'beat'
     default:
       return 'default'

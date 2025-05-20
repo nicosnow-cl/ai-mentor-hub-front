@@ -50,12 +50,12 @@ export class STTDeepgramClient implements STTClientBase {
     const { result, error } =
       await this.client.listen.prerecorded.transcribeFile(buffer, {
         model: this.config.model,
-        language: 'es-ES',
+        detect_language: true,
         smart_format: true,
       })
 
     if (error) {
-      console.error(error)
+      this.logger?.error(error)
 
       return {
         text: '',
