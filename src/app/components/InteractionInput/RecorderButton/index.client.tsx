@@ -1,7 +1,7 @@
 'use client'
 
 import { IconMicrophone, IconTrash } from '@tabler/icons-react'
-import { motion, PanInfo } from 'motion/react'
+import { motion, PanInfo, useMotionValue, useTransform } from 'motion/react'
 import { useMemo, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -19,17 +19,23 @@ export function RecorderButton() {
   const constraintsRef = useRef<HTMLDivElement>(null)
   const [isPointerDown, setIsPointerDown] = useState(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-  const { interact, transcribeAudio } = useInteract()
   const { status, updateStatus } = useInteractionStore((store) => store)
   const isCancelled = useRef(false)
   const recordingStartTime = useRef<number>(0)
+  const x = useMotionValue(0)
+  const { interact, transcribeAudio } = useInteract()
 
-  const { isDisabled, isRecording } = useMemo(
+  const { isDisabled } = useMemo(
     () => ({
-      isRecording: status === InteractionStatus.RECORDING_AUDIO,
       isDisabled: MENTOR_WORKING_STATUS.includes(status),
     }),
     [status]
+  )
+
+  const bg = useTransform(
+    x,
+    [0, -256 * 2],
+    ['rgba(15,23,42,0.5)', 'rgba(127,29,29,0.3)'] // slate-950/50 a red-900/30
   )
 
   const startRecording = async () => {
@@ -130,12 +136,10 @@ export function RecorderButton() {
   }
 
   return (
-    <div
+    <motion.div
       ref={constraintsRef}
-      className={cn(
-        'relative h-14 w-64 rounded-full bg-slate-950/50 transition-colors duration-300',
-        isPointerDown ? 'bg-slate-900/50' : 'bg-transparent'
-      )}
+      className="relative h-14 w-64 rounded-full bg-slate-950/50 transition-colors duration-500"
+      style={{ background: isPointerDown ? bg : 'transparent' }}
     >
       <span
         className={cn(
@@ -155,9 +159,9 @@ export function RecorderButton() {
         onDragEnd={handleDragEnd}
         onContextMenu={(e) => e.preventDefault()}
         className={cn('absolute', isPointerDown && 'active')}
-        isActive={isRecording}
+        isActive={isPointerDown}
         disabled={isDisabled}
-        style={{ right: '0' }}
+        style={{ x, right: '0' }}
         dragConstraints={constraintsRef}
         dragElastic={0.05}
         drag={isDisabled ? false : 'x'}
@@ -170,6 +174,6 @@ export function RecorderButton() {
           )}
         />
       </DraggableButton>
-    </div>
+    </motion.div>
   )
 }
