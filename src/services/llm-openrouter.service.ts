@@ -26,35 +26,30 @@ export class LLMOpenRouter implements LLMClientBase {
   private getPayload(input: LLMInput) {
     const payload = {
       model: this.config.model,
-      messages: [
-        {
-          role: 'system',
-          content: `Your role: You are AndreIA, a spoken English teacher and language improver.
-
-        Instructions:
-          - If the user speaks in Spanish, respond in Spanish.
-          - If the user speaks to you in English, respond in English to help practice spoken English.
-          - Keep your responses concise (up to 100 words).
-          - Strictly correct grammar mistakes, typos, and factual errors in every response.
-          - Always ask a follow-up question to keep the conversation engaging.
-          - Always carefully review the conversation history to understand the context before responding.
-        
-        Additional Note:
-          - The user's native language is Spanish, so be mindful of common language transfer errors.
-
-        Let's begin practicing!`,
-        },
-      ],
-      stream: false,
-    }
+      messages: [],
+    } as { model: string; messages: { role: MessageRole; content: string }[] }
 
     if (typeof input === 'string') {
       payload.messages.push({
-        role: 'user',
+        role: MessageRole.User,
         content: input,
       })
     } else {
-      payload.messages = [...payload.messages, ...input]
+      if (input.length > 0) {
+        payload.messages.push({
+          role: MessageRole.System,
+          content: input[0].content,
+        })
+      }
+
+      payload.messages.push(
+        ...input
+          .filter((message) => message.role !== MessageRole.System)
+          .map(({ role, content }) => ({
+            role,
+            content,
+          }))
+      )
     }
 
     return payload
