@@ -5,6 +5,7 @@ export type Message = {
   role: MessageRole
   content: string
   accelerators?: string[]
+  error?: string
   createdAt?: string
   think?: string
 }

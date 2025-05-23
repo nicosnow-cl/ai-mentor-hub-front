@@ -1,5 +1,6 @@
 import { Logger } from 'winston'
 
+import { DEFAULT_TOPIC } from '@/config/constants'
 import { ENV_VARS } from '@/config/environment'
 import { LLMClientBase } from '@/types/llm-client-base.type'
 import { LLMGCPClient } from '@/services/llm-gcp.service'
@@ -11,7 +12,7 @@ import LLMConfigs from '@/config/llm.json'
 const LLM_PROVIDER = ENV_VARS.LLM_PROVIDER
 
 export class LLMClientFactory {
-  static create(logger?: Logger): LLMClientBase | null {
+  static create(logger?: Logger, topic = DEFAULT_TOPIC): LLMClientBase | null {
     if (!LLM_PROVIDER) {
       return null
     }
@@ -31,6 +32,7 @@ export class LLMClientFactory {
             apiKey: ENV_VARS.OPENROUTER_API_KEY,
             model: providerConfig.model,
             baseUrl: providerConfig.baseUrl as string,
+            topic,
           },
           logger
         )

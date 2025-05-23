@@ -7,14 +7,14 @@ import { getLogger } from '@/helpers/logger'
 import { LLMClientFactory } from '@/clients/llm.client'
 import { LLMInput } from '@/types/llm-client-base.type'
 
-export const llmAct = async (input: LLMInput) => {
+export const llmAct = async (input: LLMInput, topic?: string) => {
   const correlationId = getCorrelationId(await headers())
   const logger = getLogger().child({ label: 'llmAct', correlationId })
 
   try {
     logger.info('Action invoked')
 
-    const llmClient = LLMClientFactory.create(logger)
+    const llmClient = LLMClientFactory.create(logger, topic)
 
     if (!llmClient) {
       throw new Error('No STT Provider configured')

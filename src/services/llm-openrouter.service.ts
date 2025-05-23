@@ -1,10 +1,16 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Logger } from 'winston'
 
+import {
+  DEFAULT_MENTOR_LANGUAGE,
+  DEFAULT_MENTOR_NAME,
+  DEFAULT_SYSTEM_INSTRUCTIONS,
+} from '@/config/constants'
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
 import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums'
+import { stringTemplateReplace } from '@/helpers/string-template-replace'
 import { stringToJSON } from '@/helpers/string-to-json'
 
 export class LLMOpenRouter implements LLMClientBase {
@@ -23,10 +29,22 @@ export class LLMOpenRouter implements LLMClientBase {
     }
   }
 
-  private getPayload(input: LLMInput) {
+  private getSystemInstructions(topic: string) {
+    return {
+      id: uuidv4(),
+      role: MessageRole.System,
+      content: stringTemplateReplace(DEFAULT_SYSTEM_INSTRUCTIONS, {
+        name: DEFAULT_MENTOR_NAME,
+        language: DEFAULT_MENTOR_LANGUAGE,
+        topic,
+      }),
+    }
+  }
+
+  private getPayload(input: LLMInput, topic: string) {
     const payload = {
       model: this.config.model,
-      messages: [],
+      messages: [this.getSystemInstructions(topic)],
     } as { model: string; messages: { role: MessageRole; content: string }[] }
 
     if (typeof input === 'string') {
@@ -35,13 +53,6 @@ export class LLMOpenRouter implements LLMClientBase {
         content: input,
       })
     } else {
-      if (input.length > 0) {
-        payload.messages.push({
-          role: MessageRole.System,
-          content: input[0].content,
-        })
-      }
-
       payload.messages.push(
         ...input
           .filter((message) => message.role !== MessageRole.System)
@@ -57,13 +68,17 @@ export class LLMOpenRouter implements LLMClientBase {
 
   async chat(input: LLMInput): Promise<Message> {
     try {
+      console.log(
+        JSON.stringify(this.getPayload(input, this.config.topic), null, 2)
+      )
+
       const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.config.apiKey}`,
         },
-        body: JSON.stringify(this.getPayload(input)),
+        body: JSON.stringify(this.getPayload(input, this.config.topic)),
       })
 
       const data = await res.json()

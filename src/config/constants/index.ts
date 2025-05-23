@@ -26,7 +26,8 @@ Respond only in this JSON format:
 
 Rules:
 - Output only valid JSON. No extra text.
-- “userFollowups” must be phrases the user might say to you to continue the conversation (questions or replies).
+- All your answer must be placed in "content. It must be in Markdown formatting.
+- Additionally, you can add “userFollowups”, that are phrases the user might say to you to continue the conversation (questions or replies).
 - Do not include questions or suggestions from the assistant.
 - Remember to always respond in the JSON format above.
 

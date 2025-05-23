@@ -1,8 +1,10 @@
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   IconBulbFilled,
   IconInnerShadowBottomFilled,
 } from '@tabler/icons-react'
+
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { TopicInput } from './TopicInput'
 
 export function EmptyState() {
   return (
@@ -16,6 +18,8 @@ export function EmptyState() {
         Puedes hacer preguntas, pedir consejos o simplemente charlar sobre
         cualquier tema que te interese.
       </p>
+
+      <TopicInput />
 
       <Alert className="mt-4 text-left opacity-75">
         <IconBulbFilled className="h-5 w-5" />
