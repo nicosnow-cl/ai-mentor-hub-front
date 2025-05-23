@@ -7,8 +7,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { useMenuDrawer } from '@/providers/menu-drawer.provider'
 import { Menu } from './Menu'
+import { useMenuDrawer } from '@/providers/menu-drawer.provider'
 
 export function MenuDrawer() {
   const { open, toogleDrawer } = useMenuDrawer((state) => state)
@@ -30,7 +30,9 @@ export function MenuDrawer() {
           </DrawerHeader>
         </div>
 
-        <Menu />
+        <div className="h-full px-2">
+          <Menu />
+        </div>
       </DrawerContent>
     </Drawer>
   )

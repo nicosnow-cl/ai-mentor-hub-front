@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Logger } from 'winston'
 
 import {
-  DEFAULT_MENTOR_LANGUAGE,
+  DEFAULT_CONVERSATION_LANGUAGE,
   DEFAULT_MENTOR_NAME,
   DEFAULT_SYSTEM_INSTRUCTIONS,
 } from '@/config/constants'
@@ -35,7 +35,7 @@ export class LLMOpenRouter implements LLMClientBase {
       role: MessageRole.System,
       content: stringTemplateReplace(DEFAULT_SYSTEM_INSTRUCTIONS, {
         name: DEFAULT_MENTOR_NAME,
-        language: DEFAULT_MENTOR_LANGUAGE,
+        language: DEFAULT_CONVERSATION_LANGUAGE,
         topic,
       }),
     }

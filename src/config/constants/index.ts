@@ -2,7 +2,7 @@ import { InteractionStatus } from '@/enums'
 
 export const DEFAULT_MENTOR_NAME = 'AthenIA'
 
-export const DEFAULT_MENTOR_LANGUAGE = 'english'
+export const DEFAULT_CONVERSATION_LANGUAGE = 'english'
 
 export const DEFAULT_TOPIC = 'English language'
 

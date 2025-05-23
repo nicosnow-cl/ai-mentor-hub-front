@@ -1,7 +1,11 @@
 'use client'
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
+import { Settings } from '../Settings'
 import { SimpleChat } from '../SimpleChat'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { IconX } from '@tabler/icons-react'
+import { DrawerClose } from '@/components/ui/drawer'
 
 export function Menu() {
   return (
@@ -9,17 +13,25 @@ export function Menu() {
       defaultValue="chat"
       className="flex h-full flex-col gap-y-4 overflow-hidden px-4"
     >
-      <TabsList className="grow-0 justify-start">
-        <TabsTrigger value="chat">Chat</TabsTrigger>
-        <TabsTrigger value="settings" disabled>
-          Configuración
-        </TabsTrigger>
-      </TabsList>
+      <div className="flex items-center justify-between">
+        <TabsList className="justify-start">
+          <TabsTrigger value="chat">Chat</TabsTrigger>
+          <TabsTrigger value="settings">Configuración</TabsTrigger>
+        </TabsList>
 
-      <TabsContent value="chat" className="flex flex-1 overflow-hidden pb-8">
+        <DrawerClose asChild>
+          <Button variant="ghost" size="icon">
+            <IconX className="!size-5" />
+          </Button>
+        </DrawerClose>
+      </div>
+
+      {/* <TabsContent value="chat" className="flex flex-1 overflow-hidden pb-8">
         <SimpleChat />
+      </TabsContent> */}
+      <TabsContent value="settings">
+        <Settings />
       </TabsContent>
-      <TabsContent value="settings"></TabsContent>
     </Tabs>
   )
 }
