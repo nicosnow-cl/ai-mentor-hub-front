@@ -1,5 +1,6 @@
 'use client'
 
+import { IconMessages, IconUser, IconVector } from '@tabler/icons-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import {
   DEFAULT_CONVERSATION_LANGUAGE,
+  DEFAULT_MENTOR_INSTRUCTIONS,
   DEFAULT_MENTOR_NAME,
   DEFAULT_TOPIC,
 } from '@/config/constants'
@@ -30,13 +32,13 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { settingsSchema } from '@/schemas/settings.schema'
 import { Textarea } from '@/components/ui/textarea'
-import { IconMessages, IconUser, IconVector } from '@tabler/icons-react'
 
 export function Settings() {
   const settingsForm = useForm<z.infer<typeof settingsSchema>>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
       mentorName: DEFAULT_MENTOR_NAME,
+      instructions: DEFAULT_MENTOR_INSTRUCTIONS,
       topic: DEFAULT_TOPIC,
       language: DEFAULT_CONVERSATION_LANGUAGE,
     },
@@ -89,7 +91,7 @@ export function Settings() {
                 </FormLabel>
 
                 <FormControl>
-                  <Textarea className="max-h-52" {...field} />
+                  <Textarea className="max-h-52" rows={8} {...field} />
                 </FormControl>
 
                 <FormDescription>

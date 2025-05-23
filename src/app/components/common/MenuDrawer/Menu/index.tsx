@@ -26,9 +26,9 @@ export function Menu() {
         </DrawerClose>
       </div>
 
-      {/* <TabsContent value="chat" className="flex flex-1 overflow-hidden pb-8">
+      <TabsContent value="chat">
         <SimpleChat />
-      </TabsContent> */}
+      </TabsContent>
       <TabsContent value="settings">
         <Settings />
       </TabsContent>
