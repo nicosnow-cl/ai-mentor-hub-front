@@ -44,12 +44,7 @@ export default function RootLayout({
           <MenuDrawer />
         </RootProvider>
 
-        <Toaster
-          duration={5000}
-          position="bottom-left"
-          closeButton
-          richColors
-        />
+        <Toaster duration={5000} position="bottom-left" closeButton />
       </body>
     </html>
   )

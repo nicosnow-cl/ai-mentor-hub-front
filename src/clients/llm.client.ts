@@ -1,6 +1,6 @@
 import { Logger } from 'winston'
 
-import { DEFAULT_TOPIC } from '@/config/constants'
+import { DEFAULT_SETTINGS } from '@/config/constants'
 import { ENV_VARS } from '@/config/environment'
 import { LLMClientBase } from '@/types/llm-client-base.type'
 import { LLMGCPClient } from '@/services/llm-gcp.service'
@@ -12,7 +12,10 @@ import LLMConfigs from '@/config/llm.json'
 const LLM_PROVIDER = ENV_VARS.LLM_PROVIDER
 
 export class LLMClientFactory {
-  static create(logger?: Logger, topic = DEFAULT_TOPIC): LLMClientBase | null {
+  static create(
+    logger?: Logger,
+    topic = DEFAULT_SETTINGS.topic
+  ): LLMClientBase | null {
     if (!LLM_PROVIDER) {
       return null
     }

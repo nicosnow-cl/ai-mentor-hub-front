@@ -1,17 +1,11 @@
 'use client'
 
 import { IconMessages, IconUser, IconVector } from '@tabler/icons-react'
+import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Button } from '@/components/ui/button'
-import {
-  DEFAULT_CONVERSATION_LANGUAGE,
-  DEFAULT_MENTOR_INSTRUCTIONS,
-  DEFAULT_MENTOR_NAME,
-  DEFAULT_TOPIC,
-} from '@/config/constants'
 import {
   Form,
   FormControl,
@@ -30,24 +24,40 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { settingsSchema } from '@/schemas/settings.schema'
+import { SettingsSchema, settingsSchema } from '@/schemas/settings.schema'
 import { Textarea } from '@/components/ui/textarea'
+import { useUserSettingStore } from '@/stores/user-settings.store'
 
 export function Settings() {
-  const settingsForm = useForm<z.infer<typeof settingsSchema>>({
+  const { updateSettings, ...restState } = useUserSettingStore((state) => state)
+  const settingsForm = useForm<SettingsSchema>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
-      mentorName: DEFAULT_MENTOR_NAME,
-      instructions: DEFAULT_MENTOR_INSTRUCTIONS,
-      topic: DEFAULT_TOPIC,
-      language: DEFAULT_CONVERSATION_LANGUAGE,
+      mentorName: restState.mentorName,
+      instructions: restState.instructions,
+      topic: restState.topic,
+      subTopic: restState.subTopic,
+      language: restState.language,
+      userName: restState.userName,
     },
   })
 
-  const onSubmit = (values: z.infer<typeof settingsSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  const onSubmit = (values: SettingsSchema) => {
+    try {
+      updateSettings(values)
+
+      toast.success('Configuración guardada', {
+        description:
+          'La configuración del mentor ha sido guardada correctamente.',
+      })
+    } catch (error) {
+      console.error('Error al guardar la configuración', error)
+
+      toast.error('Error al guardar la configuración', {
+        description: 'No se pudo guardar la configuración del mentor.',
+        richColors: true,
+      })
+    }
   }
 
   return (

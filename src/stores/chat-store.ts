@@ -2,7 +2,7 @@ import { createStore } from 'zustand/vanilla'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Chat, Message } from '@/types/chats'
-import { DEFAULT_TOPIC } from '@/config/constants'
+import { DEFAULT_SETTINGS } from '@/config/constants'
 
 export const CHAT_STORE_KEY = 'chat-store'
 
@@ -19,7 +19,7 @@ export type ChatStore = ChatState & ChatActions
 export const defaultInitState: ChatState = {
   id: uuidv4(),
   title: 'Chat',
-  topic: localStorage.getItem(CHAT_STORE_KEY) ?? DEFAULT_TOPIC,
+  topic: localStorage.getItem(CHAT_STORE_KEY) ?? DEFAULT_SETTINGS.topic,
   subTopic: '',
   messages: [],
 }

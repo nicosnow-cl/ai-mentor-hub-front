@@ -2,8 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Logger } from 'winston'
 
 import {
-  DEFAULT_CONVERSATION_LANGUAGE,
-  DEFAULT_MENTOR_NAME,
+  DEFAULT_SETTINGS,
   DEFAULT_SYSTEM_INSTRUCTIONS,
 } from '@/config/constants'
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
@@ -34,8 +33,8 @@ export class LLMOpenRouter implements LLMClientBase {
       id: uuidv4(),
       role: MessageRole.System,
       content: stringTemplateReplace(DEFAULT_SYSTEM_INSTRUCTIONS, {
-        name: DEFAULT_MENTOR_NAME,
-        language: DEFAULT_CONVERSATION_LANGUAGE,
+        name: DEFAULT_SETTINGS.mentorName,
+        language: DEFAULT_SETTINGS.language,
         topic,
       }),
     }

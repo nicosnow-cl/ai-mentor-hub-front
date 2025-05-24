@@ -1,17 +1,16 @@
 import { InteractionStatus } from '@/enums'
 
-export const DEFAULT_MENTOR_NAME = 'AthenIA'
-
-export const DEFAULT_CONVERSATION_LANGUAGE = 'english'
-
-export const DEFAULT_TOPIC = 'English language'
-
-export const DEFAULT_MENTOR_INSTRUCTIONS = `- Ask what the user wants to learn.
+export const DEFAULT_SETTINGS = {
+  mentorName: 'AthenIA',
+  instructions: `- Ask what the user wants to learn.
 - Understand their current level.
 - Explain clearly, step by step, with examples or analogies.
 - Encourage questions and curiosity.
 - Be friendly and supportive at all times.
-- Keep answers short-medium and easy to understand.`
+- Keep answers short-medium and easy to understand.`,
+  topic: 'English language',
+  language: 'english',
+}
 
 export const DEFAULT_SYSTEM_INSTRUCTIONS = `
 You are a mentor named {name}, here to help the user learn about {topic}.  
