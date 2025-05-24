@@ -21,10 +21,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { topicSchema, TopicSchema } from '@/schemas/settings.schema'
-import { useUserSettingStore } from '@/stores/user-settings.store'
+import { useUserSettingsStore } from '@/stores/user-settings.store'
 
 export function TopicInput() {
-  const { updateSettings, topic } = useUserSettingStore((state) => state)
+  const { updateSettings, topic } = useUserSettingsStore((state) => state)
   const topicForm = useForm<TopicSchema>({
     resolver: zodResolver(topicSchema),
     values: { topic },

@@ -12,11 +12,13 @@ import { ttsAct } from '@/actions/tts.action'
 import { useChatStore } from '@/providers/chat-store-provider'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 import { useTtsStore } from '@/providers/tts-store-provider'
+import { useUserSettingsStore } from '@/stores/user-settings.store'
 
 const MAX_MESSAGES = 4
 
 export const useInteract = () => {
-  const { topic, messages, appendMessage } = useChatStore((state) => state)
+  const { messages, appendMessage } = useChatStore((state) => state)
+  const settingsStore = useUserSettingsStore((state) => state)
   const { updateStatus } = useInteractionStore((store) => store)
   const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
     (store) => store
@@ -32,7 +34,10 @@ export const useInteract = () => {
         .filter((message) => !message.error)
         .slice(-MAX_MESSAGES)
 
-      const assistantMessage = await llmAct([...lastMessages, message], topic)
+      const assistantMessage = await llmAct(
+        [...lastMessages, message],
+        settingsStore
+      )
 
       appendMessage(assistantMessage)
 

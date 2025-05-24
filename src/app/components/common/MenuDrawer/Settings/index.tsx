@@ -26,10 +26,12 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { SettingsSchema, settingsSchema } from '@/schemas/settings.schema'
 import { Textarea } from '@/components/ui/textarea'
-import { useUserSettingStore } from '@/stores/user-settings.store'
+import { useUserSettingsStore } from '@/stores/user-settings.store'
 
 export function Settings() {
-  const { updateSettings, ...restState } = useUserSettingStore((state) => state)
+  const { updateSettings, ...restState } = useUserSettingsStore(
+    (state) => state
+  )
   const settingsForm = useForm<SettingsSchema>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {

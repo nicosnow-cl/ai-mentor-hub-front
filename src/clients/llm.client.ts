@@ -7,6 +7,7 @@ import { LLMGCPClient } from '@/services/llm-gcp.service'
 import { LLMLmStudio } from '@/services/llm-lmstudio.service'
 import { LLMOpenRouter } from '@/services/llm-openrouter.service'
 import { LLMProvider } from '@/enums'
+import { SettingsSchema } from '@/schemas/settings.schema'
 import LLMConfigs from '@/config/llm.json'
 
 const LLM_PROVIDER = ENV_VARS.LLM_PROVIDER
@@ -14,7 +15,7 @@ const LLM_PROVIDER = ENV_VARS.LLM_PROVIDER
 export class LLMClientFactory {
   static create(
     logger?: Logger,
-    topic = DEFAULT_SETTINGS.topic
+    settings: SettingsSchema = DEFAULT_SETTINGS as SettingsSchema
   ): LLMClientBase | null {
     if (!LLM_PROVIDER) {
       return null
@@ -29,16 +30,15 @@ export class LLMClientFactory {
     }
 
     switch (LLM_PROVIDER) {
-      case LLMProvider.OPEN_ROUTER:
-        return new LLMOpenRouter(
-          {
-            apiKey: ENV_VARS.OPENROUTER_API_KEY,
-            model: providerConfig.model,
-            baseUrl: providerConfig.baseUrl as string,
-            topic,
-          },
-          logger
-        )
+      case LLMProvider.OPEN_ROUTER: {
+        const config = {
+          apiKey: ENV_VARS.OPENROUTER_API_KEY,
+          model: providerConfig.model,
+          baseUrl: providerConfig.baseUrl as string,
+        }
+
+        return new LLMOpenRouter(config, settings, logger)
+      }
 
       case LLMProvider.LM_STUDIO:
         return new LLMLmStudio(

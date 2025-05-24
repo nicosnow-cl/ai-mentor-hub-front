@@ -10,9 +10,9 @@ export const DEFAULT_SETTINGS = {
 - Keep answers short-medium and easy to understand.`,
   topic: 'English language',
   language: 'english',
-}
+} as const
 
-export const DEFAULT_SYSTEM_INSTRUCTIONS = `
+export const SYSTEM_INSTRUCTIONS = `
 You are a mentor named {name}, here to help the user learn about {topic}.  
 Always speak in {language}, unless the user explicitly requests another language.
 

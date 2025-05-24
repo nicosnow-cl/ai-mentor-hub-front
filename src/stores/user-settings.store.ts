@@ -18,7 +18,7 @@ export const defaultInitState: UserSettingsState =
 
 export const USER_SETTINGS_STORE_KEY = 'user-settings-store'
 
-export const useUserSettingStore = create<UserSettingsStore>()(
+export const useUserSettingsStore = create<UserSettingsStore>()(
   persist(
     (set) => ({
       ...defaultInitState,
