@@ -5,13 +5,9 @@ export const stringTemplateReplace = (
   let templateReplaced = template
 
   for (const [key, value] of Object.entries(replacements)) {
-    if (value === undefined) {
-      continue
-    }
-
     const regex = new RegExp(`{${key}}`, 'g')
 
-    templateReplaced = templateReplaced.replace(regex, String(value))
+    templateReplaced = templateReplaced.replace(regex, String(value ?? '____'))
   }
 
   return templateReplaced

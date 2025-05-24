@@ -36,12 +36,7 @@ export class LLMOpenRouter implements LLMClientBase {
     return {
       id: uuidv4(),
       role: MessageRole.System,
-      content: stringTemplateReplace(SYSTEM_INSTRUCTIONS, {
-        name: this.settings.mentorName,
-        instructions: this.settings.instructions,
-        topic: this.settings.topic,
-        language: this.settings.language,
-      }),
+      content: stringTemplateReplace(SYSTEM_INSTRUCTIONS, this.settings),
     }
   }
 
@@ -59,7 +54,9 @@ export class LLMOpenRouter implements LLMClientBase {
     } else {
       payload.messages.push(
         ...input
-          .filter((message) => message.role !== MessageRole.System)
+          .filter(
+            (message) => message.role !== MessageRole.System && message.content
+          )
           .map(({ role, content }) => ({
             role,
             content,
@@ -72,8 +69,6 @@ export class LLMOpenRouter implements LLMClientBase {
 
   async chat(input: LLMInput): Promise<Message> {
     try {
-      console.log(JSON.stringify(this.getPayload(input), null, 2))
-
       const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
@@ -94,12 +89,12 @@ export class LLMOpenRouter implements LLMClientBase {
       const { think, content } = getThinkAndContent(candidate?.content || '')
       let contentObj = stringToJSON(content)
 
-      if (!contentObj) {
+      if (!contentObj || Array.isArray(contentObj)) {
         this.logger?.error('Invalid JSON response. Returning raw content.')
-        this.logger?.debug(`Raw content: ${content}`)
+        this.logger?.debug(`Raw content: ${candidate?.content}`)
 
         contentObj = {
-          content,
+          content: String(candidate?.content),
           userFollowups: [],
         }
       }

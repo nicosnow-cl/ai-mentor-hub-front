@@ -19,6 +19,7 @@ const MAX_MESSAGES = 4
 export const useInteract = () => {
   const { messages, appendMessage } = useChatStore((state) => state)
   const settingsStore = useUserSettingsStore((state) => state)
+
   const { updateStatus } = useInteractionStore((store) => store)
   const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
     (store) => store
@@ -34,10 +35,14 @@ export const useInteract = () => {
         .filter((message) => !message.error)
         .slice(-MAX_MESSAGES)
 
-      const assistantMessage = await llmAct(
-        [...lastMessages, message],
-        settingsStore
-      )
+      const assistantMessage = await llmAct([...lastMessages, message], {
+        mentorName: settingsStore.mentorName,
+        instructions: settingsStore.instructions,
+        topic: settingsStore.topic,
+        subTopic: settingsStore.subTopic,
+        language: settingsStore.language,
+        userName: settingsStore.userName,
+      })
 
       appendMessage(assistantMessage)
 
