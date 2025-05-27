@@ -13,7 +13,7 @@ import { MessageRole } from '@/enums'
 import { useInteract } from '@/app/hooks/use-send-message'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
-const DraggableButton = motion(Button)
+const DraggableButton = motion.create(Button)
 
 export function RecorderButton() {
   const constraintsRef = useRef<HTMLDivElement>(null)
@@ -35,7 +35,7 @@ export function RecorderButton() {
   const bg = useTransform(
     x,
     [0, -256 * 2],
-    ['rgba(15,23,42,0.5)', 'rgba(127,29,29,0.3)'] // slate-950/50 a red-900/30
+    ['rgba(15,23,42,0.95)', 'rgba(127,29,29,0.95)'] // slate-950 a red-900
   )
 
   const startRecording = async () => {
@@ -138,13 +138,13 @@ export function RecorderButton() {
   return (
     <motion.div
       ref={constraintsRef}
-      className="relative h-14 w-64 rounded-full bg-slate-950/50 transition-colors duration-500"
+      className="relative h-14 w-64 rounded-full bg-slate-950 transition-colors duration-500"
       style={{ background: isPointerDown ? bg : 'transparent' }}
     >
       <span
         className={cn(
-          'absolute inset-0 grid size-14 place-items-center text-red-500/50 transition-opacity duration-300',
-          isPointerDown ? 'opacity-50' : 'opacity-0'
+          'absolute inset-0 grid size-14 place-items-center text-red-500/75 transition-opacity duration-300',
+          !isPointerDown && 'opacity-0'
         )}
       >
         <IconTrash />

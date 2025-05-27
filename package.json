@@ -17,6 +17,7 @@
     "@google-cloud/text-to-speech": "^6.1.0",
     "@google/genai": "^0.14.1",
     "@hookform/resolvers": "^5.0.1",
+    "@langchain/core": "^0.3.57",
     "@radix-ui/react-alert-dialog": "^1.1.13",
     "@radix-ui/react-collapsible": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.6",
