@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { cn } from '@/lib/utils'
 import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
-import { useInteract } from '@/app/hooks/use-send-message'
+import { useInteract } from '@/app/hooks/use-interact'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 export const MESSAGE_TEXTFIELD_ID = 'message-textfield'

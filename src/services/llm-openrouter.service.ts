@@ -1,5 +1,6 @@
-import { v4 as uuidv4 } from 'uuid'
 import { Logger } from 'winston'
+import { v4 as uuidv4 } from 'uuid'
+import OpenAI from 'openai'
 
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
@@ -8,9 +9,13 @@ import { MessageRole } from '@/enums'
 import { SettingsSchema } from '@/schemas/settings.schema'
 import { stringTemplateReplace } from '@/helpers/string-template-replace'
 import { stringToJSON } from '@/helpers/string-to-json'
-import { SYSTEM_INSTRUCTIONS } from '@/config/constants'
+import {
+  SUMMARY_SYSTEM_INSTRUCTIONS,
+  SYSTEM_INSTRUCTIONS,
+} from '@/config/constants'
 
 export class LLMOpenRouter implements LLMClientBase {
+  private readonly client: OpenAI
   private readonly config: Record<string, string>
   private readonly settings: SettingsSchema
   private readonly logger?: Logger
@@ -22,6 +27,10 @@ export class LLMOpenRouter implements LLMClientBase {
   ) {
     this.config = config
     this.settings = settings
+    this.client = new OpenAI({
+      baseURL: this.config.baseUrl,
+      apiKey: this.config.apiKey,
+    })
 
     if (logger) {
       this.logger = logger.child({ label: LLMOpenRouter.name })
@@ -32,59 +41,46 @@ export class LLMOpenRouter implements LLMClientBase {
     }
   }
 
-  private getSystemInstructions() {
+  private getChatParams(
+    input: LLMInput,
+    chatSummary?: string
+  ): OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming {
     return {
-      id: uuidv4(),
-      role: MessageRole.System,
-      content: stringTemplateReplace(SYSTEM_INSTRUCTIONS, this.settings),
-    }
-  }
-
-  private getPayload(input: LLMInput) {
-    const payload = {
       model: this.config.model,
-      messages: [this.getSystemInstructions()],
-    } as { model: string; messages: { role: MessageRole; content: string }[] }
-
-    if (typeof input === 'string') {
-      payload.messages.push({
-        role: MessageRole.User,
-        content: input,
-      })
-    } else {
-      payload.messages.push(
-        ...input
-          .filter(
-            (message) => message.role !== MessageRole.System && message.content
-          )
-          .map(({ role, content }) => ({
-            role,
-            content,
-          }))
-      )
+      messages: [
+        {
+          role: MessageRole.System,
+          content: stringTemplateReplace(SYSTEM_INSTRUCTIONS, {
+            ...this.settings,
+            chatSummary,
+          }),
+        },
+        ...input.map(({ role, content }) => ({
+          role,
+          content,
+        })),
+      ],
     }
-
-    return payload
   }
 
-  async chat(input: LLMInput): Promise<Message> {
+  private getSummarizeParams(input: LLMInput) {
+    return {
+      model: this.config.model,
+      prompt: stringTemplateReplace(SUMMARY_SYSTEM_INSTRUCTIONS, {
+        chatHistory: input
+          .map((message) => `${message.role}: ${message.content}`)
+          .join('\n'),
+      }),
+    }
+  }
+
+  async chat(input: LLMInput, chatSummary?: string): Promise<Message> {
     try {
-      const res = await fetch(`${this.config.baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.config.apiKey}`,
-        },
-        body: JSON.stringify(this.getPayload(input)),
-      })
+      const completion = await this.client.chat.completions.create(
+        this.getChatParams(input, chatSummary)
+      )
 
-      const data = await res.json()
-
-      if (data.error) {
-        throw new Error(JSON.stringify(data.error))
-      }
-
-      const candidate = data.choices[0]?.message
+      const candidate = completion.choices[0]?.message
 
       const { think, content } = getThinkAndContent(candidate?.content || '')
       let contentObj = stringToJSON(content)
@@ -102,8 +98,8 @@ export class LLMOpenRouter implements LLMClientBase {
       const { content: parsedContent, userFollowups } = contentObj
 
       return {
-        id: data.id || uuidv4(),
-        role: candidate?.role || MessageRole.Assistant,
+        id: completion.id || uuidv4(),
+        role: (candidate?.role as MessageRole) || MessageRole.Assistant,
         content: parsedContent as string,
         accelerators: userFollowups as string[],
         think,
@@ -111,7 +107,21 @@ export class LLMOpenRouter implements LLMClientBase {
     } catch (error) {
       this.logger?.error(error)
 
-      throw new Error(`LLM error: ${error}`)
+      throw new Error(`${this.chat.name} error: ${error}`)
+    }
+  }
+
+  async summarize(input: LLMInput): Promise<string> {
+    try {
+      const completion = await this.client.completions.create(
+        this.getSummarizeParams(input)
+      )
+
+      return completion.choices[0]?.text || ''
+    } catch (error) {
+      this.logger?.error(error)
+
+      throw new Error(`${this.summarize.name} error: ${error}`)
     }
   }
 }

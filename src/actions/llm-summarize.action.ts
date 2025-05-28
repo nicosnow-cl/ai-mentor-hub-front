@@ -6,40 +6,36 @@ import { getCorrelationId } from '@/helpers/get-correlation-id'
 import { getLogger } from '@/helpers/logger'
 import { LLMClientFactory } from '@/clients/llm.client'
 import { LLMInput } from '@/types/llm-client-base.type'
-import { SettingsSchema } from '@/schemas/settings.schema'
 
-export type LLMActionProps = {
+export type LLMSumarrizeActionProps = {
   input: LLMInput
-  settings?: SettingsSchema
-  summary?: string
 }
 
-export const llmAct = async ({
+export const llmSummarizeAct = async ({
   input,
-  settings,
-  summary,
-}: Readonly<LLMActionProps>) => {
+}: Readonly<LLMSumarrizeActionProps>) => {
   const correlationId = getCorrelationId(await headers())
-  const logger = getLogger().child({ label: 'llmAct', correlationId })
+  const logger = getLogger().child({
+    label: 'llmSummarizeAct',
+    correlationId,
+  })
 
   try {
     logger.info('Action invoked')
 
-    const llmClient = LLMClientFactory.create(logger, settings)
+    const llmClient = LLMClientFactory.create(logger)
 
     if (!llmClient) {
       throw new Error('No LLM Provider configured')
+    } else if (!llmClient.summarize) {
+      throw new Error('LLM Provider does not support summarization')
     }
 
-    const message = await llmClient.chat(input, summary)
+    const summary = await llmClient.summarize(input)
 
-    if (!message.createdAt) {
-      message.createdAt = new Date().toISOString()
-    }
+    logger.info(`Action response: ${summary}`)
 
-    logger.info(`Action response: ${JSON.stringify(message)}`)
-
-    return message
+    return summary
   } catch (error) {
     logger.error(error)
     logger.debug(`Input: ${JSON.stringify(input)}`)

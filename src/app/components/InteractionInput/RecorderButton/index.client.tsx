@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { InteractionStatus } from '@/enums/interaction-status.enum'
 import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
-import { useInteract } from '@/app/hooks/use-send-message'
+import { useInteract } from '@/app/hooks/use-interact'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 const DraggableButton = motion.create(Button)

@@ -35,7 +35,7 @@ export class LLMClientFactory {
           apiKey: ENV_VARS.OPENROUTER_API_KEY,
           model: providerConfig.model,
           baseUrl: providerConfig.baseUrl as string,
-        }
+        } as const
 
         return new LLMOpenRouter(config, settings, logger)
       }

@@ -1,7 +1,8 @@
 import { Message } from './chats'
 
-export type LLMInput = string | Message[]
+export type LLMInput = Message[]
 
 export type LLMClientBase = {
-  chat(input: LLMInput): Promise<Message>
+  chat(input: LLMInput, summary?: string): Promise<Message>
+  summarize?(input: LLMInput): Promise<string>
 }

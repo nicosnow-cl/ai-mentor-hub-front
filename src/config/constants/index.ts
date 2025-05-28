@@ -13,7 +13,7 @@ export const DEFAULT_SETTINGS = {
 } as const
 
 export const SYSTEM_INSTRUCTIONS = `
--- SYSTEM INSTRUCTIONS ---
+--- SYSTEM INSTRUCTIONS ---
 You are a mentor named {mentorName}, here to help the user learn about {topic} subject. The name of the user is {userName}.  
 Keep your messages in {language} language, unless the user explicitly requests another language.
 
@@ -43,10 +43,30 @@ Rules:
 </ response_example>
 --- END SYSTEM INSTRUCTIONS ---
 
+--- CHAT SUMMARY ---
+Here is a summary of the chat so far:
+
+{chatSummary}
+--- END CHAT SUMMARY ---
+
 -- USER INSTRUCTIONS ---
 Keep in mind the following user's instructions:
+
 {instructions}
 --- END USER INSTRUCTIONS ---
+
+
+`
+
+export const SUMMARY_SYSTEM_INSTRUCTIONS = `
+--- SYSTEM INSTRUCTIONS ---
+You must summarize the conversation between the user and the mentor. Focus on the key points, topics discussed, and any important questions or follow-ups raised by the user. 
+The summary should be concise and capture the essence of the conversation without unnecessary details.
+--- END SYSTEM INSTRUCTIONS ---
+
+--- CHAT HISTORY ---
+{chatHistory}
+--- END CHAT HISTORY ---
 `
 
 export const MENTOR_WORKING_STATUS = [
@@ -54,3 +74,5 @@ export const MENTOR_WORKING_STATUS = [
   InteractionStatus.THINKING,
   InteractionStatus.TTS,
 ]
+
+export const MAX_MEMORY_LENGTH = 4

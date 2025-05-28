@@ -5,6 +5,7 @@ import { useMediaQuery } from '@uidotdev/usehooks'
 
 import { InteractionStatus } from '@/enums'
 import { llmAct } from '@/actions/llm.action'
+import { MAX_MEMORY_LENGTH } from '@/config/constants'
 import { Message } from '@/types/chats'
 import { MESSAGE_TEXTFIELD_ID } from '@/app/components/InteractionInput/MessageTextfield'
 import { sttAct } from '@/actions/stt.action'
@@ -13,13 +14,11 @@ import { useChatStore } from '@/providers/chat-store-provider'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 import { useTtsStore } from '@/providers/tts-store-provider'
 import { useUserSettingsStore } from '@/stores/user-settings.store'
-
-const MAX_MESSAGES = 4
+import { getLastMessagePairs } from '@/helpers/get-last-messages-pair'
 
 export const useInteract = () => {
-  const { messages, appendMessage } = useChatStore((state) => state)
+  const { messages, summary, appendMessage } = useChatStore((state) => state)
   const settingsStore = useUserSettingsStore((state) => state)
-
   const { updateStatus } = useInteractionStore((store) => store)
   const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
     (store) => store
@@ -31,17 +30,24 @@ export const useInteract = () => {
       updateStatus(InteractionStatus.THINKING)
       appendMessage(message)
 
-      const lastMessages = messages
-        .filter((message) => !message.error)
-        .slice(-MAX_MESSAGES)
+      const chatHistory = getLastMessagePairs(
+        messages.filter((message) => !message.error),
+        MAX_MEMORY_LENGTH
+      )
 
-      const assistantMessage = await llmAct([...lastMessages, message], {
+      const settings = {
         mentorName: settingsStore.mentorName,
         instructions: settingsStore.instructions,
         topic: settingsStore.topic,
         subTopic: settingsStore.subTopic,
         language: settingsStore.language,
         userName: settingsStore.userName,
+      }
+
+      const assistantMessage = await llmAct({
+        input: [...chatHistory, message],
+        settings,
+        summary,
       })
 
       appendMessage(assistantMessage)

@@ -4,6 +4,7 @@ export type Chat = {
   id: string
   title: string
   messages: Message[]
+  summary?: string
   createdAt?: string
   updatedAt?: string
 }

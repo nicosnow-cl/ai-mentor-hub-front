@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { MENTOR_WORKING_STATUS } from '@/config/constants'
 import { MessageRole } from '@/enums'
 import { useChatStore } from '@/providers/chat-store-provider'
-import { useInteract } from '@/app/hooks/use-send-message'
+import { useInteract } from '@/app/hooks/use-interact'
 import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 export function Accelerators() {
