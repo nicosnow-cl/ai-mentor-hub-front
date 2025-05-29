@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Chat, Message } from '@/types/chats'
 import { llmSummarizeAct } from '@/actions/llm-summarize.action'
+import { MAX_MEMORY_LENGTH } from '@/config/constants'
 
 export const CHAT_STORE_KEY = 'chat-store'
 
@@ -29,19 +30,20 @@ export const createChatStore = (initState: ChatState = defaultInitState) => {
       (set, stateFn) => ({
         ...initState,
         appendMessage: async (message: Message) => {
-          set((state) => ({
-            messages: [...state.messages, message],
-          }))
+          set((state) => ({ messages: [...state.messages, message] }))
 
-          if (message.role === 'assistant') {
-            const summary = await llmSummarizeAct({
-              input: stateFn().messages,
-            })
+          const { messages } = stateFn()
+
+          console.log({ messages: messages.length, MAX_MEMORY_LENGTH })
+
+          if (
+            message.role === 'assistant' &&
+            (messages.length - 1) % MAX_MEMORY_LENGTH === 0
+          ) {
+            const summary = await llmSummarizeAct({ input: messages })
 
             if (summary) {
-              set(() => ({
-                summary,
-              }))
+              set(() => ({ summary }))
             }
           }
         },

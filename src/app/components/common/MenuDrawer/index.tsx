@@ -30,7 +30,7 @@ export function MenuDrawer() {
           </DrawerHeader>
         </div>
 
-        <div className="h-full px-2">
+        <div className="h-full pb-4 pl-2">
           <Menu />
         </div>
       </DrawerContent>

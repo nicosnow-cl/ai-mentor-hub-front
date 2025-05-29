@@ -40,14 +40,14 @@ export class LLMClientFactory {
         return new LLMOpenRouter(config, settings, logger)
       }
 
-      case LLMProvider.LM_STUDIO:
-        return new LLMLmStudio(
-          {
-            model: providerConfig.model,
-            baseUrl: providerConfig.baseUrl as string,
-          },
-          logger
-        )
+      case LLMProvider.LM_STUDIO: {
+        const config = {
+          model: providerConfig.model,
+          baseUrl: providerConfig.baseUrl as string,
+        } as const
+
+        return new LLMLmStudio(config, settings, logger)
+      }
 
       case LLMProvider.GCP:
         return new LLMGCPClient(

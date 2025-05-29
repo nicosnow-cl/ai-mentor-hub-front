@@ -11,7 +11,7 @@ export function Menu() {
   return (
     <Tabs
       defaultValue="chat"
-      className="flex h-full flex-col gap-y-4 overflow-hidden px-4"
+      className="flex h-full flex-col gap-y-4 overflow-hidden px-2 md:px-4"
     >
       <div className="flex items-center justify-between">
         <TabsList className="justify-start">
@@ -26,10 +26,10 @@ export function Menu() {
         </DrawerClose>
       </div>
 
-      <TabsContent value="chat">
+      <TabsContent value="chat" asChild>
         <SimpleChat />
       </TabsContent>
-      <TabsContent value="settings">
+      <TabsContent className="overflow-auto" value="settings">
         <Settings />
       </TabsContent>
     </Tabs>
