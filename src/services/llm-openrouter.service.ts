@@ -8,7 +8,6 @@ import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums'
 import { SettingsSchema } from '@/schemas/settings.schema'
 import { stringTemplateReplace } from '@/helpers/string-template-replace'
-import { stringToJSON } from '@/helpers/string-to-json'
 import {
   SUMMARY_SYSTEM_INSTRUCTIONS,
   SYSTEM_INSTRUCTIONS,
@@ -83,25 +82,11 @@ export class LLMOpenRouter implements LLMClientBase {
       const candidate = completion.choices[0]?.message
 
       const { think, content } = getThinkAndContent(candidate?.content || '')
-      let contentObj = stringToJSON(content)
-
-      if (!contentObj || Array.isArray(contentObj)) {
-        this.logger?.error('Invalid JSON response. Returning raw content.')
-        this.logger?.debug(`Raw content: ${candidate?.content}`)
-
-        contentObj = {
-          content: String(candidate?.content),
-          userFollowups: [],
-        }
-      }
-
-      const { content: parsedContent, userFollowups } = contentObj
 
       return {
         id: completion.id || uuidv4(),
-        role: (candidate?.role as MessageRole) || MessageRole.Assistant,
-        content: parsedContent as string,
-        accelerators: userFollowups as string[],
+        role: MessageRole.Assistant,
+        content: content,
         think,
       }
     } catch (error) {

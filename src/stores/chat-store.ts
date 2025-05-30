@@ -13,7 +13,7 @@ export type ChatState = Chat
 
 export type ChatActions = {
   appendMessage: (message: Message) => void
-  reset: () => void
+  resetChat: () => void
 }
 
 export type ChatStore = ChatState & ChatActions
@@ -23,6 +23,7 @@ export const defaultInitState: ChatState = {
   title: 'Chat',
   messages: [],
   summary: '',
+  followUps: [],
 }
 
 export const createChatStore = (initState: ChatState = defaultInitState) => {
@@ -35,10 +36,11 @@ export const createChatStore = (initState: ChatState = defaultInitState) => {
 
           const { messages } = stateFn()
 
-          if (
-            message.role === MessageRole.Assistant &&
-            messages.length % MAX_MEMORY_LENGTH === 0
-          ) {
+          if (message.role !== MessageRole.Assistant) {
+            return
+          }
+
+          if (messages.length % MAX_MEMORY_LENGTH === 0) {
             const summary = await llmSummarizeAct({ input: messages })
 
             if (summary) {
@@ -46,10 +48,7 @@ export const createChatStore = (initState: ChatState = defaultInitState) => {
             }
           }
         },
-        reset: () =>
-          set(() => ({
-            ...defaultInitState,
-          })),
+        resetChat: () => set(defaultInitState),
       }),
       {
         name: CHAT_STORE_KEY,

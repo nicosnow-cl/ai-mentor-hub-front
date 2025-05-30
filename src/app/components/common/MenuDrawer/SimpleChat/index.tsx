@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import { Bubble } from '@/app/components/Chat/Bubble'
+import { EmptyState } from './EmptyState'
 import { useChatStore } from '@/providers/chat-store-provider'
 
 export function SimpleChat() {
@@ -25,6 +26,10 @@ export function SimpleChat() {
       })
     }
   }, [filteredMessages.length])
+
+  if (!filteredMessages.length) {
+    return <EmptyState />
+  }
 
   return (
     <div

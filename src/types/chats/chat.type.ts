@@ -5,6 +5,7 @@ export type Chat = {
   title: string
   messages: Message[]
   summary?: string
+  followUps?: string[]
   createdAt?: string
   updatedAt?: string
 }

@@ -4,22 +4,22 @@ import {
   HarmBlockThreshold,
   HarmCategory,
   Modality,
-  Type,
 } from '@google/genai'
 import { Logger } from 'winston'
 import { v4 as uuidv4 } from 'uuid'
 
+import {
+  FOLLOW_UPS_SYSTEM_INSTRUCTIONS,
+  SUMMARY_SYSTEM_INSTRUCTIONS,
+  SYSTEM_INSTRUCTIONS,
+} from '@/config/constants'
 import { getThinkAndContent } from '@/helpers/get-think-and-content'
 import { LLMClientBase, LLMInput } from '@/types/llm-client-base.type'
 import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums'
+import { parseLLMStrToJSON } from '@/helpers/parse-llm-str-to-json'
 import { SettingsSchema } from '@/schemas/settings.schema'
 import { stringTemplateReplace } from '@/helpers/string-template-replace'
-import { stringToJSON } from '@/helpers/string-to-json'
-import {
-  SUMMARY_SYSTEM_INSTRUCTIONS,
-  SYSTEM_INSTRUCTIONS,
-} from '@/config/constants'
 
 export class LLMGCPClient implements LLMClientBase {
   private readonly client: GoogleGenAI
@@ -56,6 +56,7 @@ export class LLMGCPClient implements LLMClientBase {
         parts: [{ text: content }],
       })),
       config: {
+        responseModalities: [Modality.TEXT],
         systemInstruction: stringTemplateReplace(SYSTEM_INSTRUCTIONS, {
           ...this.settings,
           chatSummary,
@@ -66,24 +67,6 @@ export class LLMGCPClient implements LLMClientBase {
             threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
           },
         ],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            content: {
-              type: Type.STRING,
-              description: 'The generated content.',
-            },
-            userFollowups: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.STRING,
-                description:
-                  'A list of follow-up questions or prompts for the user.',
-              },
-            },
-          },
-        },
       },
     }
   }
@@ -152,6 +135,26 @@ export class LLMGCPClient implements LLMClientBase {
     }
   }
 
+  private getFollowupsParams(input: LLMInput) {
+    return {
+      model: this.config.model,
+      contents: stringTemplateReplace(FOLLOW_UPS_SYSTEM_INSTRUCTIONS, {
+        chatHistory: input
+          .map((message) => `${message.role}: ${message.content}`)
+          .join('\n'),
+      }),
+      config: {
+        responseModalities: [Modality.TEXT],
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+          },
+        ],
+      },
+    }
+  }
+
   async chat(input: LLMInput, chatSummary?: string): Promise<Message> {
     try {
       const response = await this.client.models.generateContent(
@@ -163,25 +166,11 @@ export class LLMGCPClient implements LLMClientBase {
       }
 
       const { think, content } = getThinkAndContent(response.text)
-      let contentObj = stringToJSON(content)
-
-      if (!contentObj) {
-        this.logger?.error('Invalid JSON response. Returning raw content.')
-        this.logger?.debug(`Raw content: ${content}`)
-
-        contentObj = {
-          content,
-          userFollowups: [],
-        }
-      }
-
-      const { content: parsedContent, userFollowups } = contentObj
 
       return {
         id: response.responseId || uuidv4(),
         role: MessageRole.Assistant,
-        content: parsedContent as string,
-        accelerators: userFollowups as string[],
+        content: content,
         think,
       }
     } catch (error) {
@@ -202,6 +191,26 @@ export class LLMGCPClient implements LLMClientBase {
       this.logger?.error(error)
 
       throw new Error(`${this.summarize.name} error: ${error}`)
+    }
+  }
+
+  async getFollowups(input: LLMInput): Promise<string[]> {
+    try {
+      const response = await this.client.models.generateContent(
+        this.getFollowupsParams(input)
+      )
+
+      if (!response.text) {
+        throw new Error('No response from LLM')
+      }
+
+      const { content } = getThinkAndContent(response.text)
+
+      return parseLLMStrToJSON<string[]>(content) || []
+    } catch (error) {
+      this.logger?.error(error)
+
+      throw new Error(`${this.getFollowups.name} error: ${error}`)
     }
   }
 }

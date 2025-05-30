@@ -8,7 +8,6 @@ import { Message } from '@/types/chats'
 import { MessageRole } from '@/enums'
 import { SettingsSchema } from '@/schemas/settings.schema'
 import { stringTemplateReplace } from '@/helpers/string-template-replace'
-import { stringToJSON } from '@/helpers/string-to-json'
 import {
   SUMMARY_SYSTEM_INSTRUCTIONS,
   SYSTEM_INSTRUCTIONS,
@@ -66,33 +65,15 @@ export class LLMLmStudio implements LLMClientBase {
     try {
       const model = await this.client.llm.model(this.config.model)
 
-      if (!model) {
-        throw new Error(`Model ${this.config.model} not found`)
-      }
-
       const history = this.getHistory(input, chatSummary)
       const result = await model.respond(history)
 
       const { think, content } = getThinkAndContent(result.content || '')
-      let contentObj = stringToJSON(content)
-
-      if (!contentObj) {
-        this.logger?.error('Invalid JSON response. Returning raw content.')
-        this.logger?.debug(`Raw content: ${content}`)
-
-        contentObj = {
-          content,
-          userFollowups: [],
-        }
-      }
-
-      const { content: parsedContent, userFollowups } = contentObj
 
       return {
         id: uuidv4(),
         role: MessageRole.Assistant,
-        content: parsedContent as string,
-        accelerators: userFollowups as string[],
+        content: content,
         think,
       }
     } catch (error) {

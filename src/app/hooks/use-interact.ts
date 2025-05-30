@@ -15,6 +15,7 @@ import { useInteractionStore } from '@/providers/interaction-store-provider'
 import { useTtsStore } from '@/providers/tts-store-provider'
 import { useUserSettingsStore } from '@/stores/user-settings.store'
 import { getLastMessagePairs } from '@/helpers/get-last-messages-pair'
+import { useFollowUpsStore } from '@/stores/follow-ups.store'
 
 export const useInteract = () => {
   const { messages, summary, appendMessage } = useChatStore((state) => state)
@@ -22,6 +23,9 @@ export const useInteract = () => {
   const { updateStatus } = useInteractionStore((store) => store)
   const { setCurrentMessageId, generateAudioUrl } = useTtsStore(
     (store) => store
+  )
+  const generateFollowUps = useFollowUpsStore(
+    (store) => store.generateFollowUps
   )
   const isMobile = useMediaQuery('(max-width: 768px)')
 
@@ -51,6 +55,7 @@ export const useInteract = () => {
       })
 
       appendMessage(assistantMessage)
+      generateFollowUps(assistantMessage.id, [...chatHistory, assistantMessage])
 
       updateStatus(InteractionStatus.IDLE)
 

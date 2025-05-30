@@ -5,4 +5,5 @@ export type LLMInput = Message[]
 export type LLMClientBase = {
   chat(input: LLMInput, summary?: string): Promise<Message>
   summarize?(input: LLMInput): Promise<string>
+  getFollowups?(input: LLMInput): Promise<string[]>
 }
