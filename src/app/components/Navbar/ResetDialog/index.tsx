@@ -16,14 +16,17 @@ import {
 import { Button } from '@/components/ui/button'
 import { useChatStore } from '@/providers/chat-store-provider'
 import { useFollowUpsStore } from '@/stores/follow-ups.store'
+import { useInteractionStore } from '@/providers/interaction-store-provider'
 
 export function ResetDialog() {
   const { messages, resetChat } = useChatStore((state) => state)
   const { resetFollowUps } = useFollowUpsStore((state) => state)
+  const { resetInteraction } = useInteractionStore((state) => state)
 
   const resetStores = () => {
     resetChat()
     resetFollowUps()
+    resetInteraction()
   }
 
   return (

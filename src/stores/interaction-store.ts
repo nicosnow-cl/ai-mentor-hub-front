@@ -10,6 +10,7 @@ export type InteractionState = {
 export type InteractionActions = {
   updateStatus: (status: InteractionStatus) => void
   updateRecordingTimeLeft: (timeMs: number) => void
+  resetInteraction: () => void
 }
 
 export type InteractionStore = InteractionState & InteractionActions
@@ -24,15 +25,9 @@ export const createInteractionStore = (
 ) => {
   return createStore<InteractionStore>()((set) => ({
     ...initState,
-    updateStatus: (status) =>
-      set((state) => ({
-        ...state,
-        status,
-      })),
+    updateStatus: (status) => set(() => ({ status })),
     updateRecordingTimeLeft: (timeMs) =>
-      set((state) => ({
-        ...state,
-        recordingTimeLeft: Math.max(0, timeMs),
-      })),
+      set(() => ({ recordingTimeLeft: Math.max(0, timeMs) })),
+    resetInteraction: () => set(defaultInitState),
   }))
 }

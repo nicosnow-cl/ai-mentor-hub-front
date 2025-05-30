@@ -24,28 +24,28 @@ export function Accelerators() {
       createdAt: new Date().toISOString(),
     })
 
+  if (isLoading) {
+    return <div className="dot-loader" />
+  }
+
   return (
     <div
       key={`follow-ups-${messageId}`}
-      className="mx-auto flex flex-wrap justify-center gap-1"
+      className="mx-auto flex animate-fade-in flex-wrap justify-center gap-1 duration-300"
     >
-      {isLoading ? (
-        <div className="dot-loader" />
-      ) : (
-        followUps.map((accelerator, idx) => (
-          <Button
-            key={`${accelerator}-${idx}`}
-            type="button"
-            className="glass overflow-ellipsis border border-slate-400/10 hover:bg-slate-400/10 focus:bg-slate-400/10"
-            size="sm"
-            variant="ghost"
-            onClick={() => handleSubmitMessage(accelerator)}
-            disabled={MENTOR_WORKING_STATUS.includes(status)}
-          >
-            {accelerator}
-          </Button>
-        ))
-      )}
+      {followUps.map((accelerator, idx) => (
+        <Button
+          key={`${accelerator}-${idx}`}
+          type="button"
+          className="glass overflow-ellipsis border border-slate-400/10 hover:bg-slate-400/10 focus:bg-slate-400/10"
+          size="sm"
+          variant="ghost"
+          onClick={() => handleSubmitMessage(accelerator)}
+          disabled={MENTOR_WORKING_STATUS.includes(status)}
+        >
+          {accelerator}
+        </Button>
+      ))}
     </div>
   )
 }
