@@ -49,14 +49,14 @@ export class LLMClientFactory {
         return new LLMLmStudio(config, settings, logger)
       }
 
-      case LLMProvider.GCP:
-        return new LLMGCPClient(
-          {
-            apiKey: ENV_VARS.LLM_GCP_API_KEY,
-            model: providerConfig.model,
-          },
-          logger
-        )
+      case LLMProvider.GCP: {
+        const config = {
+          apiKey: ENV_VARS.LLM_GCP_API_KEY,
+          model: providerConfig.model,
+        } as const
+
+        return new LLMGCPClient(config, settings, logger)
+      }
 
       default:
         throw new Error('No LLM Client found')
